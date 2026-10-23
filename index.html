@@ -45,6 +45,16 @@ body.blackhole .machine{box-shadow:0 8px 0 #080a12,0 0 26px #7252df88}
 .seedinput{width:100%;padding:12px;border-radius:12px;border:1px solid #69718d;background:#151b2b;color:white;font:inherit}
 #multiplier{color:#fff0a5;text-align:center;font-size:12px;font-weight:900;min-height:18px}
 @media(prefers-reduced-motion:reduce){.ticker,.toast,.machine.godmode,.win-path path{animation:none!important}}
+
+/* Pacing and clarity pass: calm ordinary hits, dramatic rare wins */
+.score{transition:color .16s,text-shadow .16s}
+.score.counting{color:#dbff90;text-shadow:0 0 12px #8ef3ad66}
+.message{font-variant-numeric:tabular-nums}
+.machine.suspense{border-color:#efd46c;box-shadow:0 8px 0 #080a12,0 0 38px #ffd75f66}
+.cell.minihit{border-color:#ffe59b;box-shadow:0 0 8px #ffe59b7a}
+#multiplier{transition:transform .15s}
+.rule{opacity:.92}
+@media(prefers-reduced-motion:reduce){.machine.suspense{animation:none}}
 </style></head><body>
 <main class="app"><header class="row"><div><div class="brand">LUCK <b>LOOP</b></div><div class="eyebrow">100 SPINS · CHAOS EDITION</div></div><div class="toolbar"><button class="tinybtn" id="speed">速度:標準</button><button class="iconbtn" id="sound" aria-label="効果音切り替え">🔊</button></div></header>
 <section class="stats"><div class="row"><div><div class="eyebrow">TOTAL SCORE</div><div class="score" id="score">0</div></div><div class="best">BEST<strong id="best">0</strong></div></div><div class="row sm"><span>⚡ 次の強化ノルマ</span><span id="target" style="color:var(--lime)">210</span></div><div class="bar"><div id="bar"></div></div><div class="row muted"><span id="remaining">達成まで 210</span><b id="spins">0 / 100 SPINS</b></div></section>
@@ -156,19 +166,19 @@ function seedFromString(t){let h=2166136261>>>0;for(const c of String(t)){h=Math
 function rng(){let x=d.rng>>>0;if(!x)x=seedFromString('DEFAULT');x^=x<<13;x^=x>>>17;x^=x<<5;d.rng=x>>>0;return d.rng/4294967296}
 function randGame(n){return Math.floor(rng()*n)}
 const slept=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-let speedIndex=0;const speedModes=[1,.48,.18];
+let speedIndex=0;try{speedIndex=Math.min(2,Math.max(0,Number(localStorage.getItem(SAVE+'_speed'))||0))}catch(e){}const speedModes=[1,.59,.31];
 const pace=ms=>Math.max(25,Math.round(ms*speedModes[speedIndex]));
 function toast(text){let e=document.createElement('div');e.className='toast';e.textContent=text;document.body.appendChild(e);setTimeout(()=>e.remove(),1000)}
-function getBuild(){let a=Object.entries(d.powers).sort((a,b)=>b[1]-a[1]);let i=a.length?item(Number(a[0][0])):null;return combo(0)?'超電磁暴走型':combo(1)?'無限増殖型':combo(3)?'星喰い型':i?i[2]+'特化型':'ノーマル型'}
+function getBuild(){let a=Object.entries(d.powers).sort((a,b)=>b[1]-a[1]);let i=a.length?item(Number(a[0])):null;return combo(0)?'超電磁暴走型':combo(1)?'無限増殖型':combo(3)?'星喰い型':i?i[2]+'特化型':'ノーマル型'}
 function updateCombos(){for(let i=0;i<COMBOS.length;i++)if(combo(i)&&!meta.comboIds.includes(i)){meta.comboIds.push(i);persistMeta();toast('合体進化！ '+COMBOS[i][2]);song(true)}}
-function target(n){const t=210*(Math.pow(1.38,n+1)-1)/.38;return Math.max(210,Math.min(CAP,Math.round(t/10)*10))}
+function target(n){const t=210*(Math.pow(1.50,n+1)-1)/.50;return Math.max(210,Math.min(CAP,Math.round(t/10)*10))}
 function beep(f=440,t=.09,type='sine',v=.055,at=0){if(muted)return;try{let AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;ac=ac||new AC();if(ac.state==='suspended')ac.resume().catch(()=>{});let o=ac.createOscillator(),g=ac.createGain(),s=ac.currentTime+at;o.type=type;o.frequency.setValueAtTime(f,s);g.gain.setValueAtTime(.0001,s);g.gain.exponentialRampToValueAtTime(Math.max(.001,v),s+.01);g.gain.exponentialRampToValueAtTime(.0001,s+t);o.connect(g);g.connect(ac.destination);o.start(s);o.stop(s+t+.01)}catch(e){}}
 let musicTimer=null,musicStep=0;
 function musicMode(){return d.spins>=90?'FINAL':d.fever>0?'FEVER':'NORMAL'}
 function startMusic(){if(musicTimer)return;musicTimer=setInterval(()=>{
  if(muted||busy===false||document.hidden)return;
  const mode=musicMode();const a=mode==='FEVER'?[330,440,554,659,880,659,554,440]:mode==='FINAL'?[220,294,330,440,587,440,330,294]:[165,220,247,220,196,220,247,220];
- const n=a[musicStep++%a.length];beep(n,.16,mode==='FEVER'?'sawtooth':'triangle',.012);
+ const n=a[musicStep++%a.length];beep(n,.13,mode==='FEVER'?'sawtooth':'triangle',.009);
  },270)}
 function vibrate(p){try{navigator.vibrate?.(p)}catch(e){}}
 function song(big){(big?[523,659,784,987,1318,1568]:[440,554,659]).forEach((f,i)=>beep(f,.17,big?'sawtooth':'triangle',big?.058:.044,i*.085));vibrate(big?[75,35,95,35,145]:[25,25,60])}
@@ -197,7 +207,7 @@ function evaluate(g,opt={}){
  let payouts=[],used=new Set(),all=opt.god===true;
  function add(path,name,min=3,bonus=1,full=false){
   let best=null;
-  for(let s=0;s<F.length;s++){
+  for(let s=0;s<(d.awaken&&combo(3)?F.length:6);s++){
    let run=0;while(run<path.length&&eq(g[path[run]],s))run++;
    if(run<min||(name==='pair'&&run!==2)||(full&&run!==path.length))continue;
    let value=lineValue(s,run,name)*bonus;if(d.golden>=0&&path.slice(0,run).some(i=>i%5===d.golden))value*=2;if(combo(7)&&['vertical','square'].includes(name))value*=2;
@@ -310,7 +320,7 @@ function getSpin(g,god,spin,log){let z=evaluate(g,{god,reverseWorld:combo(4)&&sp
  // 54: 外れなら現在のスコア1%を貯金、5連で10倍放出
  let siphon=0;if(has(54)&&!realHit){siphon=Math.min(d.score,Math.max(1,Math.floor(d.score*.01)));d.blackhole+=siphon;if(siphon)addLog(log,'🕳️ '+fmt(siphon)+'点吸収')}
  if(has(54)&&full&&d.blackhole>0){gain+=(combo(2)?30:10)*d.blackhole;addLog(log,'🕳️ ブラックホール放出！');d.blackhole=0}
- if(d.trait==='cherry'&&z.payouts.some(p=>p.sym===0))multiplier*=1.35;if(d.trait==='rare'&&z.payouts.some(p=>p.sym>=4))multiplier*=1.5;let award=safe(gain*multiplier);
+ if(d.trait==='chain'&&z.payouts.length>=2)multiplier*=1.2;if(d.trait==='cherry'&&z.payouts.some(p=>p.sym===0))multiplier*=1.35;if(d.trait==='rare'&&z.payouts.some(p=>p.sym>=4))multiplier*=1.5;let award=safe(gain*multiplier);
  // 56: 20%を宝箱に退避（100回転目に精算）
  if(has(56)&&realHit&&award>0){let saved=Math.floor(award*.2);d.chest=safe(d.chest+saved);award-=saved;addLog(log,'🎁 宝箱に貯金')}
  // 32 / 37 / 38 / 39 / 34 / 58: 次回用の状態更新
@@ -322,7 +332,7 @@ function getSpin(g,god,spin,log){let z=evaluate(g,{god,reverseWorld:combo(4)&&sp
  if(has(12)&&z.used.size){let a=[...z.used],i=a[randGame(a.length)];d.sticky={i,v:g[i]}}else d.sticky=null;
  // 55: 5回転が終わった瞬間、続く5回転を予言
  if(has(55)&&spin%5===0){d.prophecy=randGame(6);d.prophecyEnd=spin+5;addLog(log,'🔮 次の5回：'+F[d.prophecy])}
- return {award,siphon,realHit,used:z.used,maxLen:z.maxLen,log,base:z.base,reveals:[...z.payouts,...extraReveals],multiplier};
+ return {award,siphon,realHit,used:z.used,maxLen:z.maxLen,log,base:z.base,rawGain:safe(gain),reveals:[...z.payouts,...extraReveals],multiplier};
 }
 function finalChest(log){if(has(56)&&!d.chestOpened){let mult=1+randGame(20),bonus=safe(d.chest*mult);d.score=safe(d.score+bonus);d.best=Math.max(d.best,d.score);d.chestOpened=true;addLog(log,'🎁 宝箱 '+mult+'倍！ +'+fmt(bonus))}}
 
@@ -334,22 +344,21 @@ function chartSVG(arr){if(!arr?.length)return '<p>まだ記録なし</p>';let ma
 function showCodex(){let list=COMBOS.map((a,i)=>`<div class="codexitem">${meta.comboIds.includes(i)?`<b>${a[2]}</b><div class="muted">${a[3]}<br>${item(a[0])[2]} + ${item(a[1])[2]}</div>`:`🔒 ???<br><span class="muted">未発見</span>`}</div>`).join('');modal(`<div class="eyebrow">COMBO ENCYCLOPEDIA</div><h2>🧬 合体図鑑 ${meta.comboIds.length}/12</h2><div class="grid2">${list}</div><button class="primary" id="back" style="margin-top:12px">戻る</button>`);$('back').onclick=close}
 function showHistory(){let entries=(meta.top||[]).map((x,i)=>`<div class="historyitem">${i+1}位 · <b>${fmt(x.score)}点</b><br><span class="muted">${x.build} / 最大当たり ${fmt(x.hit)}点 / ${x.date||''}</span></div>`).join('')||'<p>記録なし</p>';modal(`<div class="eyebrow">YOUR RECORDS</div><h2>🏆 歴代ベスト5</h2>${entries}<h3>直前の100回転</h3>${chartSVG(meta.previous)}<button class="primary" id="back">戻る</button>`);$('back').onclick=close}
 function askSeed(){modal(`<div class="eyebrow">SAME SEED CHALLENGE</div><h2>🎲 シード設定</h2><p>数字・文字列を指定すると抽選の初期条件を再現できる。強化の選択が変わると結果も変わる。</p><input class="seedinput" id="seedText" maxlength="32" placeholder="例：MY-LUCK-100" value="${String(d.seed||'').replace(/[^0-9a-zA-Z_-]/g,'')}"><button class="primary" id="seedStart" style="margin-top:12px">このシードで最初から</button><button class="tinybtn" id="back" style="margin-top:9px">キャンセル</button>`);$('back').onclick=close;$('seedStart').onclick=()=>{const text=$('seedText').value.replace(/[^0-9a-zA-Z_-]/g,'').slice(0,32)||'LUCK100';restart(text)}}
-function startTrait(){if(d.trait||d.spins>0)return;modal(`<div class="eyebrow">CHOOSE YOUR START</div><h2>🎴 初期特性を選択</h2><p>100回転の方向性を決めよう。1プレイにつき1回。</p><div id="traits"></div>`);const traits=[['cherry','🍒 チェリー特化','チェリーで当たると+35%'],['chain','🧬 連鎖特化','無限連鎖を引いたら継続率+10%'],['rare','💎 レア特化','💎と7️⃣の当たり+50%']];for(const t of traits){let b=document.createElement('button');b.className='choice';b.innerHTML=`<span class="emoji">${t[1].split(' ')[0]}</span><span><strong>${t[1]}</strong><small>${t[2]}</small></span>`;b.onclick=()=>{d.trait=t[0];save();close()};$('traits').appendChild(b)}}
+function startTrait(){if(d.trait||d.spins>0)return;modal(`<div class="eyebrow">CHOOSE YOUR START</div><h2>🎴 初期特性を選択</h2><p>100回転の方向性を決めよう。1プレイにつき1回。</p><div id="traits"></div>`);const traits=[['cherry','🍒 チェリー特化','チェリーで当たると+35%'],['chain','🧬 連鎖特化','2ライン以上の当たり+20%、無限連鎖の継続率も+10%'],['rare','💎 レア特化','💎と7️⃣の当たり+50%']];for(const t of traits){let b=document.createElement('button');b.className='choice';b.innerHTML=`<span class="emoji">${t[1].split(' ')[0]}</span><span><strong>${t[1]}</strong><small>${t[2]}</small></span>`;b.onclick=()=>{d.trait=t[0];save();close()};$('traits').appendChild(b)}}
 function completeRun(){if(d.historySaved)return;d.historySaved=true;meta.runs++;meta.previous=(d.trace||[]).slice();meta.top.push({score:d.score,hit:d.highestHit,build:getBuild(),date:new Date().toLocaleDateString('ja-JP'),seed:d.seed});meta.top.sort((a,b)=>b.score-a.score);meta.top=meta.top.slice(0,5);persistMeta();save()}
 // ゲームの速さはここだけで変えられる（単位はミリ秒）
-const FIRST_STOP=750;      // 最初の列が止まるまで
-const COLUMN_INTERVAL=780; // 1列止まってから次が止まるまで
-const HIT_INTERVAL=680;    // 1ラインずつ当たりを見せる間隔
+const FIRST_STOP=690;      // 最初の列が止まるまで
+const COLUMN_INTERVAL=650; // 1列止まってから次が止まるまで
+const HIT_INTERVAL=480;    // 1ラインずつ当たりを見せる間隔
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 
 function smallCelebration(p,count,total){
   // 当たりごとに別々の光・音・振動。5連は派手に。
-  let big=p.len>=5||p.name==='limit';
+  let big=p.len>=4||p.name==='limit';
   beep(470+Math.min(18,count)*65,.17,big?'sawtooth':'triangle',big?.085:.058);
   beep(710+Math.min(12,count)*47,.21,'sine',.055,.10);
   vibrate(big?[55,35,85]:[30,20,40]);
-  $('flash').classList.add('on');
-  setTimeout(()=>$('flash').classList.remove('on'),95);
+  if(big){$('flash').classList.add('on');setTimeout(()=>$('flash').classList.remove('on'),95);}
   let m=document.querySelector('.machine');
   let f=document.createElement('div');
   f.className='win-float';
@@ -357,7 +366,7 @@ function smallCelebration(p,count,total){
   m.appendChild(f);
   if(p.len>=5){const a=document.createElement('div');a.className='win-float';a.style.cssText='font-size:60px;top:15%;color:#fff;animation-duration:.65s';a.textContent=sign(p.sym);m.appendChild(a);setTimeout(()=>a.remove(),700)}
   setTimeout(()=>f.remove(),540);
-  if(big){
+  if(p.len>=5||p.name==='limit'){
     // ジャックポットも一度に合算せずラインごとに演出
     for(let j=0;j<11;j++){
       let c=document.createElement('i');c.className='confetti';
@@ -372,12 +381,12 @@ function smallCelebration(p,count,total){
 async function begin(){
  if(busy||d.spins>=100||!$('overlay').classList.contains('hidden'))return;
  busy=true;render();clearPath();
- const machine=document.querySelector('.machine');machine.classList.remove('reach','godmode');
+ const machine=document.querySelector('.machine');machine.classList.remove('reach','godmode','suspense','fever','reverse');
  $('message').className='message';$('message').textContent='リール回転中…';$('multiplier').textContent='';
  cells.forEach((c,i)=>makeTicker(i));
  startMusic();beep(135,.2,'sawtooth',.05);vibrate(25);
  let spin=d.spins+1,log=[],s=chooseGrid(spin,log),g=s.g;
- d.golden=d.upgradeCount>=3&&spin%7===0?randGame(5):-1;
+ d.golden=d.upgradeCount>=3&&spin%7===0?randGame(5):-1;if(d.golden>=0)addLog(log,'✨ ゴールデンリール 2倍');
  let result=getSpin(g,s.god,spin,log);
  if(s.god){machine.classList.add('godmode');quickBonus('👁️ スロットの神 覚醒！')}
  if(combo(4)&&spin%10===0)machine.classList.add('reverse');
@@ -393,66 +402,102 @@ async function begin(){
   $('message').textContent=`${col+1}/5 列 停止`;nextDelay=pace(COLUMN_INTERVAL);
   if(col===2||col===3){
    let reaches=H.filter(path=>{let p=path.slice(0,col+1);if(!p.every(i=>i%5<=col))return false;let a=g[p[0]];return a>=0&&p.every(i=>eq(g[i],a))});
-   if(reaches.length&&col<4){machine.classList.add('reach');$('message').textContent='⚡ REACH!! 次のリールは…';beep(690,.24,'sawtooth',.065);nextDelay+=pace(400)}
+   if(reaches.length&&col<4){machine.classList.add('reach','suspense');$('message').textContent='⚡ REACH!! 次のリールは…';beep(690,.24,'sawtooth',.06);nextDelay+=pace(col===3?560:340)}
   }
  }
- machine.classList.remove('reach','godmode');
+ machine.classList.remove('reach','godmode','suspense');
  $('message').textContent='当たりラインを確認中…';await slept(pace(350));
  await displayResult(result,g);
  machine.classList.remove('reverse');
 }
 async function displayResult(res,g){
- let hits=res.reveals||[],baseScore=safe(d.score-res.siphon),subtotal=0;
- let weights=hits.map(p=>Math.max(0,p.value)),weightSum=weights.reduce((a,b)=>a+b,0);
- let msg=$('message');cells.forEach(c=>c.classList.remove('focus','seen','hit'));
+ const hits=res.reveals||[],baseScore=safe(d.score-res.siphon);
+ const msg=$('message'),scoreEl=$('score'),mult=$('multiplier');
+ let running=0;
+ cells.forEach(c=>c.classList.remove('focus','seen','hit','minihit'));
+ clearPath();
+ scoreEl.classList.add('counting');
  if(hits.length){
   for(let i=0;i<hits.length;i++){
-   let p=hits[i];cells.forEach(c=>{if(c.classList.contains('focus')){c.classList.remove('focus');c.classList.add('seen')}});
+   const p=hits[i];
+   cells.forEach(c=>{if(c.classList.contains('focus')){
+     c.classList.remove('focus');c.classList.add('seen');
+   }});
    for(let n of p.idx)if(cells[n])cells[n].classList.add('focus');
    markPath(p.idx);
-   // Allocate actual final award per line. Sum is corrected exactly at the end.
-   let share=weightSum?Math.floor(res.award*weights[i]/weightSum):0;
-   subtotal=safe(subtotal+share);$('score').textContent=fmt(safe(baseScore+subtotal));
+   const linePoint=safe(p.value);
+   running=safe(running+linePoint);
+   scoreEl.textContent=fmt(safe(baseScore+running));
    msg.className='message '+(p.len>=4?'mega':'win');
-   msg.textContent=`${i+1}/${hits.length} ${sign(p.sym)} ${p.len}連 +${fmt(share)}点`;
-   $('multiplier').textContent=p.name==='chain'?'🧬 連鎖発動！':p.name==='limit'?'♾️ 限界突破！':'';
+   const kind=p.name==='chain'?'連鎖':p.name==='limit'?'限界突破':p.len+'連';
+   msg.textContent=`${i+1}/${hits.length} ${sign(p.sym)} ${kind} +${fmt(linePoint)}`;
+   mult.textContent=hits.length>1?`LINE ${i+1} / ${hits.length}`:'';
    smallCelebration(p,i+1,hits.length);
-   await slept(pace(hits.length>25?190:hits.length>10?320:HIT_INTERVAL));
+   // All lines still appear, but an ultra-long combo will not trap the player for minutes.
+   const interval=hits.length>24?100:hits.length>10?230:HIT_INTERVAL;
+   await slept(pace(p.len>=5?interval+200:interval));
   }
  }else{
-  msg.className='message';msg.textContent='ライン当たりなし';beep(180,.15,'triangle',.025);await slept(pace(300));
+  msg.className='message';msg.textContent='ライン当たりなし';
+  beep(190,.12,'triangle',.025);await slept(pace(240));
  }
- clearPath();cells.forEach((c,i)=>{c.classList.remove('focus','seen');if(res.used.has(i))c.classList.add('hit')});
- // Display effects in chronological order; never claim a fake intermediate multiplier.
- let effects=res.log.filter(x=>/倍|臨界|FEVER|雷神|連鎖|覚醒|予知|奇跡|チェリー|ブラックホール|宝箱|ジャックポット|契約/.test(x));
- for(let x of effects.slice(0,12)){
-  $('multiplier').textContent=x;beep(550+rand(380),.11,'triangle',.04);
-  await slept(pace(effects.length>7?160:330));
+ clearPath();
+ cells.forEach((c,i)=>{c.classList.remove('focus','seen');if(res.used.has(i))c.classList.add('hit')});
+ // Show base paylines first, then all bonuses, then the actual total multiplier.
+ // This is a real accounting breakdown. It is not a made-up per-line allocation.
+ let raw=safe(res.rawGain||0);
+ if(raw!==running){
+   mult.textContent=(raw>=running?'BONUS +':'BONUS 調整 ')+fmt(Math.abs(raw-running));
+   scoreEl.textContent=fmt(safe(baseScore+raw));
+   beep(540,.16,'triangle',.045);
+   await slept(pace(380));
  }
- // display exactly the precalculated award, including 0-point risk effects
+ const effects=res.log.filter(x=>/倍|臨界|FEVER|雷神|連鎖|覚醒|予知|奇跡|チェリー|ブラックホール|宝箱|ジャックポット|契約/.test(x));
+ const shown=effects.slice(0,8);
+ for(let i=0;i<shown.length;i++){
+   mult.textContent=shown[i];
+   beep(450+i*45,.12,'triangle',.034);
+   await slept(pace(shown.length>5?165:275));
+ }
+ if(effects.length>8){
+   mult.textContent=`＋ ほか ${effects.length-8} 効果`;await slept(pace(250));
+ }
+ const m=res.multiplier;
+ if(m!==1&&Number.isFinite(m)){
+   mult.textContent=m===0?'配当消滅！ ×0':'合計倍率 ×'+(m>=1000?fmt(m):Number(m.toFixed(2)));
+   beep(m>=10?880:640,.2,m>=10?'sawtooth':'triangle',.06);
+   await slept(pace(m>=10?580:320));
+ }
+ // Only now commit score and progress. This also handles risk cards whose payout is zero.
  d.spins++;d.score=safe(baseScore+res.award);d.best=Math.max(d.best,d.score);
  d.bestTurn=Math.max(d.bestTurn,res.award);d.highestHit=Math.max(d.highestHit,res.award);
  d.grid=g.slice();d.events=res.log.slice(-9).reverse();d.trace.push(d.score);
- $('score').textContent=fmt(d.score);msg.className='message '+(res.award>=10000?'mega':'win');
- msg.textContent=res.award?'合計 +'+fmt(res.award)+' 点！':'今回は 0 点';
- if(res.award>=10000){song(true);if(res.award>=100000){await slept(pace(260));fireworks('MEGA JACKPOT!')}}
+ scoreEl.textContent=fmt(d.score);scoreEl.classList.remove('counting');
+ msg.className='message '+(res.award>=10000?'mega':res.award?'win':'');
+ msg.textContent=res.award?'確定 +'+fmt(res.award)+' 点！':'今回は 0 点';
+ const threshold=Math.max(30000,target(Math.max(0,d.upgradeCount-1))*.25);
+ const special=res.award>=threshold||res.maxLen>=5;
+ if(special){song(true);if(res.maxLen>=5||res.award>=threshold*2){
+   await slept(pace(200));fireworks(res.award>=threshold*2?'MEGA JACKPOT!':'JACKPOT!');
+ }}else if(res.award>0){beep(650,.12,'triangle',.035)}
  if(d.spins%10===0&&d.spins<100){d.rerolls++;quickBonus('ROUND '+d.spins+' /100 · リロール権 +1')}
- if(d.streak>=3&&d.fever===0&&d.feverCooldown===0){d.fever=5;d.feverCooldown=8;quickBonus('🔥 FEVER MODE ×2！')}
- else {if(d.fever>0)d.fever--;if(d.feverCooldown>0)d.feverCooldown--}
+ if(d.streak>=3&&d.fever===0&&d.feverCooldown===0){
+   d.fever=5;d.feverCooldown=8;quickBonus('🔥 FEVER MODE ×2！');
+ }else{if(d.fever>0)d.fever--;if(d.feverCooldown>0)d.feverCooldown--}
  if(!d.awaken&&(d.upgradeCount>=8&&d.spins>=35||discovered().length>=3)){
-  d.awaken=true;quickBonus('✨ SLOT AWAKEN! 第7絵柄解放');song(true);
+   d.awaken=true;quickBonus('✨ SLOT AWAKEN!'+(combo(3)?' 第7絵柄解放':''));song(true);
  }
  if(d.spins===91)quickBonus('FINAL 10 SPINS!');
  d.golden=-1;save();render();
- await slept(pace(650));busy=false;progress();
+ await slept(pace(special?600:330));busy=false;progress();
 }
 function close(){$('modal').classList.remove('mythic'); $('overlay').classList.add('hidden');render() }
 function modal(html){$('modal').innerHTML=html;$('overlay').classList.remove('hidden');render()}
-function choiceThree(){let available=ITEMS.filter(x=>LV(x[0])<x[5]),choices=[];
+function choiceThree(){let riskActive=[41,42,49].some(id=>has(id));let available=ITEMS.filter(x=>LV(x[0])<x[5]&&(!riskActive||![41,42,49].includes(x[0]))),choices=[];
  for(let slot=0;slot<3&&available.length;slot++){
   let r=randGame(100),tier=0;while(tier<ODDS.length-1&&r>=ODDS[tier])r-=ODDS[tier++];
   let pool=available.filter(x=>x[4]===tier);if(!pool.length)pool=available;
-  let got=pool[randGame(pool.length)];choices.push(got);available=available.filter(x=>x!==got);
+  if(slot===2&&d.upgradeCount>=2&&d.upgradeCount%3===2){let boosted=available.filter(x=>x[4]>=1&&x[4]<=3);if(boosted.length)pool=boosted}let got=pool[randGame(pool.length)];choices.push(got);available=available.filter(x=>x!==got);
  }return choices;
 }
 function upgrade(){
@@ -484,10 +529,10 @@ function upgrade(){
  }
  list();
 }
-function progress(){if(busy)return;if(d.upgradeCount<80&&target(d.upgradeCount)<CAP&&d.score>=target(d.upgradeCount)){upgrade();return}if(d.spins>=100){let log=[];finalChest(log);if(log.length)d.events=[...log,...d.events].slice(0,9);save();results();return}render()}
+function progress(){if(busy)return;if(d.spins>=100){let log=[];finalChest(log);if(log.length)d.events=[...log,...d.events].slice(0,9);save();results();return}if(d.upgradeCount<80&&target(d.upgradeCount)<CAP&&d.score>=target(d.upgradeCount)){upgrade();return}render()}
 function results(){completeRun();let record=d.score>d.record;modal(`<div class="eyebrow">100 SPINS COMPLETE</div><h2>${record?'🏆 NEW BEST!':'🎰 FINISH!'}</h2><p>100回転終了！ おつかれ！</p><div class="eyebrow">FINAL SCORE</div><div class="score" style="color:var(--gold)">${fmt(d.score)}</div><p>強化回数：${d.upgradeCount}回<br>獲得強化：${Object.keys(d.powers).length}種類<br>自己ベスト：${fmt(d.best)}点<br>最高当たり：${fmt(d.highestHit)}点<br>ビルド：${getBuild()}<br>シード：${d.seed}${has(56)?'<br>🎁 最終宝箱：精算済み':''}</p>${chartSVG(d.trace)}<button class="primary" id="again">もう一度100回転！</button>`);$('again').onclick=()=>restart()}
 function restart(userSeed){let best=d.best;d=fresh();d.best=best;d.record=best;d.seed=userSeed||String(Date.now());d.rng=seedFromString(d.seed);cells.forEach((c,i)=>{c.className='cell';c.textContent=sign(d.grid[i])});$('message').textContent='SPINでスタート！';$('message').className='message';save();close();startTrait()}
-$('codex').onclick=showCodex;$('history').onclick=showHistory;$('seed').onclick=askSeed;$('speed').onclick=()=>{speedIndex=(speedIndex+1)%3;render()};$('spin').onclick=begin;$('sound').onclick=()=>{muted=!muted;try{localStorage.setItem(SAVE+'_mute',muted?'1':'0')}catch(e){}render();if(!muted)beep(720)};$('reset').onclick=()=>{if(!busy&&confirm('100回転を最初からやり直す？ 最高記録は残るで。'))restart()};
+$('codex').onclick=showCodex;$('history').onclick=showHistory;$('seed').onclick=askSeed;$('speed').onclick=()=>{speedIndex=(speedIndex+1)%3;try{localStorage.setItem(SAVE+'_speed',String(speedIndex))}catch(e){}render()};$('spin').onclick=begin;$('sound').onclick=()=>{muted=!muted;try{localStorage.setItem(SAVE+'_mute',muted?'1':'0')}catch(e){}render();if(!muted)beep(720)};$('reset').onclick=()=>{if(!busy&&confirm('100回転を最初からやり直す？ 最高記録は残るで。'))restart()};
 if(!d.seed){d.seed=String(Date.now());d.rng=seedFromString(d.seed);save()}render();setTimeout(()=>{if(!d.trait&&d.spins===0)startTrait();else progress()},110);
 })();
 </script></body></html>
