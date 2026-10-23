@@ -3,230 +3,566 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#050509">
-<title>OVERDRIVE SLOT</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0d17">
+<title>LUCK LOOP - オフラインスロット</title>
 <style>
-*{box-sizing:border-box}
-:root{font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;color:#fff;background:#050509}
-html,body{margin:0;width:100%;min-height:100%;overflow:hidden}
-body{min-height:100dvh;display:grid;place-items:center;touch-action:manipulation;-webkit-tap-highlight-color:transparent;background:radial-gradient(ellipse at 50% 42%,#26132d 0%,#100d1d 33%,#050509 80%)}
-body::before{content:"";position:fixed;inset:-25%;background:conic-gradient(from 0deg,#6a14391f,transparent 22%,#4b3cff25 45%,transparent 67%,#ff830a21);filter:blur(75px);animation:ambient 12s linear infinite;pointer-events:none}
-@keyframes ambient{to{transform:rotate(360deg)}}
-#canvas,#whiteout,#rays,#vignette{position:fixed;inset:0;pointer-events:none}
-#canvas{z-index:8;width:100%;height:100%}
-#vignette{z-index:1;box-shadow:inset 0 0 110px #0009}
-#rays{z-index:2;opacity:0;transform:scale(.5);background:repeating-conic-gradient(from 0deg at 50% 48%,#ffc22c00 0deg,#ffd75970 6deg,#ffe27c00 11deg,#0000 19deg);mix-blend-mode:screen;transition:opacity .23s;animation:raySpin 7s linear infinite}
-@keyframes raySpin{to{transform:scale(1.4) rotate(360deg)}}
-body.jackpot #rays{opacity:.9}
-body.regwin #rays{opacity:.44;filter:hue-rotate(155deg)}
-#whiteout{z-index:11;opacity:0;background:#fff}
-#whiteout.flash{animation:tripleFlash 1.2s linear both}
-@keyframes tripleFlash{0%,12%,33%,45%,66%,78%,100%{opacity:0}5%,38%,71%{opacity:.75}}
-#game{position:relative;z-index:4;width:min(92vw,465px)}
-#reels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
-.digit{position:relative;display:grid;place-items:center;overflow:hidden;height:clamp(112px,30vw,145px);border:1px solid #848092;border-radius:16px;background:linear-gradient(150deg,#262331,#0c0d15 55%,#201b2c);font-size:clamp(72px,21vw,108px);font-weight:1000;line-height:1;font-variant-numeric:tabular-nums;text-shadow:0 5px 3px #000b,0 0 18px #fff3;box-shadow:inset 0 3px 5px #ffffff29,inset 0 -16px 20px #0008,0 13px 22px #0009;will-change:transform}
-.digit::after{content:"";position:absolute;inset:0;background:linear-gradient(#fff2,transparent 27%,transparent 74%,#000a);pointer-events:none}
-body.running .digit:not(.stopped){filter:blur(.8px);text-shadow:0 -13px 10px #fff8,0 13px 10px #b25dff8c}
-.digit.stopped{animation:clack .24s ease-out}
-@keyframes clack{0%{transform:translateY(-13px) scaleY(1.15);filter:brightness(4)}60%{transform:translateY(5px) scaleY(.95)}100%{transform:none;filter:none}}
-button{width:100%;height:76px;margin-top:27px;display:block;border:1px solid #fff8;border-radius:15px;background:linear-gradient(150deg,#fff,#cecad9);font-family:inherit;font-size:25px;font-weight:900;color:#11101a;box-shadow:0 8px 0 #777282,0 20px 28px #000a;cursor:pointer;transition:transform .13s,box-shadow .13s}
-button:active:not(:disabled){transform:translateY(6px);box-shadow:0 2px 0 #777282,0 8px 16px #000a}
-button:disabled{opacity:.75;cursor:default}
-body.reach #game{filter:drop-shadow(0 0 40px #fa406755)}
-body.reach .digit:nth-child(3){border-color:#ffe383;box-shadow:0 0 36px #fbbf24a8,inset 0 0 25px #ff910055;animation:pulse .45s ease-in-out infinite alternate}
-@keyframes pulse{to{filter:brightness(1.7);transform:scale(1.055)}}
-body.jackpot{background:radial-gradient(ellipse at 50% 42%,#8d3a05 0%,#3b101d 43%,#080307 85%)}
-body.jackpot .digit{color:#fff2ab;border:2px solid #fff3a4;text-shadow:0 0 20px #ffffb0,0 0 46px #ff9300,0 4px 2px #a33d00;box-shadow:0 0 30px #ffe04db0,0 0 85px #ff5900a0,inset 0 0 32px #ffc40083;animation:gold 1.2s ease-in-out infinite alternate}
-@keyframes gold{to{filter:brightness(1.7);box-shadow:0 0 55px #fff0ad,0 0 130px #ff5400,inset 0 0 35px #fbbf24}}
-body.regwin .digit{color:#c5efff;border:2px solid #a7f3ff;box-shadow:0 0 35px #22d3eeaf,0 0 70px #6366f199,inset 0 0 20px #06b6d477}
-body.smallwin .digit{border-color:#42ffe2;box-shadow:0 0 26px #00d4b660,inset 0 0 17px #17ffff33}
-body.impact #game{animation:shake .55s ease-out}
-@keyframes shake{0%,100%{transform:none}10%{transform:translate(-13px,8px) rotate(-1.5deg)}25%{transform:translate(14px,-10px) rotate(1.4deg)}40%{transform:translate(-12px,-5px)}55%{transform:translate(10px,9px)}70%{transform:translate(-6px,2px)}85%{transform:translate(4px,-3px)}}
-#words{position:fixed;inset:0;z-index:10;display:grid;place-items:center;pointer-events:none;opacity:0;visibility:hidden;text-align:center}
-#words strong{display:block;font-size:clamp(40px,12vw,87px);font-weight:1000;line-height:.94;letter-spacing:-.06em;font-style:italic;white-space:nowrap;color:#fff0a1;-webkit-text-stroke:1px #fff;text-shadow:0 4px #9f3300,0 8px #481600,0 0 38px #ffbd00;filter:drop-shadow(0 0 25px #f50)}
-#words em{display:block;font-size:clamp(15px,4vw,26px);font-weight:900;font-style:normal;letter-spacing:.27em;margin-top:19px;text-shadow:0 0 20px #fff}
-#words.show{visibility:visible;animation:wordPop 2.5s ease-out forwards}
-#words.blue strong{color:#c5f5ff;text-shadow:0 4px #1a4ab7,0 8px #13115c,0 0 30px #00d9ff;filter:drop-shadow(0 0 18px #00aaff)}
-#words.warn strong{color:#fff;text-shadow:0 4px #d51a4d,0 0 35px #ff003c;font-size:clamp(35px,10vw,72px)}
-@keyframes wordPop{0%{opacity:0;transform:scale(.25) rotate(-9deg)}12%{opacity:1;transform:scale(1.19) rotate(3deg)}22%{transform:scale(.95)}36%,66%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.55)}}
-@media(prefers-reduced-motion:reduce){body::before,#rays,.digit,body.reach .digit:nth-child(3),body.impact #game{animation:none!important}#whiteout.flash{animation:none}#words.show{animation:none;opacity:1}}
+:root{color-scheme:dark;--bg:#0b0d17;--panel:#171b2b;--line:#30364b;--lime:#bcff55;--yellow:#ffdb65;--pink:#ff4fa0;--white:#f7f8ff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--white);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN",Meiryo,sans-serif}
+body{background:radial-gradient(ellipse at 50% -10%,#29234b 0%,#0b0d17 58%);overscroll-behavior:none}
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+button:focus-visible{outline:3px solid white;outline-offset:3px}
+.app{max-width:430px;min-height:100dvh;margin:auto;padding:calc(15px + env(safe-area-inset-top)) 18px calc(20px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:17px}
+.header,.flex{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.logo{font-size:24px;font-weight:1000;letter-spacing:-1.3px}
+.logo em{font-style:normal;color:var(--lime)}
+.sub{font-size:10px;letter-spacing:2.4px;color:#999fb6;font-weight:900}
+.iconBtn{background:#252a3b;border:1px solid #3c4254;color:white;border-radius:14px;min-width:45px;height:43px;font-size:19px}
+.topline{display:flex;align-items:end;justify-content:space-between}
+.round{color:var(--lime);font-size:14px;font-weight:900;letter-spacing:2px}
+.best{font-size:11px;color:#9ba2bc}
+.goal{background:#191d30;border:1px solid #30364c;border-radius:18px;padding:16px;box-shadow:0 8px 25px #0002}
+.goal small{font-size:12px;color:#b7bed3;font-weight:800}
+.goal strong{font-size:27px;font-weight:1000;font-variant-numeric:tabular-nums}
+.bar{height:13px;background:#34394e;border-radius:100px;overflow:hidden;margin:14px 0 11px}
+.bar>div{height:100%;width:0%;border-radius:inherit;background:linear-gradient(90deg,#72e6a0,var(--lime));transition:width .35s;box-shadow:0 0 22px #bcff5566}
+.metrics{font-size:12px;color:#b6bbd0;font-weight:800;font-variant-numeric:tabular-nums}
+.metrics b{color:white}
+.machine{position:relative;isolation:isolate;border:2px solid #555171;border-radius:25px;background:linear-gradient(155deg,#30334b,#171a2a 45%,#24233d);padding:17px 12px 15px;box-shadow:0 13px 0 #0d0d17,0 21px 35px #0007,inset 0 1px #ffffff4d}
+.machine:before{content:"";position:absolute;inset:7px;border:1px solid #ffffff12;border-radius:18px;pointer-events:none}
+.machine-top{text-align:center;color:#ffe583;font-size:11px;font-weight:1000;letter-spacing:3px;padding-bottom:14px;text-shadow:0 0 15px #ffda6699}
+.reels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.reel{height:120px;border-radius:12px;background:linear-gradient(#ffffff,#e8eaf3 43%,#ffffff);border:3px solid #b9c1d0;box-shadow:inset 0 0 24px #7785a37a,0 3px 0 #111325;display:grid;place-items:center;color:#1d263a;font-size:clamp(43px,14vw,62px);font-weight:1000;letter-spacing:-5px;overflow:hidden;user-select:none;line-height:1}
+.reel.rolling{animation:jitter .11s linear infinite;filter:blur(1.2px)}
+@keyframes jitter{0%{transform:translateY(-3px)}50%{transform:translateY(3px)}100%{transform:translateY(-3px)}}
+.reel.matched{background:#fff6c7;box-shadow:inset 0 0 25px #ffc44f,0 0 19px #ffe55d88;border-color:#fff4a3}
+.message{height:53px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:1000;text-align:center;color:#cbd1e3;letter-spacing:.5px}
+.message.win{color:var(--lime);text-shadow:0 0 17px #caff6e80}
+.message.big{color:var(--yellow);text-shadow:0 0 18px #ffd04e}
+.spin{display:block;width:100%;height:79px;border:0;border-radius:20px;color:#151422;background:linear-gradient(135deg,#d2ff66,#8aff7f);font-size:28px;font-weight:1000;letter-spacing:3px;box-shadow:0 7px 0 #40884a,0 13px 25px #0007;transition:transform .09s,box-shadow .09s}
+.spin:active:not(:disabled){transform:translateY(5px);box-shadow:0 2px 0 #40884a}
+.spin:disabled{opacity:.55;filter:grayscale(.6);cursor:default}
+.hint{text-align:center;font-size:11px;color:#a3aabd;line-height:1.65;margin:1px 0}
+.powers{background:#171b29;border:1px solid #292e40;border-radius:16px;padding:13px;min-height:61px}
+.powers b{font-size:12px;color:#d4d8e6}
+.powers div{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.chip{font-size:11px;font-weight:800;color:#dbebfe;border-radius:8px;background:#2e344a;padding:5px 7px}
+.bottom{display:flex;align-items:center;justify-content:space-between;font-size:10px;color:#828ba5;margin-top:auto}
+.reset{border:0;background:none;color:#999fb4;font-size:11px;text-decoration:underline;padding:8px}
+.flash{pointer-events:none;position:fixed;inset:0;z-index:10;opacity:0;background:#fff2a7;transition:opacity .2s}
+.flash.on{opacity:.34;transition:none}
+.jackpot{position:fixed;z-index:11;pointer-events:none;left:0;right:0;top:39%;text-align:center;font-weight:1000;font-size:clamp(39px,12vw,67px);letter-spacing:-3px;color:#fff9aa;text-shadow:0 5px #de397c,0 0 35px #ff459b;animation:pop 1s both}
+@keyframes pop{0%{opacity:0;transform:scale(.25) rotate(-12deg)}18%{opacity:1;transform:scale(1.15) rotate(3deg)}32%{transform:scale(1)}83%{opacity:1}100%{opacity:0;transform:scale(1.25)}}
+.particle{position:fixed;pointer-events:none;top:-7vh;z-index:12;width:9px;height:14px;background:var(--color);left:var(--x);animation:fall var(--duration) ease-in both;animation-delay:var(--delay)}
+@keyframes fall{to{transform:translate(var(--dx),112vh) rotate(850deg);opacity:.5}}
+.overlay{position:fixed;z-index:20;inset:0;background:#060711dd;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)}
+.overlay.hidden{display:none}
+.dialog{width:min(100%,400px);background:linear-gradient(160deg,#292e48,#151927);border:1px solid #515b78;border-radius:25px;padding:24px 18px 20px;text-align:center;box-shadow:0 20px 80px #000a;max-height:90dvh;overflow:auto}
+.dialog h1{margin:7px 0;font-size:34px;letter-spacing:1px;color:var(--lime)}
+.dialog p{font-size:13px;color:#bbc4d9;line-height:1.7;margin:6px 0 18px}
+.upgrade{width:100%;border:1px solid #565f80;background:#272f47;color:#fff;border-radius:15px;display:flex;align-items:center;text-align:left;gap:12px;padding:14px 12px;margin:9px 0}
+.upgrade:active{background:#495478;transform:scale(.99)}
+.upgrade .emoji{font-size:32px;min-width:38px;text-align:center}
+.upgrade strong{display:block;font-size:16px}
+.upgrade small{display:block;margin-top:4px;color:#bdc6dc;font-size:12px}
+.primary{width:100%;border:0;border-radius:16px;padding:16px;background:var(--lime);color:#101821;font-size:18px;font-weight:1000;margin-top:4px}
+@media (max-height:750px){.app{gap:12px}.reel{height:94px}.spin{height:66px}.goal{padding:13px}.machine{padding:13px 10px}.message{height:42px}}
+@media (prefers-reduced-motion:reduce){.reel.rolling,.particle,.jackpot{animation:none}.bar>div{transition:none}}
 </style>
 </head>
 <body>
-<div id="rays"></div><div id="vignette"></div><canvas id="canvas"></canvas><div id="whiteout"></div>
-<div id="words" aria-live="polite"><div><strong></strong><em></em></div></div>
-<main id="game"><div id="reels"><div class="digit">0</div><div class="digit">0</div><div class="digit">0</div></div><button id="spin">回す</button></main>
+<main class="app">
+  <header class="header">
+    <div>
+      <div class="logo">LUCK <em>LOOP</em></div>
+      <div class="sub">ONE TAP SLOT GAME</div>
+    </div>
+    <button class="iconBtn" id="sound" aria-label="サウンド切り替え">🔊</button>
+  </header>
+  <div class="topline">
+    <div class="round" id="round">ROUND 01</div>
+    <div class="best" id="best">BEST ROUND 01</div>
+  </div>
+  <section class="goal">
+    <div class="flex">
+      <small>返済ノルマ</small>
+      <strong id="target">190</strong>
+    </div>
+    <div class="bar"><div id="bar"></div></div>
+    <div class="flex metrics">
+      <span>獲得 <b id="bank">0</b></span>
+      <span>残り <b id="turns">8</b> 回</span>
+    </div>
+  </section>
+  <section class="machine">
+    <div class="machine-top">✦　LUCKY REELS　✦</div>
+    <div class="reels" id="reels">
+      <div class="reel">🍒</div>
+      <div class="reel">🍀</div>
+      <div class="reel">7️⃣</div>
+    </div>
+    <div class="message" id="message" aria-live="polite">同じ絵柄をそろえよう！</div>
+  </section>
+  <button class="spin" id="spin">SPIN !</button>
+  <p class="hint">
+    2つそろうと当たり・3つそろうと大当たり<br>
+    8回以内にノルマ達成！ クリアで能力を強化
+  </p>
+  <section class="powers">
+    <b>⚡ 強化アイテム</b>
+    <div id="powers"><span class="chip">まだなし</span></div>
+  </section>
+  <footer class="bottom">
+    <span>オフライン対応・課金なし・自動セーブ</span>
+    <button class="reset" id="reset">最初から</button>
+  </footer>
+</main>
+
+<div class="flash" id="flash"></div>
+<div class="overlay hidden" id="overlay">
+  <div class="dialog" id="dialog"></div>
+</div>
+
 <script>
-'use strict';
-// 内部抽選の確率はAタイプ風の仮設定。特定の実機と同じではありません。
-const roles=[
- {name:'BIG',odds:287,out:'777'},
- {name:'REG',odds:431,out:'333'},
- {name:'REPLAY',odds:7.3,out:'222'},
- {name:'BELL',odds:6.2,out:'555'},
- {name:'CHERRY',odds:33,out:'111'}
-];
-const $=s=>document.querySelector(s);
-const digits=[...document.querySelectorAll('.digit')],button=$('#spin'),flash=$('#whiteout'),words=$('#words');
-const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
-let busy=false,run=0,tickTimer=null;
-const rnd=()=>Math.random();
-function draw(){
- const u=new Uint32Array(1);
- const x=(globalThis.crypto?.getRandomValues?(globalThis.crypto.getRandomValues(u),u[0]/4294967296):rnd());
- let left=x;
- for(const r of roles){left-=1/r.odds;if(left<0)return r}
- let out;
- if(rnd()<.13){out='77'+Math.floor(rnd()*9)}
- else{do{out=''+Math.floor(rnd()*10)+Math.floor(rnd()*10)+Math.floor(rnd()*10)}while(out[0]===out[1]&&out[1]===out[2])}
- return{name:'MISS',out};
-}
-// 外部MP3なし。波形合成、轟音、重低音、警告サイレン、メロディを端末で生成する。
-const A={ctx:null,bus:null,noiseBuffer:null,motor:null,motorVol:null,
- start(){
+(()=>{
+  'use strict';
+
+  const $=id=>document.getElementById(id);
+  const faces=['🍒','🍋','🍀','🔔','💎','7️⃣'];
+  const weights=[30,27,21,13,7,2];
+  const pairPay=[32,40,54,76,125,280];
+  const triplePay=[170,210,270,390,640,2000];
+  const reelEls=[...document.querySelectorAll('.reel')];
+  const KEY='luck_loop_v1';
+
+  const itemDefs=[
+    {id:'all',icon:'🚀',name:'全当たり強化',desc:'すべての当たり +35%',max:99},
+    {id:'pair',icon:'🍒',name:'ペア強化',desc:'2つそろいの獲得 +70%',max:99},
+    {id:'triple',icon:'💎',name:'トリプル強化',desc:'3つそろいの獲得 +90%',max:99},
+    {id:'turn',icon:'⏳',name:'追加スピン',desc:'毎ラウンドの回転数 +1',max:5},
+    {id:'bonus',icon:'🪙',name:'おまけコイン',desc:'当たるたび +35 コイン',max:99},
+    {id:'wild',icon:'🍀',name:'幸運のお守り',desc:'ペアを3つそろいに変える確率 +12%',max:6}
+  ];
+
+  const fresh=()=>({
+    stage:1,spins:8,bank:0,total:0,
+    best:1,streak:0,power:{},last:[0,2,5]
+  });
+
+  let state=fresh(),busy=false,audio=null,soundOn=true;
+
   try{
-   if(!this.ctx){
-    const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
-    const c=this.ctx=new AC();this.bus=c.createDynamicsCompressor();
-    this.bus.threshold.value=-18;this.bus.knee.value=18;this.bus.ratio.value=7;this.bus.attack.value=.004;this.bus.release.value=.16;
-    const volume=c.createGain();volume.gain.value=.86;this.bus.connect(volume);volume.connect(c.destination);
-    const b=this.noiseBuffer=c.createBuffer(1,c.sampleRate,c.sampleRate),d=b.getChannelData(0);
-    for(let i=0;i<d.length;i++)d[i]=rnd()*2-1;
-   }
-   if(this.ctx.state==='suspended')this.ctx.resume().catch(()=>{});
-  }catch(e){this.ctx=null}
- },
- tone(f,d=.2,type='sawtooth',v=.22,at=0,to=f){
-  if(!this.ctx)return;
-  const c=this.ctx,t=c.currentTime+at,o=c.createOscillator(),g=c.createGain();
-  o.type=type;o.frequency.setValueAtTime(Math.max(1,f),t);o.frequency.exponentialRampToValueAtTime(Math.max(1,to),t+d);
-  g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(.0002,v),t+.008);
-  g.gain.exponentialRampToValueAtTime(.0001,t+d);
-  o.connect(g);g.connect(this.bus);o.start(t);o.stop(t+d+.03);
- },
- noise(d=.2,v=.2,cut=2800,at=0){
-  if(!this.ctx||!this.noiseBuffer)return;
-  const c=this.ctx,t=c.currentTime+at,s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();
-  s.buffer=this.noiseBuffer;f.type='lowpass';f.frequency.value=cut;
-  g.gain.setValueAtTime(Math.max(.0002,v),t);g.gain.exponentialRampToValueAtTime(.0001,t+d);
-  s.connect(f);f.connect(g);g.connect(this.bus);s.start(t);s.stop(t+d+.01);
- },
- kick(t=0){this.tone(155,.47,'sine',.8,t,35);this.noise(.16,.42,1700,t)},
- bell(f,at=0){this.tone(f,.48,'sine',.19,at);this.tone(f*2.01,.24,'triangle',.11,at)},
- press(){this.kick();this.tone(650,.12,'square',.12,0,150)},
- motorOn(){if(!this.ctx)return;const c=this.ctx,t=c.currentTime,o=c.createOscillator(),g=c.createGain();
-  o.type='sawtooth';o.frequency.setValueAtTime(46,t);o.frequency.linearRampToValueAtTime(85,t+.3);
-  g.gain.setValueAtTime(.001,t);g.gain.linearRampToValueAtTime(.08,t+.22);
-  o.connect(g);g.connect(this.bus);o.start(t);this.motor=o;this.motorVol=g;
- },
- motorOff(){if(!this.ctx||!this.motor)return;let t=this.ctx.currentTime;
-  try{this.motorVol.gain.cancelScheduledValues(t);this.motorVol.gain.setValueAtTime(.08,t);this.motorVol.gain.exponentialRampToValueAtTime(.0001,t+.18);this.motor.stop(t+.19)}catch(e){}
-  this.motor=null;
- },
- spinTick(){this.tone(370,.035,'square',.05,0,230)},
- stop(i){this.kick();this.tone(700+i*120,.15,'square',.15,0,110);this.noise(.11,.34,1800)},
- warning(){
-  this.kick();this.tone(540,.33,'sawtooth',.28,0,950);this.tone(950,.36,'sawtooth',.23,.31,480);
-  [0,.38,.76,1.14].forEach(t=>{this.tone(86,.27,'sine',.54,t,42);this.noise(.09,.15,900,t)});
-  for(let i=0;i<8;i++)this.tone(750+i*90,.09,'square',.10,.11+i*.16,900+i*110);
- },
- jackpot(){
-  this.motorOff();this.kick();this.kick(.23);this.kick(.47);
-  this.noise(.95,.9,9000);this.noise(.65,.65,2600,.4);
-  this.tone(125,1,'sawtooth',.6,0,36);this.tone(53,1.5,'sine',.9,0,27);
-  for(let i=0;i<12;i++){this.tone(380+i*120,.10,'sawtooth',.13,.06+i*.055,900+i*130)}
-  const melody=[523,659,784,1047,1319,1047,1568,1319,2093,2637];
-  melody.forEach((f,i)=>{let t=.65+i*.145;this.bell(f,t);this.tone(f/2,.19,'sawtooth',.12,t)});
-  [1.08,1.45,1.84,2.22].forEach(t=>{this.kick(t);this.noise(.24,.3,6000,t)});
-  this.tone(1047,1.4,'triangle',.31,2.3,2093);this.tone(523,1.4,'sawtooth',.17,2.3,1047);
- },
- reg(){this.motorOff();this.kick();this.noise(.42,.53,5000);
-  [392,494,587,784,988,1175].forEach((f,i)=>this.bell(f,.2+i*.16));this.tone(120,.68,'sawtooth',.35,0,55);
- },
- small(name){this.motorOff();this.kick();
-  const notes=name==='BELL'?[784,988,1319,1568]:name==='REPLAY'?[587,740,880]:[440,660,880];
-  notes.forEach((f,i)=>this.bell(f,i*.09));
- },
- lose(suspense){this.motorOff();if(suspense){this.tone(460,.19,'triangle',.15,0,230);this.tone(230,.3,'triangle',.14,.13,100)}}
-};
-// 全画面: 火花＋紙吹雪＋衝撃波＋レーザー
-const cv=$('#canvas'),ctx=cv.getContext('2d');
-let particles=[],rings=[],lasers=[],animating=false;
-function size(){const d=Math.min(devicePixelRatio||1,2);cv.width=Math.round(innerWidth*d);cv.height=Math.round(innerHeight*d);ctx.setTransform(d,0,0,d,0,0)}
-addEventListener('resize',size);size();
-const paletteGold=['#ffffff','#fff5a4','#ffbd00','#ff6a00','#ff2965'];
-const paletteBlue=['#ffffff','#a2faff','#32c7ff','#5472ff','#b85cff'];
-function effects(colors,n=140){
- const cx=innerWidth/2,cy=innerHeight*.43;if(reduceMotion)n=Math.min(n,14);
- for(let i=0;i<n;i++){const a=rnd()*Math.PI*2,v=2+rnd()*13;
-  particles.push({x:cx,y:cy,vx:Math.cos(a)*v,vy:Math.sin(a)*v-2,life:42+rnd()*70,angle:rnd()*6.3,
-   color:colors[Math.floor(rnd()*colors.length)],size:1+rnd()*5,shape:i%3});
- }
- if(!reduceMotion){for(let i=0;i<3;i++)rings.push({x:cx,y:cy,r:15-i*60,alpha:1,color:colors[i%colors.length]});
-  for(let i=0;i<14;i++)lasers.push({angle:i*Math.PI/7+rnd()*.1,life:22+rnd()*24,color:colors[i%colors.length]});}
- if(!animating){animating=true;requestAnimationFrame(paint)}
-}
-function paint(){ctx.clearRect(0,0,innerWidth,innerHeight);
- for(const p of particles){p.x+=p.vx;p.y+=p.vy;p.vx*=.992;p.vy+=.16;p.life--;
-  ctx.globalAlpha=Math.min(1,p.life/25);ctx.fillStyle=p.color;ctx.save();ctx.translate(p.x,p.y);
-  ctx.rotate(p.angle+=.09);ctx.fillRect(-p.size/2,-p.size/2,p.size,p.shape===0?p.size*3:p.size);ctx.restore()}
- particles=particles.filter(p=>p.life>0);
- for(const r of rings){r.r+=21;r.alpha-=.027;ctx.beginPath();ctx.arc(r.x,r.y,Math.max(1,r.r),0,Math.PI*2);ctx.strokeStyle=r.color;ctx.globalAlpha=Math.max(0,r.alpha);ctx.lineWidth=7;ctx.stroke()}
- rings=rings.filter(r=>r.alpha>0);
- for(const l of lasers){l.life--;ctx.globalAlpha=Math.min(.7,l.life/28);ctx.beginPath();
-  ctx.moveTo(innerWidth/2,innerHeight*.43);ctx.lineTo(innerWidth/2+Math.cos(l.angle)*innerWidth*1.6,innerHeight*.43+Math.sin(l.angle)*innerHeight*1.6);
-  ctx.strokeStyle=l.color;ctx.lineWidth=3;ctx.stroke()}
- lasers=lasers.filter(l=>l.life>0);ctx.globalAlpha=1;
- if(particles.length||rings.length||lasers.length)requestAnimationFrame(paint);
- else{animating=false;ctx.clearRect(0,0,innerWidth,innerHeight)}
-}
-function caption(title,sub='',theme=''){
- words.className='';words.querySelector('strong').textContent=title;words.querySelector('em').textContent=sub;
- if(theme)words.classList.add(theme);void words.offsetWidth;words.classList.add('show');
-}
-function whiteFlash(){if(reduceMotion)return;flash.classList.remove('flash');void flash.offsetWidth;flash.classList.add('flash')}
-function vibrate(v){try{navigator.vibrate?.(v)}catch(e){}}
-function startState(){document.body.className='running';words.className='';flash.className='';particles=[];rings=[];lasers=[];digits.forEach(d=>d.classList.remove('stopped'))}
-function finish(r,token,reach){
- clearInterval(tickTimer);tickTimer=null;A.motorOff();
- const b=document.body;b.className='';
- if(r.name==='BIG'){
-  b.className='jackpot impact';whiteFlash();caption('777 JACKPOT','BIG BONUS');A.jackpot();
-  effects(paletteGold,200);vibrate([130,40,180,60,280]);
-  setTimeout(()=>{if(token===run)effects(paletteGold,160)},510);
-  setTimeout(()=>{if(token===run)effects(paletteGold,130)},1160);
- }else if(r.name==='REG'){
-  b.className='regwin impact';whiteFlash();caption('REG BONUS','BONUS GET','blue');A.reg();effects(paletteBlue,140);vibrate([90,50,120]);
- }else if(r.name!=='MISS'){
-  b.className='smallwin';A.small(r.name);effects(r.name==='BELL'?paletteGold:paletteBlue,65);vibrate(45);
- }else{A.lose(reach);if(reach){effects(paletteBlue,16)}}
- const delay=r.name==='BIG'?2600:r.name==='REG'?1700:350;
- setTimeout(()=>{if(token!==run)return;busy=false;button.disabled=false;button.textContent='回す'},delay);
-}
-button.addEventListener('click',()=>{
- if(busy)return;busy=true;const token=++run;A.start();A.press();A.motorOn();startState();
- button.disabled=true;button.textContent='回転中…';
- const r=draw(),reach=r.out.slice(0,2)==='77';
- const stops=reach?[770,1370,3370]:[690,1150,1680],done=[false,false,false],last=[0,0,0];
- let warning=false;tickTimer=setInterval(()=>A.spinTick(),125);
- const start=performance.now();
- function frame(now){
-  if(token!==run)return;
-  const elapsed=now-start;
-  for(let i=0;i<3;i++){
-   if(!done[i]&&elapsed>=stops[i]){
-    done[i]=true;digits[i].textContent=r.out[i];digits[i].classList.add('stopped');
-    A.stop(i);vibrate(25);
-    if(i===1&&reach&&!warning){warning=true;document.body.className='running reach';A.warning();caption('激アツ','LAST REEL','warn');vibrate([70,60,90])}
-   }else if(!done[i]&&now-last[i]>(reduceMotion?140:37)){
-    digits[i].textContent=Math.floor(rnd()*10);last[i]=now;
-   }
+    const raw=JSON.parse(localStorage.getItem(KEY));
+    if(raw&&Number.isInteger(raw.stage)&&raw.stage>=1&&raw.stage<=10000&&Number.isFinite(raw.bank)&&Number.isFinite(raw.spins)&&raw.power&&typeof raw.power==='object'){
+      state={...fresh(),...raw,power:{...raw.power}};
+      state.spins=Math.max(0,Math.min(20,state.spins));
+    }
+    soundOn=localStorage.getItem('luck_loop_sound')!=='off';
+  }catch(e){}
+
+  const save=()=>{
+    try{localStorage.setItem(KEY,JSON.stringify(state));}
+    catch(e){}
+  };
+
+  const goal=()=>Math.round(190*Math.pow(1.39,state.stage-1)/10)*10;
+  const maxSpins=()=>8+(state.power.turn||0);
+
+  const pick=()=>{
+    let r=Math.random()*100;
+    for(let i=0;i<weights.length;i++){
+      r-=weights[i];
+      if(r<0)return i;
+    }
+    return 0;
+  };
+
+  const level=id=>state.power[id]||0;
+
+  function render(){
+    $('round').textContent='ROUND '+String(state.stage).padStart(2,'0');
+    $('best').textContent='BEST ROUND '+String(Math.max(state.best,state.stage)).padStart(2,'0');
+    $('target').textContent=goal().toLocaleString('ja-JP');
+    $('bank').textContent=Math.round(state.bank).toLocaleString('ja-JP')+' / '+goal().toLocaleString('ja-JP');
+    $('turns').textContent=state.spins;
+    $('bar').style.width=Math.min(100,100*state.bank/goal())+'%';
+    $('spin').disabled=busy||state.spins<=0;
+
+    const tags=itemDefs
+      .filter(x=>level(x.id)>0)
+      .map(x=>'<span class="chip">'+x.icon+' '+x.name+' Lv.'+level(x.id)+'</span>');
+
+    $('powers').innerHTML=tags.join('')||'<span class="chip">まだなし</span>';
+
+    if(Array.isArray(state.last)&&state.last.length===3){
+      state.last.forEach((v,i)=>{
+        if(!busy)reelEls[i].textContent=faces[v]||faces[0];
+      });
+    }
+    $('sound').textContent=soundOn?'🔊':'🔇';
   }
-  if(done.every(Boolean))finish(r,token,reach);else requestAnimationFrame(frame);
- }
- requestAnimationFrame(frame);
-});
+
+  function sound(freq=440,dur=.1,type='sine',volume=.08,delay=0){
+    if(!soundOn)return;
+    try{
+      const AC=window.AudioContext||window.webkitAudioContext;
+      if(!AC)return;
+
+      audio=audio||new AC();
+
+      if(audio.state==='suspended'){
+        audio.resume().catch(()=>{});
+      }
+
+      let o=audio.createOscillator();
+      let g=audio.createGain();
+      let t=audio.currentTime+delay;
+
+      o.type=type;
+      o.frequency.setValueAtTime(freq,t);
+      g.gain.setValueAtTime(.0001,t);
+      g.gain.exponentialRampToValueAtTime(Math.max(.001,volume),t+.015);
+      g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+
+      o.connect(g);
+      g.connect(audio.destination);
+      o.start(t);
+      o.stop(t+dur+.015);
+    }catch(e){}
+  }
+
+  const buzz=pattern=>{
+    try{navigator.vibrate?.(pattern);}
+    catch(e){}
+  };
+
+  const tick=()=>sound(240,.042,'square',.026);
+
+  function melody(big){
+    const notes=big
+      ?[523,659,784,988,1175,1568]
+      :[523,659,784];
+
+    notes.forEach((n,i)=>
+      sound(n,.21,big?'sawtooth':'triangle',big?.065:.055,i*.095)
+    );
+
+    if(big){
+      sound(130,.4,'sine',.12,.03);
+      buzz([70,35,90,35,150]);
+    }else{
+      buzz([40,40,60]);
+    }
+  }
+
+  function sparkle(count=36){
+    const colors=['#bcff55','#ffe16a','#ff4fa0','#7edcff','#fff'];
+
+    for(let i=0;i<count;i++){
+      let d=document.createElement('i');
+      d.className='particle';
+
+      d.style.cssText=`
+        --x:${Math.random()*100}vw;
+        --dx:${(Math.random()-.5)*180}px;
+        --color:${colors[i%colors.length]};
+        --duration:${1.1+Math.random()*.7}s;
+        --delay:${Math.random()*.22}s
+      `;
+
+      document.body.appendChild(d);
+      setTimeout(()=>d.remove(),2200);
+    }
+  }
+
+  function burst(word){
+    const f=$('flash');
+    f.classList.add('on');
+
+    setTimeout(()=>f.classList.remove('on'),80);
+
+    const t=document.createElement('div');
+    t.className='jackpot';
+    t.textContent=word;
+
+    document.body.appendChild(t);
+    setTimeout(()=>t.remove(),1100);
+  }
+
+  function buildResult(){
+    let arr=[pick(),pick(),pick()];
+    let counts=arr.map(x=>arr.filter(y=>x===y).length);
+
+    if(Math.max(...counts)===2&&Math.random()<Math.min(.72,level('wild')*.12)){
+      let index=counts.findIndex(x=>x===1);
+      let other=counts.findIndex(x=>x===2);
+
+      arr[index]=arr[other];
+      counts=[3,3,3];
+    }
+
+    let amount=0;
+    let match=0;
+    let matchFace=-1;
+
+    if(arr[0]===arr[1]&&arr[1]===arr[2]){
+      match=3;
+      matchFace=arr[0];
+      amount=triplePay[matchFace]*(1+level('triple')*.9);
+    }else{
+      let same=
+        arr[0]===arr[1]?arr[0]:
+        arr[1]===arr[2]?arr[1]:
+        arr[0]===arr[2]?arr[0]:-1;
+
+      if(same>=0){
+        match=2;
+        matchFace=same;
+        amount=pairPay[same]*(1+level('pair')*.7);
+      }
+    }
+
+    if(match){
+      amount=Math.round(
+        amount*
+        (1+level('all')*.35)*
+        (1+Math.min(5,state.streak)*.12)
+        +level('bonus')*35
+      );
+    }
+
+    return {arr,amount,match,matchFace};
+  }
+
+  function finishSpin(result){
+    state.last=result.arr;
+    state.bank+=result.amount;
+    state.total+=result.amount;
+
+    reelEls.forEach(e=>e.classList.remove('matched'));
+
+    const m=$('message');
+    m.className='message';
+
+    if(result.match){
+      state.streak++;
+
+      reelEls.forEach((e,i)=>{
+        if(result.arr[i]===result.matchFace){
+          e.classList.add('matched');
+        }
+      });
+
+      m.textContent=
+        (result.match===3?'大当たり！ ':'当たり！ ')+
+        '+'+result.amount.toLocaleString('ja-JP');
+
+      m.classList.add(result.match===3?'big':'win');
+      melody(result.match===3);
+
+      if(result.match===3){
+        burst(result.matchFace===5?'MEGA JACKPOT!':'JACKPOT!');
+        sparkle(result.matchFace===5?85:48);
+      }
+    }else{
+      state.streak=0;
+      m.textContent='ざんねん！ 次こそ！';
+      sound(195,.14,'sine',.035);
+    }
+
+    state.best=Math.max(state.best,state.stage);
+    busy=false;
+
+    save();
+    render();
+
+    if(state.spins===0){
+      setTimeout(()=>endRound(),950);
+    }
+  }
+
+  function spin(){
+    if(busy||state.spins<=0)return;
+
+    busy=true;
+    state.spins--;
+
+    reelEls.forEach(e=>e.classList.remove('matched'));
+
+    const msg=$('message');
+    msg.textContent='回転中…';
+    msg.className='message';
+
+    $('spin').disabled=true;
+
+    buzz(20);
+    sound(140,.15,'sawtooth',.065);
+
+    const result=buildResult();
+    const done=[false,false,false];
+    const ends=[560,830,1100];
+
+    reelEls.forEach(e=>e.classList.add('rolling'));
+
+    const timer=setInterval(()=>{
+      reelEls.forEach((e,i)=>{
+        if(!done[i])e.textContent=faces[pick()];
+      });
+    },75);
+
+    ends.forEach((ms,i)=>setTimeout(()=>{
+      done[i]=true;
+      reelEls[i].classList.remove('rolling');
+      reelEls[i].textContent=faces[result.arr[i]];
+
+      tick();
+      buzz(15);
+
+      if(i===2){
+        clearInterval(timer);
+        setTimeout(()=>finishSpin(result),160);
+      }
+    },ms));
+
+    render();
+  }
+
+  function endRound(){
+    if(state.spins!==0||busy)return;
+
+    const won=state.bank>=goal();
+    let dialog=$('dialog');
+
+    if(won){
+      sparkle(28);
+      melody(true);
+
+      const options=[...itemDefs]
+        .filter(x=>level(x.id)<x.max)
+        .sort(()=>Math.random()-.5)
+        .slice(0,3);
+
+      dialog.innerHTML=`
+        <div class="sub">DEBT CLEARED!</div>
+        <h1>返済成功！</h1>
+        <p>
+          ROUND ${state.stage} クリア！<br>
+          好きな強化を1つ選んで次のラウンドへ
+        </p>
+        <div id="choices"></div>
+      `;
+
+      const box=$('choices');
+
+      options.forEach(item=>{
+        let b=document.createElement('button');
+        b.className='upgrade';
+
+        b.innerHTML=`
+          <span class="emoji">${item.icon}</span>
+          <span>
+            <strong>${item.name}</strong>
+            <small>${item.desc}　（Lv.${level(item.id)+1}）</small>
+          </span>
+        `;
+
+        b.onclick=()=>{
+          state.power[item.id]=level(item.id)+1;
+          state.stage++;
+          state.bank=0;
+          state.spins=maxSpins();
+          state.streak=0;
+          state.best=Math.max(state.best,state.stage);
+
+          $('overlay').classList.add('hidden');
+          $('message').textContent='強化完了！ 次のノルマへ！';
+          $('message').className='message';
+
+          reelEls.forEach(e=>e.classList.remove('matched'));
+
+          save();
+          render();
+          sound(880,.2,'triangle',.08);
+        };
+
+        box.appendChild(b);
+      });
+
+    }else{
+      sound(180,.44,'triangle',.085);
+
+      dialog.innerHTML=`
+        <div class="sub">GAME OVER</div>
+        <h1 style="color:#ff86b1">返済失敗…</h1>
+        <p>
+          ROUND ${state.stage} まで到達<br>
+          総獲得 ${state.total.toLocaleString('ja-JP')} コイン<br>
+          あと ${(goal()-state.bank).toLocaleString('ja-JP')} コインだった！
+        </p>
+        <button class="primary" id="again">もう一度挑戦</button>
+      `;
+
+      $('again').onclick=()=>{
+        let oldBest=state.best;
+        state=fresh();
+        state.best=oldBest;
+
+        save();
+
+        $('overlay').classList.add('hidden');
+        $('message').textContent='同じ絵柄をそろえよう！';
+        $('message').className='message';
+
+        reelEls.forEach(e=>e.classList.remove('matched'));
+        render();
+      };
+    }
+
+    $('overlay').classList.remove('hidden');
+  }
+
+  $('spin').addEventListener('click',spin);
+
+  $('sound').addEventListener('click',()=>{
+    soundOn=!soundOn;
+
+    try{
+      localStorage.setItem('luck_loop_sound',soundOn?'on':'off');
+    }catch(e){}
+
+    render();
+
+    if(soundOn){
+      sound(700,.12,'sine',.07);
+    }
+  });
+
+  $('reset').addEventListener('click',()=>{
+    if(busy)return;
+
+    if(confirm('最初のラウンドからやり直す？（最高記録は残ります）')){
+      let best=state.best;
+      state=fresh();
+      state.best=best;
+
+      save();
+
+      $('overlay').classList.add('hidden');
+      $('message').textContent='同じ絵柄をそろえよう！';
+      $('message').className='message';
+
+      reelEls.forEach(e=>e.classList.remove('matched'));
+      render();
+    }
+  });
+
+  render();
+
+  if(state.spins===0){
+    setTimeout(endRound,100);
+  }
+})();
 </script>
 </body>
 </html>
