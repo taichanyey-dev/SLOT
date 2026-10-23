@@ -1,122 +1,319 @@
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#09090e">
 <title>OFFLINE SLOT</title>
 <style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif}
 *{box-sizing:border-box}
+html,body{margin:0;width:100%;min-height:100%;overflow:hidden}
 body{
- margin:0;min-height:100dvh;
- display:grid;place-items:center;
- background:#0b0b0d;color:white;
- font-family:Arial,sans-serif
+ min-height:100dvh;color:#fff;display:grid;place-items:center;
+ background:radial-gradient(ellipse at 50% 38%,#261a33 0%,#11101b 35%,#07070b 78%);
+ -webkit-tap-highlight-color:transparent;touch-action:manipulation;
 }
-main{width:92%;max-width:440px}
-.reels{
- display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:10px;margin-bottom:22px
-}
+body::before{content:"";position:fixed;inset:-20%;pointer-events:none;opacity:.35;
+ background:conic-gradient(from 0deg at 50% 48%,transparent 0deg,#3a2c51 45deg,transparent 95deg,#4a2630 150deg,transparent 210deg,#2d234c 280deg,transparent 360deg);
+ filter:blur(90px);animation:ambient 14s linear infinite}
+@keyframes ambient{to{transform:rotate(360deg)}}
+#fx{position:fixed;inset:0;pointer-events:none;width:100%;height:100%;z-index:9}
+#flash{position:fixed;inset:0;pointer-events:none;z-index:8;opacity:0;background:#fff}
+#flash.active{animation:flash .65s ease-out forwards}
+@keyframes flash{0%{opacity:0}12%{opacity:.85}35%{opacity:.2}100%{opacity:0}}
+#machine{position:relative;isolation:isolate;width:min(92vw,460px);padding:20px 0 34px;z-index:2}
+#machine::before{content:"";position:absolute;inset:-65px -27px 1px;z-index:-1;pointer-events:none;
+ background:radial-gradient(ellipse at 50% 43%,#b5315133,transparent 64%);filter:blur(16px);transition:.5s}
+.reels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;perspective:650px;position:relative}
 .reel{
- height:120px;background:#18181d;
- border:1px solid #444;border-radius:14px;
- display:grid;place-items:center;
- font-size:75px;font-weight:900
+ position:relative;overflow:hidden;display:grid;place-items:center;
+ height:clamp(115px,31vw,147px);border-radius:14px;
+ border:1px solid #858092;background:linear-gradient(160deg,#24232f,#0e1018 52%,#24212e);
+ box-shadow:inset 0 3px 9px #ffffff16,inset 0 -9px 20px #0009,0 15px 30px #0009;
+ font-size:clamp(75px,22vw,109px);font-weight:1000;line-height:1;
+ font-variant-numeric:tabular-nums;letter-spacing:-.07em;padding-right:.07em;
+ text-shadow:0 5px 4px #000,0 0 25px #ffffff18;
+ transform:translateZ(0);transition:border-color .2s,box-shadow .2s,color .2s;
 }
+.reel::after{content:"";position:absolute;inset:0;pointer-events:none;
+ background:linear-gradient(180deg,#fff2,transparent 26%,transparent 76%,#0008)}
+#machine.spinning .reel:not(.stopped){filter:blur(.7px);text-shadow:0 -16px 8px #fff2,0 17px 8px #fff2,0 0 28px #9e77ff66}
+#machine.spinning .reel.stopped{animation:reelStop .23s ease-out}
+@keyframes reelStop{0%{transform:translateY(-15px) scaleY(1.15);filter:brightness(3)}60%{transform:translateY(6px) scaleY(.94)}100%{transform:none;filter:none}}
 button{
- width:100%;height:70px;
- border:0;border-radius:14px;
- font-size:24px;font-weight:900;
- background:white;color:black;
- touch-action:manipulation
+ display:block;margin:26px 0 0;width:100%;height:72px;
+ border:1px solid #ffffff66;border-radius:14px;
+ background:linear-gradient(160deg,#fbfbff,#c6c4cf);
+ color:#13101b;font-family:inherit;font-size:25px;font-weight:900;
+ box-shadow:0 8px 0 #767380,0 18px 25px #0009;
+ cursor:pointer;transition:transform .12s,box-shadow .12s,filter .12s;
 }
-button:disabled{opacity:.5}
-.big .reel{color:#ffdb66}
-.reg .reel{color:#88d7ff}
+button:active:not(:disabled){transform:translateY(6px);box-shadow:0 2px 0 #767380,0 7px 14px #0009}
+button:disabled{cursor:default;opacity:.7}
+#machine.reach .reel:nth-child(3){border-color:#ffcc67;box-shadow:0 0 35px #ffaa0066,inset 0 0 26px #efaf3544;animation:reachPulse .7s ease-in-out infinite alternate}
+@keyframes reachPulse{to{filter:brightness(1.7);transform:scale(1.06)}}
+#machine.big .reel{color:#ffe28e;border-color:#ffeb9b;box-shadow:0 0 30px #ffac00cc,0 0 80px #ff4f0099,inset 0 0 28px #ffb30055;
+ animation:goldPulse 1.35s ease-in-out 3 alternate}
+#machine.big::before{background:radial-gradient(ellipse at 50% 43%,#ff8e00a0,transparent 72%)}
+@keyframes goldPulse{to{filter:brightness(1.5);box-shadow:0 0 65px #ffe68c,0 0 140px #ff2600c0,inset 0 0 45px #ffc038bb}}
+#machine.reg .reel{color:#b8ecff;border-color:#adeaff;box-shadow:0 0 30px #00baff99,0 0 70px #8951ef88,inset 0 0 24px #33cfff44}
+#machine.small .reel{border-color:#79e5dd;box-shadow:0 0 24px #00ffcf50,inset 0 0 22px #00d8c833}
+#machine.big{animation:impactShake .46s cubic-bezier(.36,.07,.19,.97) both}
+#machine.reg{animation:impactShake .34s cubic-bezier(.36,.07,.19,.97) both}
+@keyframes impactShake{0%,100%{transform:translate(0)}14%{transform:translate(-10px,6px) rotate(-1deg)}29%{transform:translate(12px,-7px) rotate(1deg)}44%{transform:translate(-9px,-4px)}59%{transform:translate(8px,6px)}74%{transform:translate(-4px,1px)}89%{transform:translate(3px,-2px)}}
+#message{position:fixed;inset:0;z-index:10;pointer-events:none;display:grid;place-items:center;opacity:0;visibility:hidden;text-align:center}
+#message.show{visibility:visible;animation:messageIntro 2.8s ease-out forwards}
+#message span{font-size:clamp(42px,11vw,80px);white-space:nowrap;font-weight:1000;letter-spacing:-.06em;font-style:italic;
+ color:#fff3b7;-webkit-text-stroke:1px #fff;filter:drop-shadow(0 0 20px #ff5b00);
+ text-shadow:0 4px 0 #9f3900,0 9px 0 #5a1600,0 0 45px #ffce11;transform:rotate(-5deg)}
+#message.regText span{color:#d5f9ff;text-shadow:0 5px 0 #184ed0,0 0 40px #00e0ff;filter:drop-shadow(0 0 15px #00aaff)}
+@keyframes messageIntro{0%{opacity:0;transform:scale(.3) rotate(-8deg)}12%{opacity:1;transform:scale(1.25) rotate(4deg)}23%{transform:scale(.95)}35%,68%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.8)}}
+@media(prefers-reduced-motion:reduce){body::before{animation:none}#machine.big,#machine.reg,#machine.big .reel,#machine.spinning .reel.stopped,#machine.reach .reel:nth-child(3){animation:none}#flash.active{animation:none}}
 </style>
 </head>
 <body>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div id="flash" aria-hidden="true"></div>
+<div id="message" aria-live="polite"><span></span></div>
 <main id="machine">
- <div class="reels">
-  <div class="reel">0</div>
-  <div class="reel">0</div>
-  <div class="reel">0</div>
+ <div class="reels" aria-label="スロットの3つの数字">
+  <div class="reel">0</div><div class="reel">0</div><div class="reel">0</div>
  </div>
- <button id="spin">回す</button>
+ <button id="spin" type="button">回す</button>
 </main>
 <script>
-const roles=[
+"use strict";
+// どの結果になるかを先に抽選し、その後リールを演出で停止させる。
+// 下の数字は「実在機種をコピーした確率」ではなく、Aタイプ風の仮設定。
+const roles = [
  {name:"BIG",odds:287,pattern:"777",pay:252},
  {name:"REG",odds:431,pattern:"333",pay:96},
  {name:"REPLAY",odds:7.3,pattern:"222",pay:3},
  {name:"BELL",odds:6.2,pattern:"555",pay:8},
  {name:"CHERRY",odds:33,pattern:"111",pay:2}
 ];
+const machine=document.querySelector("#machine");
 const reels=[...document.querySelectorAll(".reel")];
-const button=document.getElementById("spin");
-const machine=document.getElementById("machine");
-let spinning=false;
+const button=document.querySelector("#spin");
+const flash=document.querySelector("#flash");
+const message=document.querySelector("#message");
+const messageText=message.querySelector("span");
+const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let spinning=false,sequence=0,spinTicker=null;
+let games=0,medals=0;
 
-function rand(){
- if(window.crypto?.getRandomValues){
-  const a=new Uint32Array(1);
-  crypto.getRandomValues(a);
-  return a[0]/4294967296;
- }
+function random(){
+ const a=new Uint32Array(1);
+ if(globalThis.crypto?.getRandomValues){crypto.getRandomValues(a);return a[0]/4294967296}
  return Math.random();
 }
-function digit(){return Math.floor(rand()*10)}
-
-function draw(){
- let x=rand();
- for(const role of roles){
-  x-=1/role.odds;
-  if(x<0)return role;
- }
+const digit=()=>Math.floor(random()*10);
+function lottery(){
+ let x=random();
+ for(const r of roles){x-=1/r.odds;if(x<0)return r}
  let p;
- do{
-  p=""+digit()+digit()+digit();
- }while(p[0]===p[1]&&p[1]===p[2]);
+ if(random()<.1){let last=digit();if(last===7)last=8;p="77"+last}
+ else{do{p=""+digit()+digit()+digit()}while(p[0]===p[1]&&p[1]===p[2])}
  return {name:"MISS",pattern:p,pay:0};
 }
 
-button.onclick=()=>{
- if(spinning)return;
- spinning=true;
- button.disabled=true;
- machine.className="";
- const result=draw();
- const start=performance.now();
- const changed=[0,0,0];
- const stops=[850,1170,1490];
+// Web Audio API: 効果音をすべて合成
+const sound={
+ ctx:null,master:null,noise:null,motor:null,motorGain:null,
+ init(){
+  try{
+   if(!this.ctx){
+    const C=window.AudioContext||window.webkitAudioContext;
+    if(!C)return;
+    this.ctx=new C();
+    this.master=this.ctx.createDynamicsCompressor();
+    this.master.threshold.value=-20;this.master.knee.value=25;
+    this.master.ratio.value=6;this.master.attack.value=.005;this.master.release.value=.2;
+    const vol=this.ctx.createGain();vol.gain.value=.63;
+    this.master.connect(vol);vol.connect(this.ctx.destination);
+    const n=this.ctx.createBuffer(1,Math.ceil(this.ctx.sampleRate*.7),this.ctx.sampleRate);
+    const d=n.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+    this.noise=n;
+   }
+   if(this.ctx.state==="suspended")this.ctx.resume().catch(()=>{});
+  }catch(e){this.ctx=null}
+ },
+ tone(freq,duration=.15,type="sine",volume=.15,delay=0,endFreq=freq){
+  if(!this.ctx)return;
+  const c=this.ctx,t=c.currentTime+delay;
+  const o=c.createOscillator(),g=c.createGain();
+  o.type=type;o.frequency.setValueAtTime(Math.max(1,freq),t);
+  o.frequency.exponentialRampToValueAtTime(Math.max(1,endFreq),t+duration);
+  g.gain.setValueAtTime(.0001,t);
+  g.gain.exponentialRampToValueAtTime(Math.max(.0002,volume),t+.009);
+  g.gain.exponentialRampToValueAtTime(.0001,t+duration);
+  o.connect(g);g.connect(this.master);o.start(t);o.stop(t+duration+.02);
+ },
+ burst(duration=.2,volume=.22,filterFreq=1600,delay=0){
+  if(!this.ctx||!this.noise)return;
+  const c=this.ctx,t=c.currentTime+delay;
+  const src=c.createBufferSource(),filter=c.createBiquadFilter(),g=c.createGain();
+  src.buffer=this.noise;filter.type="lowpass";filter.frequency.value=filterFreq;
+  g.gain.setValueAtTime(volume,t);g.gain.exponentialRampToValueAtTime(.0001,t+duration);
+  src.connect(filter);filter.connect(g);g.connect(this.master);src.start(t);src.stop(t+duration);
+ },
+ click(){this.tone(310,.09,"square",.09,0,110);this.burst(.04,.06,1000)},
+ motorStart(){
+  if(!this.ctx)return;
+  const c=this.ctx,t=c.currentTime;
+  this.motor=c.createOscillator();this.motorGain=c.createGain();
+  const lp=c.createBiquadFilter();lp.type="lowpass";lp.frequency.value=210;
+  this.motor.type="sawtooth";this.motor.frequency.setValueAtTime(45,t);
+  this.motor.frequency.linearRampToValueAtTime(68,t+.28);
+  this.motorGain.gain.setValueAtTime(.0001,t);
+  this.motorGain.gain.linearRampToValueAtTime(.055,t+.2);
+  this.motor.connect(lp);lp.connect(this.motorGain);this.motorGain.connect(this.master);
+  this.motor.start(t);
+ },
+ motorStop(){
+  if(!this.motor||!this.ctx)return;
+  const t=this.ctx.currentTime;
+  try{this.motorGain.gain.cancelScheduledValues(t);
+   this.motorGain.gain.setValueAtTime(.045,t);
+   this.motorGain.gain.exponentialRampToValueAtTime(.0001,t+.15);
+   this.motor.stop(t+.17)}catch(e){}
+  this.motor=null;
+ },
+ reelTick(){this.tone(180,.045,"triangle",.038,0,110)},
+ stop(i){this.tone(260+i*65,.10,"square",.13,0,90);this.burst(.075,.16,900)},
+ reach(){
+  this.tone(440,.2,"sawtooth",.16,0,530);
+  this.tone(660,.22,"triangle",.12,.13,830);
+  this.tone(100,.9,"sawtooth",.11,.21,230);
+ },
+ big(){
+  this.motorStop();
+  this.burst(.7,.8,5000);this.tone(105,.65,"sawtooth",.54,0,35);
+  this.tone(54,.95,"sine",.65,0,31);
+  this.tone(970,.26,"square",.2,0,1800);
+  const notes=[523,659,784,1047,784,1047,1319,1568,2093];
+  notes.forEach((f,i)=>{
+   this.tone(f,.22,"triangle",.22,.24+i*.12);
+   this.tone(f/2,.22,"sawtooth",.07,.24+i*.12);
+  });
+  this.burst(.4,.4,7000,.42);this.burst(.8,.27,9000,1.12);
+ },
+ reg(){
+  this.motorStop();this.burst(.42,.4,4200);this.tone(115,.5,"sawtooth",.31,0,55);
+  [392,494,587,784,988].forEach((f,i)=>this.tone(f,.28,"triangle",.22,.12+i*.15));
+ },
+ small(name){
+  if(name==="REPLAY"){
+   [550,730,880].forEach((f,i)=>this.tone(f,.18,"sine",.11,i*.07));
+  }else if(name==="BELL"){
+   [740,990,1480].forEach((f,i)=>this.tone(f,.28,"triangle",.14,i*.08));
+  }else{
+   this.tone(400,.2,"triangle",.13);this.tone(750,.25,"sine",.14,.12);
+  }
+ }
+};
 
- function animate(now){
-  const elapsed=now-start;
-  let finished=true;
+// 全画面パーティクル演出
+const canvas=document.querySelector("#fx"),pen=canvas.getContext("2d");
+let particles=[],fxRunning=false;
+function resize(){
+ const dpr=Math.min(devicePixelRatio||1,2);
+ canvas.width=Math.round(innerWidth*dpr);canvas.height=Math.round(innerHeight*dpr);
+ pen.setTransform(dpr,0,0,dpr,0,0);
+}
+addEventListener("resize",resize);resize();
+function explode(colorSet,count=100,x=innerWidth/2,y=innerHeight*.44){
+ if(reduced)count=Math.min(count,12);
+ for(let i=0;i<count;i++){
+  const a=random()*Math.PI*2,speed=2+random()*10;
+  particles.push({x,y,vx:Math.cos(a)*speed,vy:Math.sin(a)*speed-2,
+   life:40+random()*48,max:88,size:1.5+random()*5,
+   color:colorSet[Math.floor(random()*colorSet.length)],spin:random()*6.28});
+ }
+ if(!fxRunning){fxRunning=true;requestAnimationFrame(renderParticles)}
+}
+function renderParticles(){
+ pen.clearRect(0,0,innerWidth,innerHeight);
+ for(const p of particles){
+  p.x+=p.vx;p.y+=p.vy;p.vx*=.991;p.vy+=.11;p.life--;
+  pen.globalAlpha=Math.max(0,Math.min(1,p.life/28));
+  pen.fillStyle=p.color;pen.save();pen.translate(p.x,p.y);
+  pen.rotate(p.spin+=.08);pen.fillRect(-p.size/2,-p.size/2,p.size,p.size*2.2);pen.restore();
+ }
+ pen.globalAlpha=1;
+ particles=particles.filter(p=>p.life>0);
+ if(particles.length){requestAnimationFrame(renderParticles)}
+ else{fxRunning=false;pen.clearRect(0,0,innerWidth,innerHeight)}
+}
+function brightFlash(){
+ if(reduced)return;
+ flash.classList.remove("active");void flash.offsetWidth;flash.classList.add("active");
+}
+function shout(text,reg=false){
+ messageText.textContent=text;message.className="";
+ if(reg)message.classList.add("regText");
+ void message.offsetWidth;message.classList.add("show");
+}
+function vibrate(pattern){try{navigator.vibrate?.(pattern)}catch(e){}}
+function win(result,token){
+ const gold=["#fff7ae","#ffb900","#ff4700","#ffffff","#f8497b"];
+ const blue=["#fff","#69dfff","#537bff","#ba80ff"];
+ if(result.name==="BIG"){
+  machine.className="big";brightFlash();sound.big();shout("BIG BONUS!!");
+  vibrate([90,35,150,50,220]);explode(gold,reduced?8:140);
+  setTimeout(()=>{if(sequence===token)explode(gold,90,innerWidth*.25,innerHeight*.32)},380);
+  setTimeout(()=>{if(sequence===token)explode(gold,90,innerWidth*.76,innerHeight*.32)},730);
+ }else if(result.name==="REG"){
+  machine.className="reg";brightFlash();sound.reg();shout("REG BONUS!",true);
+  vibrate([60,35,100]);explode(blue,95);
+ }else if(result.name!=="MISS"){
+  machine.className="small";sound.small(result.name);
+  explode(result.name==="BELL"?gold:blue,38);
+  vibrate(35);
+ }else{machine.className=""}
+}
+button.addEventListener("click",()=>{
+ if(spinning)return;
+ sound.init();sound.click();sound.motorStart();
+ spinning=true;sequence++;const token=sequence;
+ games++;medals-=3;
+ machine.className="spinning";message.className="";flash.className="";
+ particles=[];button.disabled=true;button.textContent="回転中…";
+ reels.forEach(r=>r.classList.remove("stopped"));
+ const result=lottery();
+ const reach=result.pattern.startsWith("77");
+ const stopAt=reach?[930,1460,2950]:[850,1320,1880];
+ const stopped=[false,false,false],lastTick=[0,0,0];
+ let reached=false;
+ if(spinTicker)clearInterval(spinTicker);
+ spinTicker=setInterval(()=>sound.reelTick(),reduced?200:135);
+ const begin=performance.now();
+ function frame(time){
+  if(sequence!==token)return;
+  const elapsed=time-begin;
   for(let i=0;i<3;i++){
-   if(elapsed<stops[i]){
-    finished=false;
-    if(now-changed[i]>55){
-     reels[i].textContent=digit();
-     changed[i]=now;
+   if(!stopped[i]&&elapsed>=stopAt[i]){
+    stopped[i]=true;reels[i].textContent=result.pattern[i];
+    reels[i].classList.add("stopped");sound.stop(i);vibrate(18);
+    if(i===1&&reach&&!reached){
+     reached=true;machine.className="spinning reach";
+     sound.reach();vibrate([45,55,45]);
     }
-   }else{
-    reels[i].textContent=result.pattern[i];
+   }else if(!stopped[i]&&time-lastTick[i]>(reduced?140:47)){
+    reels[i].textContent=digit();lastTick[i]=time;
    }
   }
-  if(!finished){
-   requestAnimationFrame(animate);
-   return;
-  }
-  if(result.name==="BIG")machine.className="big";
-  if(result.name==="REG")machine.className="reg";
-  spinning=false;
-  button.disabled=false;
+  if(stopped.every(Boolean)){
+   clearInterval(spinTicker);spinTicker=null;
+   sound.motorStop();spinning=false;medals+=result.pay;
+   button.disabled=false;button.textContent="回す";
+   win(result,token);
+  }else requestAnimationFrame(frame);
  }
- requestAnimationFrame(animate);
-};
+ requestAnimationFrame(frame);
+});
 </script>
 </body>
 </html>
