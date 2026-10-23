@@ -1,1100 +1,238 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0c101d"><title>LUCK LOOP 100 · PERFECT FLOW 5×5</title><style>
-:root{color-scheme:dark;--ink:#f5f7ff;--muted:#a6b2ce;--edge:#414969;--lime:#bcff69;--gold:#ffe073;--pink:#ff65af}*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;min-height:100%;background:#0c101d;color:var(--ink);font-family:system-ui,-apple-system,'Hiragino Kaku Gothic ProN',Meiryo,sans-serif}body{background:radial-gradient(ellipse at top,#29264e 0%,#0c101d 65%)}button{font:inherit;cursor:pointer;touch-action:manipulation}button:focus-visible{outline:2px solid #fff;outline-offset:3px}.app{max-width:460px;min-height:100dvh;margin:auto;padding:calc(14px + env(safe-area-inset-top)) 14px calc(16px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px}.row{display:flex;justify-content:space-between;align-items:center;gap:10px}.brand{font-size:25px;letter-spacing:-1.4px;font-weight:1000}.brand b{color:var(--lime)}.eyebrow{font-size:10px;color:var(--muted);letter-spacing:2px;font-weight:800}.quiet{color:var(--muted)}.iconbtn{background:#252c42;border:1px solid var(--edge);color:white;border-radius:12px;width:42px;height:41px;font-size:18px}.stats{background:linear-gradient(145deg,#252a45,#171d30);border:1px solid var(--edge);border-radius:18px;padding:14px}.score{font-size:clamp(34px,10vw,45px);font-weight:1000;letter-spacing:-1.5px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.best{text-align:right;font-size:11px;color:var(--muted)}.best strong{display:block;color:#fff;font-size:16px}.bar{height:11px;border-radius:30px;overflow:hidden;background:#39415d;margin:9px 0 7px}.bar>div{height:100%;background:linear-gradient(90deg,#6ae7b5,var(--lime));width:0;transition:width .2s}.sm{font-size:12px;font-weight:800}.machine{border:2px solid #585878;background:linear-gradient(155deg,#33394f,#1a2032 65%,#302b46);border-radius:23px;padding:12px 9px;box-shadow:0 8px 0 #080a12,0 14px 26px #0008}.machine-title{font-size:11px;text-align:center;letter-spacing:3px;font-weight:1000;color:var(--gold);padding-bottom:10px}.reels{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}.cell{aspect-ratio:1/1.03;display:grid;place-items:center;min-width:0;background:linear-gradient(#fff,#dfe5f0 50%,#fff);border:2px solid #c1cade;border-radius:9px;font-size:clamp(24px,8vw,39px);line-height:1;color:#111c30;user-select:none;box-shadow:inset 0 0 11px #8d98b6aa,0 2px #0b0e1b}.cell.hit{background:#fff1a3;border-color:#ffc944;box-shadow:0 0 13px #ffcb4f,inset 0 0 12px #ffcf61}.cell.rolling{filter:blur(1px);animation:shake .09s infinite}@keyframes shake{50%{transform:translateY(4px)}}.message{height:38px;display:grid;place-items:center;text-align:center;font-size:15px;font-weight:1000;color:#dbe1ef}.message.win{color:var(--lime)}.message.mega{color:var(--gold);text-shadow:0 0 13px #eec959}.spin{width:100%;height:70px;border:0;border-radius:18px;color:#13201a;background:linear-gradient(130deg,#d3ff72,#7bf6a8);font-size:27px;font-weight:1000;letter-spacing:2px;box-shadow:0 6px #387f57,0 11px 20px #0008}.spin:active:not(:disabled){transform:translateY(4px);box-shadow:0 2px #387f57}.spin:disabled{opacity:.5;filter:grayscale(.7)}.box{border:1px solid #303952;background:#181e30;border-radius:14px;padding:11px}.chips,.events{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}.chip{font-size:11px;border-radius:7px;background:#303a53;padding:5px 7px;font-weight:800}.event{font-size:10px;color:#ffdf8c;border-radius:7px;border:1px solid #665439;background:#382b24;padding:4px 6px}.muted{font-size:11px;line-height:1.55;color:var(--muted)}.rule{text-align:center;margin:0;font-size:11px;line-height:1.5;color:#b4bdd2}.link{border:0;background:none;color:#afb9d5;text-decoration:underline;padding:7px}.footer{margin-top:auto;font-size:11px}.overlay{position:fixed;z-index:30;inset:0;background:#080a15e9;display:grid;place-items:center;backdrop-filter:blur(8px);padding:16px}.overlay.hidden{display:none}.modal{width:min(100%,430px);max-height:90dvh;overflow:auto;padding:20px 16px;border:1px solid #5b6384;background:linear-gradient(155deg,#2d3550,#151b2e);border-radius:23px;text-align:center;box-shadow:0 20px 70px #000c}.modal h2{margin:5px 0;font-size:28px;color:var(--lime)}.modal p{font-size:12px;color:#c1ccdf;line-height:1.7;margin:8px 0 16px}.choice{width:100%;display:flex;gap:11px;align-items:center;text-align:left;color:#fff;background:#29344d;border:1px solid #596481;border-radius:13px;padding:12px;margin:8px 0}.choice:active{background:#445578}.choice .emoji{font-size:27px;flex:0 0 34px}.choice strong{font-size:14px;display:block}.choice small{font-size:11px;line-height:1.4;color:#c8d1e5;display:block;margin-top:3px}.tier{font-size:9px;letter-spacing:1px;font-weight:900}.tier-0{color:#ccd2e1}.tier-1{color:#71b7ff}.tier-2{color:#c99aff}.tier-3{color:#ffe080}.tier-4{color:#ff91ba}.primary{border:0;width:100%;border-radius:14px;background:var(--lime);font-size:18px;font-weight:1000;padding:14px;color:#19211b}.flash{position:fixed;inset:0;pointer-events:none;z-index:9;background:#fff2a9;opacity:0;transition:opacity .2s}.flash.on{opacity:.33;transition:none}.boom{position:fixed;z-index:10;top:36%;left:0;right:0;text-align:center;font-size:clamp(34px,10vw,55px);font-weight:1000;letter-spacing:-2px;color:#fff4a6;text-shadow:0 4px #ef4c98,0 0 25px #ff70ac;pointer-events:none;animation:boom .9s both}@keyframes boom{0%{transform:scale(.3) rotate(-12deg);opacity:0}20%{transform:scale(1.17);opacity:1}80%{opacity:1}100%{transform:scale(1.25);opacity:0}}.confetti{position:fixed;z-index:11;top:-3vh;left:var(--x);width:8px;height:13px;background:var(--c);pointer-events:none;animation:fall var(--t) linear forwards;animation-delay:var(--d)}@keyframes fall{to{transform:translate(var(--dx),105vh) rotate(800deg);opacity:.4}}@media(max-height:740px){.app{gap:9px}.stats{padding:11px}.machine{padding:9px}.message{height:32px}.spin{height:59px}}@media(prefers-reduced-motion:reduce){.rolling,.boom,.confetti{animation:none!important}}
-
-/* 列の停止とラインごとの順番演出 */
-.machine{position:relative;isolation:isolate}
-.cell.land{animation:land .28s cubic-bezier(.1,.9,.3,1.25)}
-@keyframes land{0%{transform:translateY(-13px) scale(.96);filter:brightness(1.5)}65%{transform:translateY(3px) scale(1.07)}100%{transform:none}}
-.cell.focus{position:relative;z-index:2;background:#fff2a0;border-color:#fff66a;box-shadow:0 0 20px #ffe34c,0 0 8px #fff,inset 0 0 15px #f7ac48;animation:hitPulse .42s ease-in-out infinite alternate}
-@keyframes hitPulse{from{transform:scale(1.02);filter:brightness(1)}to{transform:scale(1.09);filter:brightness(1.25)}}
-.cell.seen{background:#fff5c9;border-color:#f3d171}
-.win-float{position:absolute;z-index:7;left:0;right:0;top:44%;text-align:center;pointer-events:none;color:#fffbd3;font-size:clamp(19px,7vw,31px);font-weight:1000;text-shadow:0 3px #ec528b,0 0 18px #ffa800;animation:winFly .5s both}
-@keyframes winFly{0%{transform:translateY(18px) scale(.65);opacity:0}25%{transform:translateY(0) scale(1.15);opacity:1}75%{opacity:1}100%{transform:translateY(-14px) scale(1);opacity:0}}
-@media(prefers-reduced-motion:reduce){.cell.land,.cell.focus,.win-float{animation:none!important}}
-
-.modal.mythic{border:2px solid #ff6cae;box-shadow:0 0 35px #e65ba688}/* EXTENDED CHAOS: real reels, payoff stages, themes, codex */
-.toolbar{display:flex;gap:6px;flex-wrap:wrap}.tinybtn{border:1px solid #4a5676;background:#232a41;color:#eaf1ff;border-radius:9px;padding:7px 9px;font-size:11px;font-weight:800}
-.machine.reach{box-shadow:0 8px 0 #080a12,0 0 32px #e3a84b88;border-color:#f8cb63}
-.machine.fever{border-color:#fb6fa3;box-shadow:0 8px 0 #080a12,0 0 28px #f15e9a99}
-.machine.reverse{filter:hue-rotate(120deg)}
-.machine.awake{border-color:#ffcb3f;box-shadow:0 8px 0 #080a12,0 0 30px #ffb11a88}
-.machine.godmode{animation:shakeMachine .25s infinite}
-@keyframes shakeMachine{50%{transform:translateX(3px)}}
-.cell{overflow:hidden;position:relative}
-.cell.rolling{animation:none;filter:none}
-.ticker{height:400%;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-around;position:absolute;top:0;left:0;animation:verticalRun var(--rate,.19s) linear infinite;will-change:transform}
-.ticker span{height:25%;width:100%;display:grid;place-items:center}
-@keyframes verticalRun{from{transform:translateY(0)}to{transform:translateY(-25%)}}
-.cell.golden{border-color:#ffbd21;background:linear-gradient(#fffcce,#ffe3a6);box-shadow:0 0 18px #ffbb21}
-.cell.land{animation:land .3s cubic-bezier(.15,1.2,.4,1)}
-.win-path{position:absolute;pointer-events:none;z-index:5;inset:0;width:100%;height:100%;overflow:visible}
-.win-path path{fill:none;stroke:#fff26c;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 4px #ffb800);stroke-dasharray:150;animation:pathOn .43s ease-out both}
-@keyframes pathOn{from{stroke-dashoffset:150}to{stroke-dashoffset:0}}
-.stage{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;min-height:24px;color:#ffe6a1;font-weight:900}
-.toast{position:fixed;z-index:15;top:18%;left:8%;right:8%;padding:13px 18px;text-align:center;border-radius:15px;background:#292141f5;border:2px solid #ffe28f;color:#fff3b6;box-shadow:0 0 35px #fbbc6680;font-weight:1000;pointer-events:none;animation:toast .95s both}
-@keyframes toast{0%{transform:scale(.7);opacity:0}22%{transform:scale(1.07);opacity:1}75%{opacity:1}100%{transform:scale(1);opacity:0}}
-body.final10 .stats{border-color:#e9b64e;box-shadow:0 0 14px #f3bf5655}
-body.infected .machine{background:linear-gradient(155deg,#463352,#122e35 60%,#2a4037)}
-body.thunder .machine{border-color:#83c8ff}
-body.blackhole .machine{box-shadow:0 8px 0 #080a12,0 0 26px #7252df88}
-.cardmeta{font-size:11px;color:#b9c7e5;padding:7px;margin:7px 0;border:1px solid #4c5575;border-radius:8px}
-.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;text-align:left}
-.codexitem{border:1px solid #444b67;border-radius:8px;padding:8px;background:#252d42;font-size:11px}
-.historyitem{padding:8px;margin:7px 0;border:1px solid #424d67;border-radius:9px;text-align:left;font-size:12px}
-.chartsvg{width:100%;height:130px;border:1px solid #4c5473;border-radius:10px;background:#171e31;margin:10px 0}
-.seedinput{width:100%;padding:12px;border-radius:12px;border:1px solid #69718d;background:#151b2b;color:white;font:inherit}
-#multiplier{color:#fff0a5;text-align:center;font-size:12px;font-weight:900;min-height:18px}
-@media(prefers-reduced-motion:reduce){.ticker,.toast,.machine.godmode,.win-path path{animation:none!important}}
-
-/* Pacing and clarity pass: calm ordinary hits, dramatic rare wins */
-.score{transition:color .16s,text-shadow .16s}
-.score.counting{color:#dbff90;text-shadow:0 0 12px #8ef3ad66}
-.message{font-variant-numeric:tabular-nums}
-.machine.suspense{border-color:#efd46c;box-shadow:0 8px 0 #080a12,0 0 38px #ffd75f66}
-.cell.minihit{border-color:#ffe59b;box-shadow:0 0 8px #ffe59b7a}
-#multiplier{transition:transform .15s}
-.rule{opacity:.92}
-@media(prefers-reduced-motion:reduce){.machine.suspense{animation:none}}
-
-/* EVOLUTION: vault, specialty controls, boss, and responsive event overlays */
-.judgeStages{display:grid;gap:5px;margin:12px 0;text-align:left}.judgeRow{font-size:12px;color:#ffe898;border-bottom:1px solid #ffffff23;padding:6px;animation:toast .55s both}
-.evolutionPanel{border:1px solid #665b45;border-radius:15px;background:linear-gradient(120deg,#28263a,#171d31);padding:10px 12px;display:grid;gap:7px}
-.evolutionPanel strong{color:#ffdc74;font-variant-numeric:tabular-nums}
-.miniProgress{background:#3a3650;height:7px;border-radius:20px;overflow:hidden}.miniProgress div{background:linear-gradient(90deg,#eaa54e,#fff394);width:0;height:100%;transition:width .25s}
-.evoMeta{color:#b8c6dd;font-size:10px}.evotools{justify-content:space-between}.evotools button{flex:1}
-.machine.shadow{border-color:#9b6aff;box-shadow:0 8px 0 #080a12,0 0 30px #8a52feaa}
-.machine.overheat{border-color:#ff753e;box-shadow:0 8px 0 #080a12,0 0 30px #ff7337aa}
-.cell.locked{border-color:#45d5ff!important;box-shadow:inset 0 0 16px #5ae9ffaa,0 0 10px #68e9ff}
-.slotTiles{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:10px 0}.slotTiles button{padding:13px 0;border-radius:10px;background:#28324d;border:1px solid #586789;color:#fff}
-.bingoGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.bingoTile{min-height:70px;display:grid;place-items:center;padding:5px;background:#222b40;border:1px solid #495471;border-radius:12px;font-size:12px}.bingoTile.done{background:#294534;border-color:#93db64;color:#d9ffbc}
-.evoNotice{padding:10px;border-radius:12px;border:1px solid #78643c;background:#342e29;color:#fff1b5;font-size:13px}
-@media(max-height:780px){.evolutionPanel{gap:4px;padding:8px}.evoMeta{font-size:9px}}
-
-/* PERFECT FLOW: five rows, skillful selection, smaller mobile tiles */
-.app{max-width:480px;gap:10px}
-.reels{gap:4px}.cell{aspect-ratio:1/1.01;font-size:clamp(21px,7.2vw,36px);border-radius:7px;border-width:1.5px}
-.machine{padding:11px 8px}
-.comboHint{font-size:11px;color:#ffdb85;background:#44362e;border:1px solid #7b6040;border-radius:10px;padding:8px 10px;margin-top:6px}
-.synergy{color:#baff92;font-size:10px;font-weight:900;display:block;margin-top:3px}
-.recommended{border-color:#baff88;box-shadow:0 0 0 1px #7ba94b}
-.cell.pickable{cursor:pointer;border-color:#5ef3ff;box-shadow:0 0 9px #4de8ffaa;animation:choosePulse .7s infinite alternate}
-@keyframes choosePulse{to{filter:brightness(1.3)}}
-.pickTip{text-align:center;background:#223947;border:1px solid #7beaff;color:#e7feff;border-radius:10px;font-weight:900;font-size:12px;padding:7px;display:none}
-.pickTip.active{display:block}
-body.final10 .machine{border-color:#ecc24e;box-shadow:0 8px 0 #080a12,0 0 30px #eebb4c88}
-body.final10 .spin{background:linear-gradient(135deg,#ffe59c,#ffab65)}
-@media(max-height:700px){.app{gap:8px}.machine-title{padding-bottom:5px}.cell{font-size:clamp(20px,6.7vw,33px)}.stats{padding:9px}}
-</style></head><body>
-<main class="app"><header class="row"><div><div class="brand">LUCK <b>LOOP</b></div><div class="eyebrow">100 SPINS · PERFECT FLOW 5×5</div></div><div class="toolbar"><button class="tinybtn" id="speed">速度:標準</button><button class="iconbtn" id="sound" aria-label="効果音切り替え">🔊</button></div></header>
-<section class="stats"><div class="row"><div><div class="eyebrow">TOTAL SCORE</div><div class="score" id="score">0</div></div><div class="best">BEST<strong id="best">0</strong></div></div><div class="row sm"><span>⚡ 次の強化ノルマ</span><span id="target" style="color:var(--lime)">210</span></div><div class="bar"><div id="bar"></div></div><div class="row muted"><span id="remaining">達成まで 210</span><b id="spins">0 / 100 SPINS</b></div></section>
-<section class="machine"><div class="machine-title">✦ FIVE REELS · 25 SYMBOLS ✦</div><div id="reels" class="reels" aria-label="5行5列のスロット"></div><svg id="paths" class="win-path" viewBox="0 0 100 100" preserveAspectRatio="none" style="display:none"></svg><div class="pickTip" id="pickTip">盤面をタップして選択／特殊ボタンでキャンセル</div><div id="message" class="message" aria-live="polite">SPINでスタート！</div><div id="multiplier"></div></section>
-<section class="evolutionPanel" aria-label="特殊システム">
-<div class="row sm"><span>🏦 金庫 <strong id="vault">0</strong> PT</span><span id="phase">NORMAL</span></div>
-<div class="miniProgress"><div id="vaultBar"></div></div>
-<div class="row sm evoMeta"><span id="bossStatus">⚔️ ボス待機</span><span id="mysteryStatus">🎁 銅の宝箱</span></div>
-<div class="row sm evoMeta"><span id="fragmentStatus">✨ 欠片 0</span><span id="heatStatus">🌋 熱量 0%</span></div>
-<div class="toolbar evotools"><button class="tinybtn" id="special">⚙️ 特殊操作</button><button class="tinybtn" id="bingo">🌈 ビンゴ</button><button class="tinybtn" id="system">📜 世界ルール</button></div>
-</section><button id="spin" class="spin">SPIN !</button><div class="rule">100回転でスコア勝負 · 強化66種＋合体12種＋新システム20個<br>横5ライン＋斜め2ライン／追加役は強化で解放</div>
-<section class="box"><div class="row sm"><span>✨ 強化 <span id="upcount">0</span>回</span><span class="quiet" id="status">連勝 0</span></div><div id="nearCombo" class="comboHint" style="display:none"></div><div class="chips" id="chips"><span class="chip">まだなし</span></div></section>
-<section class="box"><div class="sm">⚡ 直近の発動</div><div class="events" id="events"><span class="muted">強化を獲得すると特殊効果が発動するで！</span></div></section>
-<footer class="row footer quiet"><div class="toolbar"><button class="tinybtn" id="codex">図鑑</button><button class="tinybtn" id="history">記録</button><button class="tinybtn" id="seed">シード</button></div><button id="reset" class="link">最初から</button></footer></main>
-<div class="flash" id="flash"></div><div class="overlay hidden" id="overlay"><div id="modal" class="modal"></div></div>
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101322">
+<title>LUCK LOOP 100 | PURE</title>
+<style>
+:root{color-scheme:dark;--bg:#101322;--card:#1e2338;--line:#3a4058;--lime:#c7ff69;--gold:#ffe184;--muted:#aab2c7}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--bg);color:white;font-family:system-ui,-apple-system,'Hiragino Kaku Gothic ProN',Meiryo,sans-serif}
+body{background:radial-gradient(ellipse at 50% -10%,#302c57,#101322 65%)}
+button{font:inherit;touch-action:manipulation;cursor:pointer}button:focus-visible{outline:2px solid white;outline-offset:3px}
+.app{max-width:460px;min-height:100dvh;margin:auto;display:flex;flex-direction:column;gap:13px;padding:calc(14px + env(safe-area-inset-top)) 15px calc(18px + env(safe-area-inset-bottom))}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.brand{font-weight:1000;font-size:26px;letter-spacing:-1.4px}.brand b{color:var(--lime)}.sub{font-size:10px;letter-spacing:2.2px;color:var(--muted);font-weight:800}
+.sound{border:1px solid var(--line);border-radius:12px;background:#242a40;color:white;width:40px;height:40px;font-size:17px}
+.scorecard{border-radius:19px;border:1px solid #404762;background:linear-gradient(130deg,#252c43,#1a2031);padding:16px}
+.caption{color:var(--muted);font-size:11px;font-weight:800;letter-spacing:1px}.total{font-size:clamp(32px,9.5vw,45px);font-weight:1000;font-variant-numeric:tabular-nums;letter-spacing:-1px;word-break:break-all;line-height:1.16;margin:5px 0 12px}
+.counter{font-size:15px;font-weight:1000;color:var(--lime)}.bar{height:9px;background:#3c435f;border-radius:30px;overflow:hidden;margin:8px 0 6px}.bar>i{display:block;width:0;height:100%;background:linear-gradient(90deg,#5ceeb9,var(--lime));border-radius:inherit;transition:width .3s}
+.mini{font-size:11px;color:var(--muted)}.mini strong{color:white}
+.machine{position:relative;border-radius:21px;border:2px solid #62617e;background:linear-gradient(155deg,#393950,#202439 70%,#29243a);padding:12px 10px 11px;box-shadow:0 7px #080a12,0 14px 27px #0007;overflow:hidden;isolation:isolate}
+.machine-title{text-align:center;color:var(--gold);font-size:11px;font-weight:1000;letter-spacing:2.3px;margin:0 0 10px}.board{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;isolation:isolate}.column{min-width:0;display:flex;flex-direction:column;gap:5px;overflow:hidden;border-radius:10px}
+.tile{position:relative;width:100%;aspect-ratio:1/1;display:grid;place-items:center;min-width:0;border:2px solid #c5cfe2;border-radius:9px;background:linear-gradient(#fff,#e1e8f5 50%,#fff);box-shadow:inset 0 0 12px #9eabc8a9;color:#1b2337;font-size:clamp(23px,8vw,37px);line-height:1;user-select:none;transition:background .12s,border-color .12s}
+.column.spinning .tile{animation:flow .115s linear infinite;filter:blur(.75px)}
+@keyframes flow{from{transform:translateY(-8px)}to{transform:translateY(8px)}}
+.column.stopped .tile{animation:land .23s cubic-bezier(.2,.8,.3,1.2)}
+@keyframes land{0%{transform:translateY(-12px)}65%{transform:translateY(2px)}100%{transform:none}}
+.tile.focus{z-index:2;border-color:#ffdf54;background:#fff0aa;box-shadow:0 0 20px #ffca41,inset 0 0 14px #ffda67;transform:scale(1.07)}
+.tile.gold{border-color:#ebc35f;box-shadow:0 0 12px #ffd76c, inset 0 0 12px #ffe381}.tile.gold:after{content:'✦';position:absolute;right:1px;top:0;font-size:10px;color:#9e7400}
+.tile.win{background:#fff7d5;border-color:#e7c76e}
+.reach .column:nth-child(5){filter:drop-shadow(0 0 8px #ffe57b)}
+.float-points{position:absolute;z-index:8;pointer-events:none;white-space:nowrap;font-size:clamp(15px,5vw,24px);font-weight:1000;color:white;transform:translate(-50%,-80%);text-shadow:0 3px #df5791,0 0 7px #000,0 0 18px #ffd15a;animation:float .46s both}
+@keyframes float{0%{opacity:0;transform:translate(-50%,-20%) scale(.6)}25%{opacity:1;transform:translate(-50%,-80%) scale(1.2)}100%{opacity:0;transform:translate(-50%,-150%)}}
+.message{min-height:31px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;color:#e5e9f5;font-weight:900;margin-top:7px}
+.fever-on .machine-title{color:#ffcb67;text-shadow:0 0 13px #ffb84c}.fever-on{border-color:#ecad4d}
+.big-total{position:absolute;z-index:12;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;background:#101322ba;animation:appear .85s both}
+.big-total>div{text-align:center}.big-total small{display:block;font-size:13px;letter-spacing:2px;color:#ffe6a2;font-weight:1000}.big-total strong{display:block;font-size:clamp(36px,10vw,53px);color:var(--gold);font-weight:1000;line-height:1.2;text-shadow:0 4px #e45b88,0 0 28px #ffbf41;overflow-wrap:anywhere;padding:0 8px}
+@keyframes appear{0%{opacity:0;transform:scale(.78)}18%{opacity:1;transform:scale(1.07)}30%{transform:scale(1)}75%{opacity:1}100%{opacity:0}}
+.shake{animation:machine-shake .28s linear}@keyframes machine-shake{20%{transform:translateX(-3px)}40%{transform:translateX(3px)}60%{transform:translateX(-2px)}80%{transform:translateX(2px)}}
+.spin{margin-top:6px;width:100%;min-height:72px;border:0;border-radius:18px;color:#17231a;background:linear-gradient(135deg,#d6ff72,#83ef9d);box-shadow:0 6px #477e59,0 12px 26px #0007;font-size:29px;letter-spacing:3px;font-weight:1000}
+.spin:active:not(:disabled){transform:translateY(4px);box-shadow:0 2px #477e59}.spin:disabled{opacity:.55;filter:grayscale(.6)}
+.rules{text-align:center;color:#b2bad2;font-size:11px;line-height:1.6;margin:0}
+.upgrades{border:1px solid #31384f;border-radius:13px;background:#171c2b;padding:12px}summary{list-style:none;cursor:pointer;font-size:12px;font-weight:900}summary::-webkit-details-marker{display:none}summary:after{content:' ▾';color:#b9c1d7}.owned{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.chip{background:#303c54;border-radius:8px;padding:7px 8px;font-size:11px;line-height:1.45;color:#e7ecf8}
+.footer{margin-top:auto;font-size:10px;color:#949bb3}.reset{border:0;color:#afb8cf;background:none;text-decoration:underline;font-size:11px;padding:8px}
+.overlay{position:fixed;inset:0;z-index:30;background:#080a15e5;backdrop-filter:blur(7px);display:grid;place-items:center;padding:16px}.hidden{display:none!important}
+.dialog{width:min(100%,420px);max-height:90dvh;overflow:auto;text-align:center;border:1px solid #626983;border-radius:22px;background:linear-gradient(150deg,#2d3551,#161c2c);padding:22px 17px;box-shadow:0 25px 65px #0009}.dialog h2{margin:8px 0;font-size:28px;color:var(--lime)}.dialog p{font-size:13px;color:#c9d0e2;line-height:1.65}
+.choice{display:flex;align-items:center;gap:12px;width:100%;padding:15px 12px;margin:9px 0;border:1px solid #626c86;border-radius:14px;text-align:left;color:white;background:#2a3550}.choice:active{background:#435577}.emoji{font-size:29px;width:34px;text-align:center}.choice strong{display:block;font-size:16px}.choice small{display:block;color:#c7d2e7;margin-top:5px;font-size:12px;line-height:1.35}
+.primary{border:0;border-radius:14px;background:var(--lime);color:#16221a;padding:16px;width:100%;font-size:17px;font-weight:1000}
+@media(max-height:760px){.app{gap:9px;padding-top:9px}.scorecard{padding:11px}.machine{padding:9px 8px}.spin{min-height:60px}.tile{font-size:clamp(22px,7.5vw,35px)}}
+@media(prefers-reduced-motion:reduce){.column.spinning .tile,.column.stopped .tile,.float-points,.big-total,.shake{animation:none!important}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="row"><div><div class="brand">LUCK <b>LOOP</b></div><div class="sub">PURE · 100 SPINS</div></div><button class="sound" id="sound" aria-label="音の切り替え">🔊</button></header>
+  <section class="scorecard"><div class="row"><span class="caption">TOTAL SCORE</span><span class="counter" id="counter">0 / 100</span></div><div class="total" id="score">0</div><div class="row mini"><span>次の強化まで</span><strong id="next">800 PT</strong></div><div class="bar"><i id="progress"></i></div><div class="row mini"><span id="feverText">🔥 フィーバー準備中</span><span id="best">BEST 0</span></div></section>
+  <section class="machine" id="machine"><div class="machine-title" id="machineTitle">✦ 5 × 5 SLOT ✦</div><div class="board" id="board"></div><div class="message" id="message" aria-live="polite">SPINを押してスタート！</div></section>
+  <button class="spin" id="spin">SPIN !</button>
+  <p class="rules">縦・横・斜めで同じ絵柄が3個以上なら当たり<br>そろったラインが1本ずつ得点になる！</p>
+  <details class="upgrades"><summary>⚡ 獲得した強化 <span id="upgradeCount">0</span>種類</summary><div class="owned" id="owned"><span class="mini">まだなし</span></div></details>
+  <footer class="row footer"><span>オフライン・自動セーブ</span><button class="reset" id="reset">最初から</button></footer>
+</main>
+<div class="overlay hidden" id="overlay"><div class="dialog" id="dialog"></div></div>
 <script>
 (()=>{'use strict';
-const $=id=>document.getElementById(id), F=['🍒','🍋','🍀','🔔','💎','7️⃣','🌠'], WEIGHTS=[30,27,21,13,7,2], PAY=[130,150,190,270,450,850,2300], TIER=['COMMON','RARE','EPIC','LEGENDARY','MYTHIC'], ODDS=[51.7,28,15,5,.3], SAVE='luck_loop_perfect_flow_5x5_v1', CAP=9000000000000000;
-const H=[...Array.from({length:5},(_,r)=>[0,1,2,3,4].map(c=>r*5+c)),[0,6,12,18,24],[20,16,12,8,4]];
-// [番号, アイコン, 名前, 説明, レアリティ(0～4), 最大レベル]
-const ITEMS=[
-[0,'🚀','全ライン強化','全ライン得点 +23% / Lv',0,99],
-[61,'🍒','3連強化','3連得点 +50% / Lv',0,99],
-[62,'💥','ロング強化','4・5連得点 +65% / Lv',0,99],
-[63,'💎','レア絵柄強化','💎と7️⃣の配当 +90% / Lv',1,99],
-[64,'🪙','スピンボーナス','毎回転 +15点 / Lv',0,99],
-[65,'🍀','当たりボーナス','当たりライン +35点 / Lv',0,99],
-[1,'🔄','逆走スロット','右からの5ラインも当たり',1,1],
-[2,'⬇️','縦一閃','縦の3連でも当たり',1,1],
-[3,'❌','クロスハンター','連続3列の斜めも当たり',1,1],
-[4,'🧱','四角ビンゴ','2×2同柄で追加配当',1,1],
-[5,'🦘','飛び石','横の1・3・5列目でも当たり',1,1],
-[6,'🪞','シンメトリー','左右対称の横列で追加配当',1,1],
-[7,'🧲','ペア支配','左から2個でも少額配当',0,1],
-[8,'🌈','レインボー','全6絵柄が出たら次の当たり3倍',1,1],
-[9,'🌀','ジグザグ','山型・谷型の3連も当たり',1,1],
-[10,'👑','全方位支配','逆走強化＋特殊ラインも逆算・倍増',3,1],
-[11,'🃏','ワイルド発芽','3回転に1回、万能絵柄1マス',1,1],
-[12,'🧊','粘着リール','当たり絵柄を1マス次回に保存',2,1],
-[13,'🔁','敗者復活','外れたら左側の3列を順に再抽選する',1,1],
-[14,'🍹','フルーツ融合','各回転25%で🍒と🍋を融合',1,1],
-[15,'🍀','幸運の融合','各回転30%で🍀と🔔を融合',1,1],
-[16,'7️⃣','七変化','7️⃣が20%で万能化',2,1],
-[17,'🧲','マグネット','横2連から25%で3列目変化',1,1],
-[18,'💣','連鎖爆弾','🔔当たりで周囲を🔔化し再配当',3,1],
-[19,'🧬','遺伝子改造','7️⃣出現率UP＋7️⃣1個につき育成点',2,1],
-[20,'👁️','神の指先','10回転ごとに最高の1マスへ変化',3,1],
-[21,'💎','ダイヤ鉱脈','💎5個以上で特別ボーナス',0,5],
-[22,'7️⃣','777伝説','7️⃣5個以上で高額ボーナス',2,4],
-[23,'🍒','チェリー祭り','🍒12個以上で全配当4倍',2,1],
-[24,'🍋','レモン地獄','🍋8個以上で個数ボーナス',0,5],
-[25,'🍀','クローバーフィーバー','🍀9個以上でライン得点3倍',2,1],
-[26,'🔔','鐘の共鳴','🔔5個以上で20%の5倍抽選',2,1],
-[27,'🎯','ダブルジャックポット','2ライン以上の当たりで2倍',1,1],
-[28,'👑','トリプルクラウン','3ライン以上の当たりで5倍',3,1],
-[29,'🌟','ファイブスター','5個そろい配当がさらに4倍',2,1],
-[30,'🌋','神の一撃','5個そろい2ラインで35倍',4,1],
-[31,'🔥','連勝の炎','連続当たり1回につき+15% / Lv',0,5],
-[32,'🥶','逆境の炎','連続外れ1回につき+50% / Lv',1,4],
-[33,'🏦','複利エンジン','10回転ごと固定ボーナス+10% / Lv',1,5],
-[34,'🌱','成長する7','7️⃣出現1個ごと配当+3% / Lv',0,5],
-[35,'🩸','血の契約','前半50回転半減・後半2.2倍',2,1],
-[36,'🚀','ラストスパート','残り10回転の全得点3倍',1,1],
-[37,'🌋','火山チャージ','10回の外れをため次の当たり10倍',2,1],
-[38,'🔗','絆の連鎖','同じ絵柄の連続当たりで倍率成長',1,1],
-[39,'📚','コレクター','全6種で当たると以後2倍',2,1],
-[40,'💪','強化の暴走','総強化Lv10ごとに全得点+25%',0,1],
-[41,'🎲','大勝負','当たり20%で6倍、失敗でも70%配当',2,1],
-[42,'🪙','コイントス','当たり半分で2倍、失敗でも75%配当',1,1],
-[43,'💀','死神の契約','獲得後10回転は半減、その後2倍',2,1],
-[44,'☢️','臨界突破','当たりごと確率+1%、成功で10倍',3,1],
-[45,'🎰','裏ジャックポット','ハズレ時0.5%で+10,000点',2,1],
-[46,'⚡','雷神','当たり時5%で10倍',3,1],
-[47,'💸','借金取り','スコア10%を払って次の4連以上6倍',2,3],
-[48,'🧨','爆発寸前','大当たりなし12回後、次の大当たり5倍',3,1],
-[49,'🎭','天国と地獄','当たり25%で5倍、失敗でも60%配当',2,1],
-[50,'🌠','奇跡の1%','毎回転1%でその回の全得点45倍',4,1],
-[51,'🌌','パラレルワールド','10回転ごと2盤面を抽選、高得点側を採用',3,1],
-[52,'⏳','タイムリープ','20回転ごとに過去最高の1回を再獲得',3,1],
-[53,'🧬','無限連鎖','当たりラインが30%で再配当（最大12連鎖）',4,1],
-[54,'🕳️','ブラックホール','外れでスコア1%貯蓄、5連で10倍放出',3,1],
-[55,'🔮','未来予知','5回転ごと予言。的中時10倍',3,1],
-[56,'🎁','禁断の宝箱','当たり15%を貯金し終了時2～8倍',2,1],
-[57,'👻','ゴーストリール','前回当たりの配当を次回25%で再獲得',2,1],
-[58,'🦠','ウイルス感染','当たった絵柄の強化が別絵柄に伝染',3,1],
-[59,'♾️','限界突破','5連の配当が25%で倍々再配当（最大6段）',4,1],
-[60,'👁️','スロットの神','1プレイ1回、毎回転0.6%で全マス統一',4,1]
+const $=id=>document.getElementById(id);
+const FACE=['🍒','🍋','🍀','🔔','🔷','💎','7️⃣'];
+const WEIGHT=[26,22,18,14,10,7,3];
+const POWER=[1,1.1,1.25,1.45,1.9,2.8,5];
+const BASE={3:55,4:380,5:2600};
+const SAVE='luck_loop_pure_5x5_v1';
+const LIMIT=1e13;
+// 説明を読んだだけで効果が分かる10種類に厳選
+const UP=[
+ {id:'three',icon:'🍒',name:'3連ブースト',desc:'3個そろいの得点 +60% / Lv',max:6},
+ {id:'four',icon:'⚡',name:'4連ブースト',desc:'4個そろいの得点 +100% / Lv',max:6},
+ {id:'five',icon:'👑',name:'5連ブースト',desc:'5個そろいの得点 +200% / Lv',max:5},
+ {id:'fruit',icon:'🍋',name:'フルーツ王',desc:'🍒と🍋の当たり得点 +75% / Lv',max:6},
+ {id:'luck',icon:'🍀',name:'ラッキー',desc:'🍀と🔔の当たり得点 +75% / Lv',max:6},
+ {id:'rare',icon:'💎',name:'レア王',desc:'🔷・💎・7️⃣の当たり得点 +100% / Lv',max:6},
+ {id:'combo',icon:'🔗',name:'コンボ職人',desc:'2本以上そろうと、追加1本ごと +25% / Lv',max:5},
+ {id:'wild',icon:'🌟',name:'ワイルド',desc:'5回転ごとに万能マスを追加 +1個',max:2},
+ {id:'gold',icon:'✨',name:'黄金マス',desc:'7回転ごとに金色マス出現。そのマスの当たりが3倍から強化',max:4},
+ {id:'fever',icon:'🔥',name:'フィーバー強化',desc:'フィーバー倍率 +1倍 / Lv（基本2倍）',max:4}
 ];
-// Two-card evolutions: truly change game logic, not visual-only labels.
-const COMBOS=[
- [46,44,'🌩️ 超電磁暴走','雷神発動率上昇、臨界爆発で追加5倍'],
- [11,53,'🧬 増殖するワイルド','無限連鎖の継続率を上げる'],
- [54,59,'🕳️ 終焉の穴','ブラックホール放出時に追加3倍'],
- [16,34,'🌠 星喰いの7','秘密の第7絵柄が解放'],
- [1,10,'🔃 反転世界','10回転ごと特殊な右始まり判定'],
- [35,36,'🩸 終末契約','最後の10回転はさらに2倍'],
- [38,31,'🔥 絆の業火','同じ絵柄の連勝がより強くなる'],
- [2,4,'🏛️ 黄金建築','縦と四角の当たりが2倍'],
- [58,18,'🦠 感染爆弾','爆弾再判定の配当2倍'],
- [57,52,'👻 幽霊時計','ゴーストとタイムリープの追加点2倍'],
- [55,46,'🔮 予言雷鳴','予言的中でさらに2倍'],
- [27,28,'👑 王冠連結','2ライン以上で追加1.5倍']
-];
-const combo=(i)=>has(COMBOS[i][0])&&has(COMBOS[i][1]);
-const discovered=()=>COMBOS.filter((x,i)=>combo(i));
-function comboNeeds(){return COMBOS.flatMap((a,i)=>{let one=has(a[0]),two=has(a[1]);if(one===two)return [];let id=one?a[1]:a[0],it=item(id);return it?[{id,name:a[2],need:it,comboIndex:i}]:[]})}
-function closestCombo(){return comboNeeds()[0]||null}
-function compatibility(it){let related=comboNeeds().filter(x=>x.id===it[0]);if(related.length)return {score:100,text:'🌟 合体完成！ '+related.map(x=>x.name).join(' / ')};let s=d.trait==='rare'&&[22,63,34,16,55].includes(it[0])?35:d.trait==='cherry'&&[23,14,61,31].includes(it[0])?35:d.trait==='chain'&&[27,53,31,38].includes(it[0])?35:0;
-if(it[0]===61&&has(14)||it[0]===62&&has(29)||it[0]===46&&has(55))s+=28;
-if([0,61,62,64,65].includes(it[0]))s+=10;
-return {score:s,text:s>=25?'✨ 今のビルドと好相性':null}}
+const create=()=>({turn:0,score:0,best:0,nextGoal:800,upgrades:0,power:{},energy:0,fever:0,board:Array.from({length:25},(_,i)=>(i*3+Math.floor(i/5))%7)});
+let d=create(),busy=false,soundOn=true,audio=null;
+try{let old=JSON.parse(localStorage.getItem(SAVE));if(old&&Number.isInteger(old.turn)&&old.turn>=0&&old.turn<=100&&Number.isFinite(old.score)&&old.score>=0&&old.score<=LIMIT&&old.power&&Number.isFinite(old.nextGoal)){d={...create(),...old}}soundOn=localStorage.getItem(SAVE+'_sound')!=='off'}catch(e){}
+const save=()=>{try{localStorage.setItem(SAVE,JSON.stringify(d))}catch(e){}};
+const lv=id=>Math.max(0,Math.min(10,Number(d.power[id])||0));
+const money=n=>Math.round(n).toLocaleString('ja-JP');
+const rand=n=>Math.floor(Math.random()*n);
+const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+const cap=n=>Math.max(0,Math.min(LIMIT,Math.round(Number.isFinite(n)?n:LIMIT)));
+const lines=[];
+// どの方向も「途中からの3連」を見逃さないように、すべての直線を生成
+for(const [dr,dc] of [[0,1],[1,0],[1,1],[1,-1]]){
+ for(let r=0;r<5;r++)for(let c=0;c<5;c++){
+  let pr=r-dr,pc=c-dc;
+  if(pr>=0&&pr<5&&pc>=0&&pc<5)continue;
+  const p=[];for(let y=r,x=c;y>=0&&y<5&&x>=0&&x<5;y+=dr,x+=dc)p.push(y*5+x);
+  if(p.length>=3)lines.push({p,dir:dr===0?'横':dc===0?'縦':'斜め'});
+ }
+}
+const cols=[],tiles=[];
+for(let c=0;c<5;c++){
+ let col=document.createElement('div');col.className='column';$('board').appendChild(col);cols[c]=col;
+ for(let r=0;r<5;r++){
+  let tile=document.createElement('div');tile.className='tile';tile.textContent=FACE[d.board[r*5+c]??0];col.appendChild(tile);tiles[r*5+c]=tile;
+ }
+}
+function sound(freq=440,length=.11,type='sine',vol=.06,delay=0){
+ if(!soundOn)return;
+ try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;audio=audio||new AC();if(audio.state==='suspended')audio.resume().catch(()=>{});
+ const o=audio.createOscillator(),g=audio.createGain(),at=audio.currentTime+delay;
+ o.type=type;o.frequency.setValueAtTime(freq,at);g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(vol,at+.013);g.gain.exponentialRampToValueAtTime(.0001,at+length);o.connect(g);g.connect(audio.destination);o.start(at);o.stop(at+length+.02)}catch(e){}
+}
+const buzz=p=>{try{navigator.vibrate?.(p)}catch(e){}};
+function fanfare(hard=false){(hard?[440,554,659,880,1175]:[523,659,784]).forEach((n,i)=>sound(n,.18,hard?'sawtooth':'triangle',.055,i*.075));buzz(hard?[70,30,90,30,110]:[30,25,45])}
+function choose(){let p=Math.random()*100;for(let i=0;i<WEIGHT.length;i++){p-=WEIGHT[i];if(p<0)return i}return 0}
+function render(){
+ $('score').textContent=money(d.score);$('counter').textContent=d.turn+' / 100';
+ $('next').textContent=money(Math.max(0,d.nextGoal-d.score))+' PT';
+ $('progress').style.width=Math.min(100,Math.max(0,100*d.score/Math.max(1,d.nextGoal)))+'%';
+ $('best').textContent='BEST '+money(Math.max(d.best,d.score));
+ $('feverText').textContent=d.fever>0?'🔥 FEVER ×'+(2+lv('fever'))+' / 残り'+d.fever+'回':'🔥 FEVER '+d.energy+'/18';
+ $('machine').classList.toggle('fever-on',d.fever>0);
+ $('machineTitle').textContent=d.fever>0?'🔥 FEVER TIME ×'+(2+lv('fever')):'✦ 5 × 5 SLOT ✦';
+ $('upgradeCount').textContent=Object.keys(d.power).filter(k=>lv(k)>0).length;
+ $('owned').innerHTML=UP.filter(p=>lv(p.id)>0).map(p=>'<span class="chip">'+p.icon+' '+p.name+' Lv.'+lv(p.id)+'<br>'+p.desc+'</span>').join('')||'<span class="mini">まだなし</span>';
+ $('spin').disabled=busy||d.turn>=100||!$('overlay').classList.contains('hidden');
+ $('sound').textContent=soundOn?'🔊':'🔇';
 
-const META='luck_loop_perfect_flow_5x5_meta_v1';
-const loadMeta=()=>{try{return {...{top:[],previous:[],comboIds:[],unlocked:[],runs:0},...JSON.parse(localStorage.getItem(META)||'{}')}}catch(e){return {top:[],previous:[],comboIds:[],unlocked:[],runs:0}}};
-let meta=loadMeta();
-const persistMeta=()=>{try{localStorage.setItem(META,JSON.stringify(meta))}catch(e){}};
-const item=id=>ITEMS.find(a=>a[0]===id), fresh=()=>({spins:0,score:0,best:0,record:0,upgradeCount:0,powers:{},seed:0,rng:0,trait:'',trace:[],highestHit:0,rerolls:0,fever:0,feverCooldown:0,feverTriggers:0,awaken:false,golden:-1,historySaved:false,grid:Array.from({length:25},(_,i)=>i%6),misses:0,wins:0,streak:0,lastSym:-1,sameSym:0,sinceBig:0,charge:0,critical:0,growing7:0,fusionF:false,fusionL:false,seen:[],virus:[0,0,0,0,0,0],sticky:null,ghost:0,blackhole:0,chest:0,chestOpened:false,prophecy:-1,prophecyEnd:0,rainbow:false,heist:0,contractAt:-1,bestTurn:0,godUsed:false,events:[],pending:0,
- vault:0,sealTokens:0,sealNext:-1,sealUsed:false,
- rules:[],eventsDone:[],targetSymbol:-1,
- relics:[],heatSymbol:-1,heat:0,heatTimer:0,
- cellLevels:Array(25).fill(0),boss:null,
- mystery:{wins:0,bigs:0},fate:'',fateUsed:false,
- shadow:0,mutations:0,bingo:[],bingoRows:[],
- recentBoards:[],prediction:null,predictionNext:0,
- fragments:0,wildCell:-1,finalJudged:false,
- judgementBonus:0,dominoCount:0,activeGold:-1,bonusPending:0
-});
-let d=fresh(),busy=false,muted=false,ac=null, cells=[],selectMode=null;
-try{const v=JSON.parse(localStorage.getItem(SAVE));if(v&&Number.isInteger(v.spins)&&v.spins>=0&&v.spins<=100&&Number.isFinite(v.score)&&v.score>=0&&v.score<=CAP&&v.powers&&typeof v.powers==='object')d={...fresh(),...v,virus:Array.isArray(v.virus)?v.virus:[0,0,0,0,0,0]};muted=localStorage.getItem(SAVE+'_mute')==='1'}catch(e){}
-const save=()=>{try{localStorage.setItem(SAVE,JSON.stringify(d))}catch(e){}}, LV=id=>Math.max(0,Math.min(99,Number(d.powers[id])||0)), has=id=>LV(id)>0, rand=n=>Math.floor(Math.random()*n), fmt=n=>Math.floor(n).toLocaleString('ja-JP'), safe=n=>Math.max(0,Math.min(CAP,Math.round(Number.isFinite(n)?n:CAP))), sumLV=()=>Object.values(d.powers).reduce((a,b)=>a+(Number(b)||0),0);
-// 极端な高得点だけなだらかに圧縮。超大当たりの成長は残す。
-function softPayout(n){if(n<=2000000)return safe(n);return safe(2000000*Math.pow(n/2000000,.64))}
-function seedFromString(t){let h=2166136261>>>0;for(const c of String(t)){h=Math.imul(h^c.charCodeAt(0),16777619)>>>0}return h||1}
-function rng(){let x=d.rng>>>0;if(!x)x=seedFromString('DEFAULT');x^=x<<13;x^=x>>>17;x^=x<<5;d.rng=x>>>0;return d.rng/4294967296}
-function randGame(n){return Math.floor(rng()*n)}
-const slept=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-let speedIndex=0;try{speedIndex=Math.min(2,Math.max(0,Number(localStorage.getItem(SAVE+'_speed'))||0))}catch(e){}const speedModes=[1,.67,.38];
-const pace=ms=>Math.max(25,Math.round(ms*speedModes[speedIndex]));
-function toast(text){let e=document.createElement('div');e.className='toast';e.textContent=text;document.body.appendChild(e);setTimeout(()=>e.remove(),1000)}
-function getBuild(){let a=Object.entries(d.powers).sort((a,b)=>b[1]-a[1]);let i=a.length?item(Number(a[0])):null;return combo(0)?'超電磁暴走型':combo(1)?'無限増殖型':combo(3)?'星喰い型':i?i[2]+'特化型':'ノーマル型'}
-function updateCombos(){for(let i=0;i<COMBOS.length;i++)if(combo(i)&&!meta.comboIds.includes(i)){meta.comboIds.push(i);persistMeta();toast('合体進化！ '+COMBOS[i][2]);song(true)}}
-function target(n){const t=460*(Math.pow(1.48,n+1)-1)/.48;return Math.max(210,Math.min(CAP,Math.round(t/10)*10))}
-function beep(f=440,t=.09,type='sine',v=.055,at=0){if(muted)return;try{let AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;ac=ac||new AC();if(ac.state==='suspended')ac.resume().catch(()=>{});let o=ac.createOscillator(),g=ac.createGain(),s=ac.currentTime+at;o.type=type;o.frequency.setValueAtTime(f,s);g.gain.setValueAtTime(.0001,s);g.gain.exponentialRampToValueAtTime(Math.max(.001,v),s+.01);g.gain.exponentialRampToValueAtTime(.0001,s+t);o.connect(g);g.connect(ac.destination);o.start(s);o.stop(s+t+.01)}catch(e){}}
-let musicTimer=null,musicStep=0;
-function musicMode(){return d.spins>=90?'FINAL':d.fever>0?'FEVER':'NORMAL'}
-function startMusic(){if(musicTimer)return;musicTimer=setInterval(()=>{
- if(muted||busy===false||document.hidden)return;
- const mode=musicMode();const a=mode==='FEVER'?[330,440,554,659,880,659,554,440]:mode==='FINAL'?[220,294,330,440,587,440,330,294]:[165,220,247,220,196,220,247,220];
- const n=a[musicStep++%a.length];beep(n,.13,mode==='FEVER'?'sawtooth':'triangle',.009);
- },270)}
-function vibrate(p){try{navigator.vibrate?.(p)}catch(e){}}
-function song(big){(big?[523,659,784,987,1318,1568]:[440,554,659]).forEach((f,i)=>beep(f,.17,big?'sawtooth':'triangle',big?.058:.044,i*.085));vibrate(big?[75,35,95,35,145]:[25,25,60])}
-function fireworks(word){$('flash').classList.add('on');setTimeout(()=>$('flash').classList.remove('on'),90);let b=document.createElement('div');b.className='boom';b.textContent=word;document.body.append(b);setTimeout(()=>b.remove(),950);for(let i=0;i<48;i++){let c=document.createElement('i');c.className='confetti';c.style.cssText=`--x:${Math.random()*100}vw;--dx:${rand(181)-90}px;--c:${['#bcff69','#ffda75','#ff67af','#7ce7ff'][i%4]};--t:${1+Math.random()*.8}s;--d:${Math.random()*.2}s`;document.body.append(c);setTimeout(()=>c.remove(),2000)}}
-function pick(){let w=WEIGHTS.slice();if(d.awaken&&combo(3))w.push(1.5);if(has(19)){w[5]+=1.4+.05*d.spins;w[4]+=.25+.015*d.spins;} let total=w.reduce((a,b)=>a+b,0),v=rng()*total;for(let i=0;i<w.length;i++)if((v-=w[i])<0)return i;return w.length-1}
-function roll(){return Array.from({length:25},pick)}
-function sign(v){return v===-1?'🌟':F[v]}
-function render(){let t=target(d.upgradeCount),prev=d.upgradeCount?target(d.upgradeCount-1):0;$('score').textContent=fmt(d.score);$('best').textContent=fmt(Math.max(d.best,d.score));$('target').textContent=fmt(t)+' 点';$('remaining').textContent='達成まで '+fmt(Math.max(0,t-d.score));$('spins').textContent=d.spins+' / 100 SPINS';$('bar').style.width=Math.max(0,Math.min(100,100*(d.score-prev)/Math.max(1,t-prev)))+'%';$('upcount').textContent=d.upgradeCount;let s='連勝 '+d.streak;if(has(54))s+='　🕳️ '+fmt(d.blackhole);if(has(56))s+='　🎁 '+fmt(d.chest);if(has(55)&&d.prophecy>=0&&d.spins<d.prophecyEnd)s+='　🔮 '+F[d.prophecy];$('status').textContent=s;let p=ITEMS.filter(x=>LV(x[0])).map(x=>`<span class="chip" title="${x[3]}">${x[1]} ${x[2]} ${LV(x[0])>1?'Lv'+LV(x[0]):''}</span>`);$('chips').innerHTML=p.join('')||'<span class="muted">まだなし。ノルマを超えたら強化！</span>';$('events').innerHTML=(d.events||[]).slice(0,9).map(x=>`<span class="event">${x}</span>`).join('')||'<span class="muted">まだ発動なし</span>';$('spin').disabled=busy||selectMode!==null||d.spins>=100||!$('overlay').classList.contains('hidden');$('sound').textContent=muted?'🔇':'🔊';$('speed').textContent=['速度:標準','速度:高速','速度:超高速'][speedIndex];document.body.classList.toggle('final10',d.spins>=90);document.body.classList.toggle('infected',has(58));document.body.classList.toggle('thunder',has(46));document.body.classList.toggle('blackhole',has(54));document.querySelector('.machine').classList.toggle('awake',d.awaken);const next=closestCombo();$('nearCombo').style.display=next?'block':'none';if(next)$('nearCombo').textContent='🌟 合体進化まであと1つ：'+next.name+'（必要：'+next.need[1]+' '+next.need[2]+'）';$('pickTip').classList.toggle('active',selectMode!==null);$('special').textContent=selectMode?'✖ 選択キャンセル':'⚙️ 特殊操作'}
-// Extended HUD is separate so existing 66-card presentation stays unchanged.
-const oldRender=render;
-render=function(){
- oldRender();
- $('vault').textContent=fmt(d.vault||0);
- $('vaultBar').style.width=Math.min(100,Math.log10(1+(d.vault||0))/7*100)+'%';
- $('phase').textContent=d.shadow>0?'🌑 裏世界 '+d.shadow:d.heatTimer>0?'🌋 オーバーヒート':d.fever>0?'🔥 FEVER':d.awaken?'✨ 覚醒':'NORMAL';
- const b=d.boss;
- $('bossStatus').textContent=b?'👹 '+F[b.sym]+'討伐 残り'+b.left:'⚔️ 次のボス '+([30,60,90].find(x=>x>d.spins)||'終了');
- const my=d.mystery||{wins:0,bigs:0};
- const tier=Math.min(3,Math.floor((my.wins||0)/3)+(my.bigs>0?1:0));
- $('mysteryStatus').textContent='🎁 '+['銅','銀','金','虹'][tier]+'の宝箱';
- $('fragmentStatus').textContent='✨ 欠片 '+(d.fragments||0)+(d.wildCell>=0?' ／ 万能予約':'');
- $('heatStatus').textContent='🌋 熱量 '+(d.heatTimer>0?'覚醒'+d.heatTimer+'回':Math.round(d.heat||0)+'%');
- document.querySelector('.machine').classList.toggle('shadow',d.shadow>0);
- document.querySelector('.machine').classList.toggle('overheat',d.heatTimer>0);
-};
-const box=$('reels');for(let i=0;i<25;i++){let e=document.createElement('div');e.className='cell';e.textContent=sign(d.grid[i]??0);e.onclick=()=>chooseBoardCell(i);box.append(e);cells.push(e)}
-// 融合・万能の判定。targetSym の絵柄として扱えるか
-function eq(v,targetSym){if(v===-1||v===targetSym)return true;if(d.fusionF&&targetSym<=1&&v<=1)return true;if(d.fusionL&&[2,3].includes(targetSym)&&[2,3].includes(v))return true;return false}
-function lineValue(sym,len,kind='line'){
- let p=PAY[sym]*(len===2?.24:len===3?1:len===4?3.3:8);
- if(kind==='square')p*=2.8;
- if(kind==='mirror')p*=1.8;
- if(kind==='step')p*=1.4;
- p*=1+.23*LV(0);
- p*=1+(len===3?.50*LV(61):len>=4?.65*LV(62):0);
- if(sym>=4)p*=1+.9*LV(63);
- if(sym===5)p*=1+.03*LV(34)*Math.min(d.growing7,60);
- if(has(58))p*=1+Math.min(3,d.virus[sym]||0);
- if(len===5&&has(29))p*=4;;
- // 同系統の倍率が重なっても強化が死なないよう漸減。
- const basis=PAY[sym]*(len===2?.24:len===3?1:len===4?3.3:8);
- if(p>basis*16)p=basis*(16+3*Math.sqrt(p/basis-16));
- return safe(p+35*LV(65));
 }
-function evaluate(g,opt={}){
- let payouts=[],used=new Set(),all=opt.god===true;
- function add(path,name,min=3,bonus=1,full=false){
-  let best=null;
-  for(let s=0;s<(d.awaken&&combo(3)?F.length:6);s++){
-   let run=0;while(run<path.length&&eq(g[path[run]],s))run++;
-   if(run<min||(name==='pair'&&run!==2)||(full&&run!==path.length))continue;
-   let value=lineValue(s,run,name)*bonus;if(d.golden>=0&&path.slice(0,run).some(i=>i%5===d.golden))value*=1.5;if(combo(7)&&['vertical','square'].includes(name))value*=2;
-   if(!best||value>best.value)best={sym:s,len:run,value,idx:path.slice(0,run),name};
-  }
-  if(best){payouts.push(best);best.idx.forEach(i=>used.add(i))}
- }
- for(let line of H){add(line,'line');if(has(7))add(line,'pair',2,1,false)}
- if(has(1)||has(10)||all){for(let line of H)add(line.slice().reverse(),'reverse',3,has(10)?2:1)}
- if(has(2)||all){for(let c=0;c<5;c++){let p=[c,c+5,c+10,c+15,c+20];add(p,'vertical');if(has(10))add(p.slice().reverse(),'vertical reverse')}}
- if(has(3)||all){for(let c=0;c<3;c++)for(let r=0;r<3;r++){
-  let down=[r*5+c,(r+1)*5+c+1,(r+2)*5+c+2];
-  let up=[(r+2)*5+c,(r+1)*5+c+1,r*5+c+2];
-  add(down,'cross');add(up,'cross');
-  if(has(10)){add(down.slice().reverse(),'cross reverse');add(up.slice().reverse(),'cross reverse')}
- }}
- if(has(4)||all)for(let r=0;r<4;r++)for(let c=0;c<4;c++)add([r*5+c,r*5+c+1,(r+1)*5+c,(r+1)*5+c+1],'square',4,1,true);
- if(has(5)||all)for(let r=0;r<5;r++){let p=[r*5,r*5+2,r*5+4];add(p,'step',3,1,true);if(has(10))add(p.slice().reverse(),'step reverse',3,2,true)}
- if(has(6)||all)for(let r=0;r<5;r++){let a=r*5;if(eq(g[a],g[a+4])&&eq(g[a+1],g[a+3])){let sym=g[a]>=0?g[a]:0;let v=lineValue(sym,3,'mirror');payouts.push({sym,len:3,value:v,idx:[a,a+1,a+2,a+3,a+4],name:'mirror'});[a,a+1,a+2,a+3,a+4].forEach(i=>used.add(i))}}
- if(has(9)||all)for(let c=0;c<3;c++)for(let r=0;r<5;r++)for(let j of [-1,1]){let mid=r+j;if(mid<0||mid>4)continue;let p=[r*5+c,mid*5+c+1,r*5+c+2];add(p,'zigzag');if(has(10))add(p.slice().reverse(),'zigzag reverse',3,2)}
- let lineSum=payouts.reduce((a,b)=>a+b.value,0);
- if(has(25)&&g.filter(x=>x===2).length>=9)lineSum*=3;
- let count=s=>g.filter(x=>x===s).length;
- let bonuses=0;
- if(has(21)&&count(4)>=5)bonuses+=200*LV(21)*count(4);
- if(has(22)&&count(5)>=5)bonuses+=1500*LV(22);
- if(has(24)&&count(1)>=8)bonuses+=60*LV(24)*count(1);if(has(19)&&count(5))bonuses+=count(5)*(70+12*Math.floor(d.spins/10));if(d.awaken&&count(6)>=3)bonuses+=25000*count(6);
- if(opt.reverseWorld){for(const p of H){add(p.slice().reverse(),'反転当たり',3,2)}}
- let full5=payouts.filter(x=>x.len===5).length;lineSum=payouts.reduce((a,b)=>a+b.value,0)*(has(25)&&g.filter(x=>x===2).length>=9?3:1);return {payouts,used,lineSum:safe(payouts.reduce((a,b)=>a+b.value,0)*(has(25)&&g.filter(x=>x===2).length>=9?3:1)),bonuses:safe(bonuses),count,full5,maxLen:Math.max(0,...payouts.map(x=>x.len)),main:payouts.length?payouts.reduce((a,b)=>a.value>=b.value?a:b).sym:-1,base:safe(lineSum+bonuses+15*LV(64))};
-}
-function addLog(log,text){if(log.length<22&&!log.includes(text))log.push(text)}
-function adjust(g,spin,log){
- // 12: 粘着リール（前回の当たりを同じマスに固定）
- if(has(12)&&d.sticky){g[d.sticky.i]=d.sticky.v;addLog(log,'🧊 粘着')}
- // 11: 3回転に1回ワイルド発芽
- if(has(11)&&spin%3===0){g[randGame(25)]=-1;addLog(log,'🃏 ワイルド')}
- // 16: 7️⃣が一定確率で万能に
- if(has(16)){let n=0;for(let i=0;i<25;i++)if(g[i]===5&&rng()<.2){g[i]=-1;n++}if(n)addLog(log,'7️⃣ 七変化 ×'+n)}
- // 17: 横に同じ2絵柄→3列目25%書き換え
- if(has(17))for(let r=0;r<5;r++){let i=r*5;if(g[i]>=0&&g[i]===g[i+1]&&rng()<.25){g[i+2]=g[i];addLog(log,'🧲 マグネット')}}
- return g;
-}
-function improve(g,log){ // 20: 最も得になるマスを実際に探す
- let best=evaluate(g).base,idx=-1,sym=-1;
- for(let i=0;i<25;i++)for(let s=0;s<F.length;s++){if(g[i]===s)continue;let v=g[i];g[i]=s;let p=evaluate(g).base;g[i]=v;if(p>best){best=p;idx=i;sym=s}}
- if(idx>=0){g[idx]=sym;addLog(log,'👁️ 神の指先')}return g;
-}
-function chooseGrid(spin,log){d.fusionF=has(14)&&rng()<.25;d.fusionL=has(15)&&rng()<.30;if(d.fusionF)addLog(log,'🍹 フルーツ融合発動');if(d.fusionL)addLog(log,'🍀 幸運の融合発動');let g=adjust(roll(),spin,log);
- // 60: 1プレイに一度だけ神モード（優先）
- let god=false;if(has(60)&&!d.godUsed&&rng()<.006){god=true;g=Array(25).fill(randGame(6));d.godUsed=true;addLog(log,'👁️ スロットの神')}
- // 51: 10回ごと、2つの盤面から強い方
- if(has(51)&&spin%10===0&&!god){let alt=adjust(roll(),spin,log);if(evaluate(alt).base>evaluate(g).base)g=alt;addLog(log,'🌌 パラレル選択')}
- if(has(20)&&spin%10===0&&!god)improve(g,log);
- return {g,god};
-}
-function getSpin(g,god,spin,log){let z=evaluate(g,{god,reverseWorld:combo(4)&&spin%10===0}),extraReveals=[];
- // 13: 外れなら一番右の列をリロール
- if(has(13)&&!z.payouts.length&&!god){
-  let bestG=g.slice(), best=evaluate(bestG,{god,reverseWorld:combo(4)&&spin%10===0});
-  for(let trial=0;trial<3;trial++){
-   let candidate=g.slice();let col=2-trial;for(let row=0;row<5;row++)candidate[row*5+col]=pick();
-   let e=evaluate(candidate,{god,reverseWorld:combo(4)&&spin%10===0});
-   if(e.base>best.base){best=e;bestG=candidate;}
-  }
-  for(let i=0;i<25;i++)g[i]=bestG[i];z=best;
-  addLog(log,z.payouts.length?'🔁 敗者復活成功':'🔁 中央列リトライ');
- }
- // 18: 🔔が当たると接触する絵柄をベルに感染、再判定
- let original=0;if(has(18)&&z.payouts.some(p=>p.sym===3)){
-  original=z.base;
-  let next=new Set();for(let p of z.payouts)if(p.sym===3)for(let i of p.idx){let r=Math.floor(i/5),c=i%5;for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){let rr=r+dr,cc=c+dc;if(rr>=0&&rr<5&&cc>=0&&cc<5)next.add(rr*5+cc)}}
-  for(let i of next)g[i]=3;
-  z=evaluate(g,{god,reverseWorld:combo(4)&&spin%10===0});if(combo(8))original*=2;addLog(log,'💣 爆弾で再配当');
- }
- let gain=safe(z.base+original),realHit=z.payouts.length>0,prevMiss=d.misses,full=z.full5>0,big=z.maxLen>=4,highest=Math.max(0,...z.payouts.map(p=>p.value));
- let multiplier=1;if(d.fever>0){multiplier*=2;addLog(log,'🔥 FEVER 2倍')}if(combo(5)&&spin>=91)multiplier*=2;
- // 8: 以前発生したレインボーは次の当たりで3倍
- if(realHit&&d.rainbow){multiplier*=3;d.rainbow=false;addLog(log,'🌈 レインボー3倍')}
- if(has(8)&&new Set(g.filter(x=>x>=0)).size===6){d.rainbow=true;addLog(log,'🌈 次回の当たり予告')}
- // 23～30: 盤面・当たり条件に応じた倍率
- if(has(23)&&z.count(0)>=12){multiplier*=4;addLog(log,'🍒 チェリー祭り4倍')}
- if(has(25)&&z.count(2)>=9)addLog(log,'🍀 フィーバー3倍');
- if(has(26)&&z.count(3)>=5&&rng()<.2){multiplier*=5;addLog(log,'🔔 共鳴5倍')}
- if(combo(11)&&z.payouts.length>=2)multiplier*=1.5;if(has(27)&&z.payouts.length>=2){multiplier*=2;addLog(log,'🎯 2ライン2倍')}
- if(has(28)&&z.payouts.length>=3){multiplier*=5;addLog(log,'👑 3ライン5倍')}
- if(has(30)&&z.full5>=2){multiplier*=35;addLog(log,'🌋 神の一撃35倍')}
- // 31～40: 成長・積み上げ型
- if(realHit&&has(31))multiplier*=1+.15*LV(31)*Math.min(d.streak,12);
- if(realHit&&has(32)&&prevMiss){multiplier*=1+.5*LV(32)*prevMiss;addLog(log,'🥶 逆境 '+prevMiss+'連')}
- if(has(35))multiplier*=spin<=50?.5:2.2;
- if(has(36)&&spin>=91){multiplier*=3;addLog(log,'🚀 ラストスパート')}
- if(realHit&&has(37)&&d.charge>=10){multiplier*=10;d.charge=0;addLog(log,'🌋 火山10倍')}
- if(realHit&&has(38)&&z.main===d.lastSym&&d.sameSym>0){multiplier*=Math.min(32,1+d.sameSym)*(combo(6)?1.5:1);addLog(log,'🔗 同絵柄連鎖')}
- if(has(39)&&d.seen.length===6){multiplier*=2;addLog(log,'📚 全種コンプ2倍')}
- if(has(40))multiplier*=1+.25*Math.floor(sumLV()/10);
- // 43: 死神の契約 10回の後はずっと2倍
- if(has(43)){multiplier*=spin<=d.contractAt+10?.5:2;if(spin===d.contractAt+11)addLog(log,'💀 契約解放2倍')}
- // 48: 大当たりが10回ない時、次の4連以上を強化
- if(has(48)&&big&&d.sinceBig>=12){multiplier*=5;addLog(log,'🧨 5倍解放')}
- // 47: 先払い契約→次の4連以上を10倍
- if(big&&d.heist>0){multiplier*=Math.pow(6,Math.min(d.heist,2));d.heist=0;addLog(log,'💸 借金取り6倍')}
- // 55: 予言の絵柄でライン成立
- if(has(55)&&d.prophecy>=0&&spin<=d.prophecyEnd&&z.payouts.some(p=>p.sym===d.prophecy)){multiplier*=combo(10)?20:10;d.prophecy=-1;addLog(log,'🔮 未来予知的中10倍')}
- // 41/42/49: ハイリスク倍率（実際に0にもなる）
- if(realHit&&has(41)){if(rng()<.2){multiplier*=6;addLog(log,'🎲 大勝負6倍！')}else{multiplier*=.7;addLog(log,'🎲 保険配当70%')}}
- if(realHit&&has(42)){if(rng()<.5){multiplier*=2;addLog(log,'🪙 コイン成功2倍')}else{multiplier*=.75;addLog(log,'🪙 保険配当75%')}}
- if(realHit&&has(49)){if(rng()<.25){multiplier*=5;addLog(log,'🎭 天国5倍')}else{multiplier*=.6;addLog(log,'🎭 地獄でも60%配当')}}
- // 44/45/46: 抽選で爆発するギャンブル系
- if(realHit&&has(44)){d.critical++;if(rng()<Math.min(.9,d.critical*.01)){multiplier*=10;if(combo(0))multiplier*=3;d.critical=0;addLog(log,'☢️ 臨界爆発'+(combo(0)?'30':'10')+'倍')}}
- if(!realHit&&has(45)&&rng()<.005){gain+=10000;addLog(log,'🎰 裏ジャックポット！')}
- if(realHit&&has(46)&&rng()<(combo(0)?.10:.05)){multiplier*=10;addLog(log,'⚡ 雷神10倍')}
- // 53: 各当たりラインの30%連鎖。性能のため最大20段
- if(realHit&&has(53)){let extra=0,steps=0;for(let p of z.payouts){let j=0;while(j<12&&rng()<((combo(1)?.42:.3)+(d.trait==='chain'?.10:0))){extra+=p.value;extraReveals.push({...p,name:"chain"});j++;steps++}}if(steps){gain+=extra;addLog(log,'🧬 無限連鎖 ×'+steps)}}
- // 59: 5連が成立すると25%で2,4,8...の追加配当
- if(full&&has(59)){let bonus=0,chains=0;for(let p of z.payouts.filter(p=>p.len===5)){let v=p.value*2,j=0;while(j<6&&rng()<.25){bonus+=v;extraReveals.push({...p,value:v,name:"limit"});v*=2;j++;chains++}}if(chains){gain+=bonus;addLog(log,'♾️ 限界突破 ×'+chains)}}
- // 57: 前回のヒットが霊として発生
- if(has(57)&&d.ghost>0&&rng()<.25){gain+=d.ghost*(combo(9)?2:1);addLog(log,'👻 ゴースト再来')}
- // 52: 20回転ごと、過去の1回転最高得点を追加
- if(has(52)&&spin%20===0&&d.bestTurn>0){gain+=d.bestTurn*(combo(9)?2:1);addLog(log,'⏳ タイムリープ')}
- // 33: 固定配当は10回転ごとに複利で増える
- if(has(33)&&LV(64)>0){gain+=15*LV(64)*(Math.pow(1+.1*LV(33),Math.floor(spin/10))-1);if(spin%10===0)addLog(log,'🏦 複利成長')}
- // 50: 全配当100倍という最終判定
- if(has(50)&&rng()<.01){multiplier*=45;addLog(log,'🌠 奇跡の1%！！')}
- // 54: 外れなら現在のスコア1%を貯金、5連で10倍放出
- let siphon=0;if(has(54)&&!realHit){siphon=Math.min(d.score,Math.max(1,Math.floor(d.score*.01)));d.blackhole+=siphon;if(siphon)addLog(log,'🕳️ '+fmt(siphon)+'点吸収')}
- if(has(54)&&full&&d.blackhole>0){gain+=(combo(2)?30:10)*d.blackhole;addLog(log,'🕳️ ブラックホール放出！');d.blackhole=0}
- if(d.trait==='chain'&&z.payouts.length>=2)multiplier*=1.2;if(d.trait==='cherry'&&z.payouts.some(p=>p.sym===0))multiplier*=1.35;if(d.trait==='rare'&&z.payouts.some(p=>p.sym>=4))multiplier*=1.5;let effective=multiplier<=10?multiplier:10+Math.sqrt(multiplier-10)*3;let award=safe(gain*effective);
- // 56: 20%を宝箱に退避（100回転目に精算）
- if(has(56)&&realHit&&award>0){let saved=Math.floor(award*.15);d.chest=safe(d.chest+saved);award-=saved;addLog(log,'🎁 宝箱に貯金')}
- // 32 / 37 / 38 / 39 / 34 / 58: 次回用の状態更新
- if(realHit){d.streak++;d.misses=0;if(z.main===d.lastSym)d.sameSym++;else d.sameSym=1;d.lastSym=z.main;d.seen=[...new Set([...d.seen,...z.payouts.map(p=>p.sym)])];if(has(58)){for(let sym of new Set(z.payouts.map(p=>p.sym))){d.virus[sym]=Math.min(20,(d.virus[sym]||0)+.10);let other=randGame(6);d.virus[other]=Math.min(20,(d.virus[other]||0)+.10)}addLog(log,'🦠 感染拡大')}}
- else{d.misses++;d.streak=0;d.sameSym=0;if(has(37))d.charge=Math.min(10,d.charge+1)}
- if(big)d.sinceBig=0;else d.sinceBig++;
- if(has(34))d.growing7+=z.count(5);
- d.ghost=realHit?highest:0;
- if(has(12)&&z.used.size){let a=[...z.used],i=a[randGame(a.length)];d.sticky={i,v:g[i]}}else d.sticky=null;
- // 55: 5回転が終わった瞬間、続く5回転を予言
- if(has(55)&&spin%5===0){d.prophecy=randGame(6);d.prophecyEnd=spin+5;addLog(log,'🔮 次の5回：'+F[d.prophecy])}
- return {award,siphon,realHit,used:z.used,maxLen:z.maxLen,log,base:z.base,rawGain:safe(gain),reveals:[...z.payouts,...extraReveals],multiplier:effective,rawMultiplier:multiplier};
-}
-function finalChest(log){if(has(56)&&!d.chestOpened){let mult=2+randGame(7),bonus=safe(d.chest*mult);d.score=safe(d.score+bonus);d.best=Math.max(d.best,d.score);d.chestOpened=true;addLog(log,'🎁 宝箱 '+mult+'倍！ +'+fmt(bonus))}}
-
-
-// ========= EVOLUTION: 20 SYSTEMS / 100 SPINS =========
-const RULES=[
- {id:'diag',name:'↗️ 斜め革命',desc:'斜めのライン配当が2.5倍になる'},
- {id:'cherry',name:'🍒 桜色の世界',desc:'各回転30%でチェリー1個が万能化'},
- {id:'cascade',name:'🌊 再起動する5連',desc:'5連発生時に再抽選して追加得点を獲得'},
- {id:'reverse',name:'🔃 逆転法則',desc:'右始まりの当たり判定が毎回追加される'},
- {id:'double',name:'💫 双子ライン',desc:'2ライン以上なら追加1.6倍'},
- {id:'diamond',name:'💎 研磨の世界',desc:'💎を3個引くと+2500点'},
- {id:'ghost',name:'👻 過去の増幅',desc:'過去の盤面による書き換えが起きやすくなる'},
- {id:'risk',name:'🎭 暴走世界',desc:'4連以上+70%、代わりに3連は-20%'}
-];
-const RELICS=[
- {id:'solar',name:'☀️ 太陽炉',desc:'毎回転、基本配当の15%を追加'},
- {id:'mirror',name:'🪞 極光の鏡',desc:'2本以上そろうと配当が1.25倍'},
- {id:'heart',name:'💖 不滅の心臓',desc:'ハズレ時も+350点'},
- {id:'thunder',name:'🌩️ 神雷の心臓',desc:'当たり時5%でさらに3倍'},
- {id:'growth',name:'🌳 世界樹',desc:'成長Lv5のマスがある当たりに+50%'}
-];
-const hasRule=id=>d.rules.includes(id),hasRelic=id=>d.relics.includes(id);
-function addRelic(id){
- if(d.relics.includes(id)){
-  d.score=safe(d.score+1500);return;
- }
- d.relics.push(id);toast('🌟 秘宝獲得 '+RELICS.find(x=>x.id===id).name);
-}
-// New standalone score evaluation, attached to the original 66-card evaluator.
-const coreEvaluate=evaluate;
-evaluate=function(g,opt={}){
- let z=coreEvaluate(g,{...opt,reverseWorld:opt.reverseWorld||hasRule('reverse')});
- let extras=0;
- for(const line of z.payouts){
-  let bonus=0;
-  if(hasRule('diag')&&(line.idx.some(i=>i<5)&&line.idx.some(i=>i>=10)||['cross','zigzag','reverse'].includes(line.name)))bonus+=line.value*1.5;
-  if(hasRule('risk'))bonus+=line.value*(line.len>=4?.7:-.2);
-  if(hasRelic('growth')&&line.idx.some(i=>(d.cellLevels[i]||0)>=5))bonus+=line.value*.5;
-  if(line.idx.some(i=>(d.cellLevels[i]||0)>=5))bonus+=line.value*.25;
-  extras+=bonus;
- }
- if(hasRule('diamond')&&z.count(4)>=5)extras+=2500;
- z.bonuses=safe(z.bonuses+extras);
- z.base=safe(z.base+extras);
- return z;
-};
-// 11: Rare shadow world changes reel probabilities for exactly five spins.
-const corePick=pick;
-pick=function(){
- if(d.shadow>0){
-  const w=[11,13,15,20,22,19],total=w.reduce((a,b)=>a+b,0);
-  let v=rng()*total;
-  for(let i=0;i<6;i++)if((v-=w[i])<0)return i;
-  return 5;
- }
- return corePick();
-};
-// 1, 18, 19: held column / ghost board / player-chosen wild spot.
-const coreChooseGrid=chooseGrid;
-chooseGrid=function(spin,log){
- let s=coreChooseGrid(spin,log),g=s.g;
- if(hasRule('cherry')&&rng()<.30){
-  let positions=g.map((x,i)=>x===0?i:-1).filter(x=>x>=0);
-  if(positions.length){g[positions[randGame(positions.length)]]=-1;addLog(log,'🍒 桜色の世界')}
- }
- if(d.fate==='wild7'&&g.includes(5)&&rng()<.32){
-  g[g.indexOf(5)]=-1;addLog(log,'🃏 運命の7')
- }
- if(d.recentBoards.length&&rng()<(hasRule('ghost')?.16:.07)){
-  let board=d.recentBoards.reduce((a,b)=>a.score>=b.score?a:b);
-  const indices=[randGame(25),randGame(25)];
-  for(let i of indices)g[i]=board.grid[i];
-  addLog(log,'👻 過去の亡霊 2マス復元');
- }
- if(d.sealNext>=0){
-  const col=d.sealNext;
-  for(let r=0;r<5;r++)g[r*5+col]=d.grid[r*5+col];
-  addLog(log,'🔒 '+(col+1)+'列目を封印');d.sealNext=-1;
- }
- if(d.wildCell>=0){g[d.wildCell]=-1;addLog(log,'🌟 運命のカケラ');d.wildCell=-1}
- return s;
-};
-// 4, 5, 8, 9, 12, 14: nonlinear jackpots with a controlled ceiling.
-const coreGetSpin=getSpin;
-getSpin=function(g,god,spin,log){
- const res=coreGetSpin(g,god,spin,log);
- const primary=res.reveals.filter(p=>!['chain','limit','domino'].includes(p.name));
- const five=primary.filter(p=>p.len>=5);
- let extra=0;
- if(hasRelic('solar'))extra+=res.base*.15;
- if(hasRelic('mirror')&&primary.length>=2)extra+=res.award*.25;
- if(hasRelic('heart')&&!primary.length)extra+=350;
- if(hasRelic('thunder')&&primary.length&&rng()<.05){extra+=res.award*2;addLog(log,'🌩️ 神雷の心臓3倍')}
- if(hasRule('double')&&primary.length>=2){extra+=res.award*.6;addLog(log,'💫 双子ライン')}
- if(hasRule('cascade')&&five.length){
-  const second=evaluate(adjust(roll(),spin,log));
-  extra+=second.base*.5;
-  addLog(log,'🌊 5連の再抽選 +'+fmt(second.base*.5));
- }
- if(five.length){
-  // 9: tiny 3-symbol multiplier reel; the same value is shown during payout animation.
-  const bonus=[1,1,1,2,2,3,5];
-  const reels=[bonus[randGame(bonus.length)],bonus[randGame(bonus.length)],bonus[randGame(bonus.length)]];
-  const factor=reels[0]===reels[1]&&reels[1]===reels[2]?3:
-      reels[0]===reels[1]||reels[1]===reels[2]||reels[0]===reels[2]?1.75:1.2;
-  res.secondReels=reels;res.secondFactor=factor;
-  extra+=res.award*(factor-1);
-  addLog(log,'🎰 セカンドスロット ×'+factor);
-  // 6: selected symbol jackpot rewards rare glyphs more.
-  const matched=five.some(p=>p.sym===d.targetSymbol);
-  if(matched){
-   const factor2=d.targetSymbol===5?6:d.targetSymbol===4?4:2.5;
-   extra+=res.award*(factor2-1);
-   addLog(log,'🎯 自作ジャックポット ×'+factor2);
-  }
- }
- // 5: domino branches only once per spin, capped at three extra triggers.
- if(primary.length&&has(46)&&has(44)&&has(53)&&rng()<.045){
-  const stages=1+randGame(3);
-  for(let k=0;k<stages;k++){
-   extra+=Math.max(100,res.base)*(1.0+k*.8);
-   res.reveals.push({...primary[0],name:'domino',value:safe(res.base*(1.0+k*.8))});
-  }
-  d.dominoCount+=stages;
-  addLog(log,'⚡ コンボドミノ '+stages+'連鎖');
- }
- // 8: high frequency of the same hit symbol causes an overheated phase.
- if(primary.length){
-  const sym=primary[0].sym;
-  d.heat=d.heatSymbol===sym?Math.min(100,d.heat+22):22;
-  d.heatSymbol=sym;
-  if(d.heat>=100){d.heatTimer=5;d.heat=0;addLog(log,'🌋 '+F[sym]+' オーバーヒート突入！')}
- }
- if(d.heatTimer>0){
-  if(primary.some(p=>p.sym===d.heatSymbol))extra+=res.award*1.5;
-  d.heatTimer--;
- }
- if(d.shadow>0){extra+=res.award*.45;d.shadow--;addLog(log,'🌑 裏世界 +45%')}
- else if(spin>=12&&rng()<.006){d.shadow=5;addLog(log,'🌑 裏世界の扉が開いた')}
- if(d.fate==='triple'&&five.length){extra+=res.award*4;d.fate='used';addLog(log,'🎴 運命の5連 5倍')}
- if(d.fate==='spark'&&primary.length&&rng()<.12){extra+=res.award*1.2;addLog(log,'🎴 星の祝福')}
- if(d.boss){
-  d.boss.left--;
-  if(primary.some(p=>p.sym===d.boss.sym&&p.len>=3)){
-   const gift=[3500,15000,45000][[30,60,90].indexOf(d.boss.at)]||3500;
-   extra+=gift;
-   addRelic(RELICS[Math.min(4,d.boss.at/30|0)].id);
-   addLog(log,'👹 ボス討伐！ +'+fmt(gift));
-   d.boss=null;
-  }else if(d.boss.left<=0){addLog(log,'👹 ボス撤退');d.boss=null}
- }
- // 16: prophecy is selected by the player, no score deduction on failure.
- const pr=d.prediction;
- if(pr){
-  pr.left--;
-  const success=pr.type==='rare'?g.filter(v=>v===5).length>=3:
-    pr.type==='long'?res.maxLen>=4:
-    g.filter(v=>v===4).length>=3;
-  if(success){extra+=4500;d.prediction=null;addLog(log,'🔮 予言成功！ +4500')}
-  else if(pr.left<=0){d.prediction=null;addLog(log,'🔮 予言終了')}
- }
- // 4: vault receives exactly 5% of spin payout and releases at 3x on five-of-kind.
- const starting=softPayout(safe(res.award+extra));
- const deposit=Math.floor(starting*.05);
- let payout=safe(starting-deposit);
- d.vault=safe(d.vault+deposit);
- if(five.length&&d.vault>0){
-  const release=safe(d.vault*3);
-  payout=safe(payout+release);d.vault=0;
-  addLog(log,'🏦 金庫開放 +'+fmt(release));
-  res.vaultRelease=release;
- }
- res.award=safe(payout);
- res.extraPoints=safe(extra);
- res.rawGain=safe(res.rawGain+extra);
- return res;
-};
-// 7, 15, 16: special actions are accessible from one menu, not 20 extra controls.
-function chooseOne(title,description,options){
- return new Promise(resolve=>{
-  modal(`<div class="eyebrow">SPECIAL CHOICE</div><h2>${title}</h2><p>${description}</p><div id="specialChoices"></div>`);
-  for(const op of options){
-   const b=document.createElement('button');b.className='choice';
-   b.innerHTML=`<span class="emoji">${op.icon||'✨'}</span><span><strong>${op.name}</strong><small>${op.desc||''}</small></span>`;
-   b.onclick=()=>{close();resolve(op.id)};
-   $('specialChoices').appendChild(b);
-  }
- });
-}
-function sealMenu(){
- if(d.sealTokens<=0||d.sealNext>=0)return toast('封印券がないで');
- modal('<h2>🔒 リール封印</h2><p>次の1回転だけ、現在の縦1列を引き継ぐ。券を1枚消費。</p><div class="slotTiles" id="columnChoices"></div><button id="cancelChoice" class="primary">戻る</button>');
- for(let i=0;i<5;i++){
-  const b=document.createElement('button');b.textContent=(i+1)+'列';
-  b.onclick=()=>{d.sealNext=i;d.sealTokens--;save();close();toast((i+1)+'列目を保存した！')};
-  $('columnChoices').appendChild(b);
- }
- $('cancelChoice').onclick=close;
-}
-function wildMenu(){
- if(d.fragments<3||d.wildCell>=0)return toast('欠片が足りないで');
- modal('<h2>🌟 運命のカケラ</h2><p>3個消費して次回の1マスを万能絵柄に。左上から右下へ1～25で選択。</p><div class="slotTiles" id="positions"></div><button id="cancelChoice" class="primary">戻る</button>');
- for(let i=0;i<25;i++){
-  let b=document.createElement('button');b.textContent=i+1;
-  b.onclick=()=>{d.wildCell=i;d.fragments-=3;save();close();toast('🌟 '+(i+1)+'番を万能予約')};
-  $('positions').appendChild(b);
- }
- $('cancelChoice').onclick=close;
-}
-function sacrificeMenu(){
- const eligible=Object.entries(d.powers).filter(([id,lv])=>lv>0);
- const total=eligible.reduce((s,x)=>s+x[1],0);
- if(total<3)return toast('強化が合計3レベル必要や');
- modal('<h2>🩸 生贄進化</h2><p>不要な強化を合計3レベル消費して、秘宝を1つ獲得。3つ選択してな。</p><div id="sacChoices"></div><p id="sacCount">0 / 3 レベル</p><button id="sacConfirm" class="primary" disabled>進化させる</button><button id="sacCancel" class="tinybtn">戻る</button>');
- const chosen=[];
- function rebuild(){
-  $('sacChoices').replaceChildren();
-  for(const [sid,level] of Object.entries(d.powers)){
-   if(level<=0)continue;
-   const id=Number(sid),it=item(id);
-   if(!it)continue;
-   const amount=chosen.filter(x=>x===id).length;
-   if(amount>=level)continue;
-   const b=document.createElement('button');b.className='choice';
-   b.textContent=it[1]+' '+it[2]+' Lv.'+level+'（選択 '+amount+'）';
-   b.onclick=()=>{if(chosen.length>=3)return;chosen.push(id);rebuild()};
-   $('sacChoices').appendChild(b);
-  }
-  $('sacCount').textContent=chosen.length+' / 3 レベル';
-  $('sacConfirm').disabled=chosen.length!==3;
- }
- rebuild();$('sacCancel').onclick=close;
- $('sacConfirm').onclick=()=>{
-  if(chosen.length!==3)return;
-  chosen.forEach(id=>{d.powers[id]--;if(!d.powers[id])delete d.powers[id]});
-  addRelic(RELICS[randGame(RELICS.length)].id);
-  d.events=['🩸 生贄進化',...d.events].slice(0,9);
-  save();close();updateCombos();render();
- };
-}
-function predictionMenu(){
- if(d.prediction||d.spins<5||d.spins<d.predictionNext)return toast('予言はまだ選べないで');
- modal('<h2>🔮 未来への賭け</h2><p>次の5回転で条件を達成すると4500点。失敗しても減点なし。</p><div id="predChoices"></div><button id="cancelChoice" class="primary">戻る</button>');
- for(const op of [
-  {id:'rare',name:'7️⃣を3個以上出す'},
-  {id:'long',name:'4連以上を出す'},
-  {id:'diamond',name:'💎を3個以上出す'}
- ]){
-  const b=document.createElement('button');b.className='choice';b.textContent=op.name;
-  b.onclick=()=>{d.prediction={type:op.id,left:5};d.predictionNext=d.spins+15;save();close();toast('🔮 予言スタート！')};
-  $('predChoices').appendChild(b);
- }
- $('cancelChoice').onclick=close;
-}
-function beginBoardSelect(mode){
- if(busy||d.spins>=100)return;
- if(mode==='seal'&&(d.sealTokens<=0||d.sealNext>=0)){toast('封印券がないで');return}
- if(mode==='wild'&&(d.fragments<3||d.wildCell>=0)){toast('欠片が足りないで');return}
- close();selectMode=mode;
- $('pickTip').textContent=mode==='seal'?'🔒 固定したい縦1列を盤面からタップ':'🌟 万能化したい1マスを盤面からタップ';
- cells.forEach(c=>c.classList.add('pickable'));
- render();
-}
-function cancelBoardSelect(){selectMode=null;cells.forEach(c=>c.classList.remove('pickable'));render()}
-function chooseBoardCell(i){
- if(!selectMode||busy)return;
- if(selectMode==='seal'){d.sealNext=i%5;d.sealTokens--;toast('🔒 '+(i%5+1)+'列目を封印予約')}
- if(selectMode==='wild'){d.wildCell=i;d.fragments-=3;toast('🌟 '+(i+1)+'番を万能化予約')}
- cancelBoardSelect();save();render();
-}
-function specialMenu(){
- if(busy)return;
- if(selectMode){cancelBoardSelect();return}
-
- modal(`<h2>⚙️ 特殊操作</h2><p>特別な操作だけをここにまとめたで。スピン数は消費しない。</p>
- <button class="choice" id="doSeal">🔒 リール封印（券 ${d.sealTokens}）</button>
- <button class="choice" id="doWild">🌟 万能1マス（欠片 ${d.fragments}）</button>
- <button class="choice" id="doSac">🩸 生贄進化（強化3Lv消費）</button>
- <button class="choice" id="doPredict">🔮 未来への賭け（5回転予言）</button>
- <button class="primary" id="backSpecial">戻る</button>`);
- $('doSeal').onclick=()=>beginBoardSelect('seal');$('doWild').onclick=()=>beginBoardSelect('wild');
- $('doSac').onclick=sacrificeMenu;$('doPredict').onclick=predictionMenu;
- $('backSpecial').onclick=close;
-}
-function bingoCheck(res,g){
- const a=res.reveals||[];
- const checks=[
-  a.some(p=>p.sym===0&&p.len>=3),
-  a.some(p=>p.sym===1&&p.len>=3),
-  a.some(p=>p.sym===2&&p.len>=3),
-  a.some(p=>p.sym===3&&p.len>=3),
-  a.some(p=>p.sym===4&&p.len>=3),
-  a.some(p=>p.sym===5&&p.len>=3),
-  a.some(p=>p.name==='cross'||(p.name==='line'&&p.idx.length>=3&&p.idx.some(i=>i<5)&&p.idx.some(i=>i>=10))),
-  res.maxLen>=4,res.maxLen>=5
- ];
- checks.forEach((v,i)=>{if(v&&!d.bingo.includes(i))d.bingo.push(i)});
- const rows=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
- let prize=0;
- rows.forEach((r,i)=>{
-  if(!d.bingoRows.includes(i)&&r.every(v=>d.bingo.includes(v))){
-   d.bingoRows.push(i);prize+=2500*(1+d.bingoRows.length);
-  }
- });
- if(prize){d.score=safe(d.score+prize);toast('🌈 BINGO! +'+fmt(prize)+'点');d.events.unshift('🌈 ビンゴ '+fmt(prize))}
-}
-function showBingo(){
- const names=['🍒3連','🍋3連','🍀3連','🔔3連','💎3連','7️⃣3連','↗️斜め','4連','5連'];
- modal('<h2>🌈 役コレクション</h2><p>1プレイ中に役を集めて、縦・横・斜めを完成するとボーナス。</p><div class="bingoGrid" id="bGrid"></div><p>達成ライン '+d.bingoRows.length+' / 8</p><button class="primary" id="bBack">戻る</button>');
- names.forEach((x,i)=>{const e=document.createElement('div');e.className='bingoTile'+(d.bingo.includes(i)?' done':'');e.textContent=x;$('bGrid').append(e)});
- $('bBack').onclick=close;
-}
-function showRules(){
- const lines=(d.rules.length?d.rules.map(x=>RULES.find(r=>r.id===x)?.name||x):['まだ変化なし'])
- .map(x=>'<div class="evoNotice">'+x+'</div>').join('');
- modal('<h2>📜 世界ルール</h2><p>25・50・75回転目に世界を改変する特別な3択が登場。</p>'+lines+
- '<p>🎯 狙い絵柄：'+(d.targetSymbol>=0?F[d.targetSymbol]:'未選択')+' / 秘宝：'+d.relics.length+'個</p><button class="primary" id="ruleClose">戻る</button>');
- $('ruleClose').onclick=close;
-}
-async function specialChoice(kind){
- if(kind==='rule'){
-  const choices=[];const avail=RULES.filter(x=>!d.rules.includes(x.id));
-  for(let i=0;i<3;i++)choices.push(avail.splice(randGame(avail.length),1)[0]);
-  const picked=await chooseOne('👁️ ルール崩壊','世界のルールを1つ書き換える。100回転まで効果は継続。',choices.map(x=>({icon:'🌪️',...x})));
-  d.rules.push(picked);toast('世界が変わった！');
- }else if(kind==='fate'){
-  const options=[
-   {id:'wild7',icon:'7️⃣',name:'七の運命',desc:'毎回転、32%で7️⃣1個をワイルド化'},
-   {id:'triple',icon:'👑',name:'運命の一撃',desc:'次の5連成立時だけ5倍'},
-   {id:'spark',icon:'🌠',name:'星の祝福',desc:'当たりごと12%で追加+120%'}
-  ];
-  d.fate=await chooseOne('🎴 運命のカード','50回転に一度だけ授かる、100回転限定の能力。',options);
- }else if(kind==='boss'){
-  const shuffled=[2,3,4,5];for(let i=shuffled.length-1;i>0;i--){const j=randGame(i+1);[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]]}const options=shuffled.slice(0,3).map(n=>({id:String(n),icon:F[n],name:F[n]+' の守護者',desc:'次の5回転でこの絵柄の3連を成立させろ'}));
-  const sym=Number(await chooseOne('👹 ボススロット','次の5回転で指定の絵柄を3連させると秘宝を獲得。',options));
-  d.boss={sym,left:5,at:d.spins};
- }else if(kind==='target'){
-  const options=[0,2,4,5].map(n=>({id:String(n),icon:F[n],name:F[n]+' を狙う',desc:'5連時 '+(n===5?8:n===4?5:3)+'倍'}));
-  d.targetSymbol=Number(await chooseOne('🎯 自作ジャックポット','このプレイで5連を狙う絵柄を選んでな。',options));
- }
- save();render();
-}
-function nextMilestone(){
- if(d.targetSymbol<0)return 'target';
- for(const n of [25,50,75])if(d.spins>=n&&!d.eventsDone.includes('rule'+n)){
-  d.eventsDone.push('rule'+n);return 'rule';
- }
- if(d.spins>=50&&!d.eventsDone.includes('fate')){d.eventsDone.push('fate');return 'fate'}
- for(const n of [30,60,90])if(d.spins>=n&&!d.eventsDone.includes('boss'+n)){
-  d.eventsDone.push('boss'+n);return 'boss';
- }
- return null;
-}
-function postSpinEvents(res,g){
- const lines=res.reveals.filter(x=>!['chain','limit','domino'].includes(x.name));
- d.recentBoards.push({grid:g.slice(),score:res.award});
- d.recentBoards=d.recentBoards.slice(-10);
- // 12: attached multiplier rises on every slot participating in a win.
- for(const i of new Set(lines.flatMap(p=>p.idx)))d.cellLevels[i]=Math.min(5,(d.cellLevels[i]||0)+1);
- // 14: a positive mutation event, changes a real card level.
- if(Object.keys(d.powers).length&&rng()<.012){
-  const options=ITEMS.filter(x=>LV(x[0])>0&&LV(x[0])<x[5]);
-  if(options.length){let x=options[randGame(options.length)];d.powers[x[0]]++;d.mutations++;toast('🧪 '+x[2]+' 突然変異！')}
- }
- // 15: ten-spin mystery box; grows according to actual performance.
- if(lines.length)d.mystery.wins++;
- if(res.maxLen>=4)d.mystery.bigs++;
- if(d.spins%10===0){
-  const t=Math.min(3,Math.floor(d.mystery.wins/3)+(d.mystery.bigs>0?1:0));
-  const prize=[300,1000,3200,11000][t];
-  d.score=safe(d.score+prize);d.events.unshift('🎁 '+['銅','銀','金','虹'][t]+'宝箱 +'+fmt(prize));
-  toast('🎁 '+['銅','銀','金','虹'][t]+'宝箱 +'+fmt(prize));
-  d.mystery={wins:0,bigs:0};
-  d.sealTokens=Math.min(3,d.sealTokens+1);
- }
- // 19: miss-streak shards, gives a strategic way to rescue the next roll.
- if(!lines.length&&d.misses>=3&&d.misses%3===0){d.fragments=Math.min(12,d.fragments+1);d.events.unshift('🌟 運命のカケラ +1')}
- bingoCheck(res,g);
- d.best=Math.max(d.best,d.score);
- if(d.trace.length)d.trace[d.trace.length-1]=d.score;
-}
-function judgement(){
- if(d.finalJudged)return;
- d.finalJudged=true;
- const unique=Object.values(d.powers).filter(x=>x>0).length;
- const uniqueBonus=unique*300;
- const combos=discovered().length;
- const comboBonus=combos*1800;
- const bingoBonus=d.bingoRows.length*750;
- const relicBonus=d.relics.length*1600;
- d.judgementBonus=safe(uniqueBonus+comboBonus+bingoBonus+relicBonus);d.judgementBreakdown=[['強化コレクション',uniqueBonus],['合体進化ボーナス',comboBonus],['ビンゴ報酬',bingoBonus],['秘宝ボーナス',relicBonus]];
- d.score=safe(d.score+d.judgementBonus);
- if(d.vault>0){d.score=safe(d.score+d.vault);d.events.unshift('🏦 金庫の残額 +'+fmt(d.vault));d.vault=0}
- d.events=['♾️ 最終審判 +'+fmt(d.judgementBonus),...d.events].slice(0,9);
- d.best=Math.max(d.best,d.score);
- if(d.trace.length)d.trace[d.trace.length-1]=d.score;
- save();
-}
-// ========= END EVOLUTION SYSTEMS =========
-
-function makeTicker(i){const el=cells[i];el.textContent='';el.className='cell rolling';const strip=document.createElement('div');strip.className='ticker';strip.style.setProperty('--rate',(.13+(i%5)*.024)+'s');for(let k=0;k<4;k++){const t=document.createElement('span');t.textContent=F[(i*3+k+rand(6))%6];strip.appendChild(t)}el.appendChild(strip)}
-function markPath(indices){let svg=$('paths');svg.replaceChildren();const reel=$('reels');const a=svg.getBoundingClientRect();if(!a.width||!a.height)return;svg.setAttribute('viewBox',`0 0 ${a.width} ${a.height}`);const pts=indices.map(i=>{let b=cells[i].getBoundingClientRect();return `${b.left-a.left+b.width/2},${b.top-a.top+b.height/2}`});const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d','M '+pts.join(' L '));svg.appendChild(p);svg.style.display='block'}
-function clearPath(){$('paths').style.display='none';$('paths').replaceChildren()}
-function quickBonus(text){beep(620,.12,'triangle',.04);toast(text)}
-function chartSVG(arr){if(!arr?.length)return '<p>まだ記録なし</p>';let max=Math.max(1,...arr);let pts=arr.map((v,i)=>`${5+290*i/Math.max(1,arr.length-1)},${115-105*v/max}`).join(' ');return `<svg class="chartsvg" viewBox="0 0 300 130" role="img" aria-label="スコア推移"><path d="M5 115 L295 115" stroke="#75809c"/><polyline points="${pts}" fill="none" stroke="#bcff69" stroke-width="2.5" stroke-linejoin="round"/><text x="8" y="14" font-size="10" fill="#aeb8d0">MAX ${fmt(max)}</text></svg>`}
-function showCodex(){let list=COMBOS.map((a,i)=>`<div class="codexitem">${meta.comboIds.includes(i)?`<b>${a[2]}</b><div class="muted">${a[3]}<br>${item(a[0])[2]} + ${item(a[1])[2]}</div>`:`🔒 ???<br><span class="muted">未発見</span>`}</div>`).join('');modal(`<div class="eyebrow">COMBO ENCYCLOPEDIA</div><h2>🧬 合体図鑑 ${meta.comboIds.length}/12</h2><div class="grid2">${list}</div><button class="primary" id="back" style="margin-top:12px">戻る</button>`);$('back').onclick=close}
-function showHistory(){let entries=(meta.top||[]).map((x,i)=>`<div class="historyitem">${i+1}位 · <b>${fmt(x.score)}点</b><br><span class="muted">${x.build} / 最大当たり ${fmt(x.hit)}点 / ${x.date||''}</span></div>`).join('')||'<p>記録なし</p>';modal(`<div class="eyebrow">YOUR RECORDS</div><h2>🏆 歴代ベスト5</h2>${entries}<h3>直前の100回転</h3>${chartSVG(meta.previous)}<button class="primary" id="back">戻る</button>`);$('back').onclick=close}
-function askSeed(){modal(`<div class="eyebrow">SAME SEED CHALLENGE</div><h2>🎲 シード設定</h2><p>数字・文字列を指定すると抽選の初期条件を再現できる。強化の選択が変わると結果も変わる。</p><input class="seedinput" id="seedText" maxlength="32" placeholder="例：MY-LUCK-100" value="${String(d.seed||'').replace(/[^0-9a-zA-Z_-]/g,'')}"><button class="primary" id="seedStart" style="margin-top:12px">このシードで最初から</button><button class="tinybtn" id="back" style="margin-top:9px">キャンセル</button>`);$('back').onclick=close;$('seedStart').onclick=()=>{const text=$('seedText').value.replace(/[^0-9a-zA-Z_-]/g,'').slice(0,32)||'LUCK100';restart(text)}}
-function startTrait(){if(d.trait||d.spins>0)return;modal(`<div class="eyebrow">CHOOSE YOUR START</div><h2>🎴 初期特性を選択</h2><p>100回転の方向性を決めよう。1プレイにつき1回。</p><div id="traits"></div>`);const traits=[['cherry','🍒 チェリー特化','チェリーで当たると+35%'],['chain','🧬 連鎖特化','2ライン以上の当たり+20%、無限連鎖の継続率も+10%'],['rare','💎 レア特化','💎と7️⃣の当たり+50%']];for(const t of traits){let b=document.createElement('button');b.className='choice';b.innerHTML=`<span class="emoji">${t[1].split(' ')[0]}</span><span><strong>${t[1]}</strong><small>${t[2]}</small></span>`;b.onclick=()=>{d.trait=t[0];save();close();progress()};$('traits').appendChild(b)}}
-function completeRun(){if(d.historySaved)return;d.historySaved=true;meta.runs++;meta.previous=(d.trace||[]).slice();meta.top.push({score:d.score,hit:d.highestHit,build:getBuild(),date:new Date().toLocaleDateString('ja-JP'),seed:d.seed});meta.top.sort((a,b)=>b.score-a.score);meta.top=meta.top.slice(0,5);persistMeta();save()}
-// ゲームの速さはここだけで変えられる（単位はミリ秒）
-const FIRST_STOP=300;      // 最初の列が止まるまで
-const COLUMN_INTERVAL=225; // 1列止まってから次が止まるまで
-const HIT_INTERVAL=255;    // 1ラインずつ当たりを見せる間隔
-const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-
-function smallCelebration(p,count,total){
-  // 当たりごとに別々の光・音・振動。5連は派手に。
-  let big=p.len>=4||p.name==='limit';
-  beep(470+Math.min(18,count)*65,.17,big?'sawtooth':'triangle',big?.085:.058);
-  beep(710+Math.min(12,count)*47,.21,'sine',.055,.10);
-  vibrate(big?[55,35,85]:[30,20,40]);
-  if(big){$('flash').classList.add('on');setTimeout(()=>$('flash').classList.remove('on'),95);}
-  let m=document.querySelector('.machine');
-  let f=document.createElement('div');
-  f.className='win-float';
-  f.textContent=(p.name==='chain'?'CHAIN! ':p.name==='limit'?'LIMIT! ':p.len>=5?'JACKPOT! ':p.len===4?'BIG HIT! ':'HIT! ')+count+'/'+total;
-  m.appendChild(f);
-  if(p.len>=5){const a=document.createElement('div');a.className='win-float';a.style.cssText='font-size:60px;top:15%;color:#fff;animation-duration:.65s';a.textContent=sign(p.sym);m.appendChild(a);setTimeout(()=>a.remove(),700)}
-  setTimeout(()=>f.remove(),540);
-  if(p.len>=5||p.name==='limit'){
-    // ジャックポットも一度に合算せずラインごとに演出
-    for(let j=0;j<11;j++){
-      let c=document.createElement('i');c.className='confetti';
-      c.style.cssText=`--x:${Math.random()*100}vw;--dx:${rand(181)-90}px;--c:${['#bcff69','#ffda75','#ff67af','#7ce7ff'][j%4]};--t:${.7+Math.random()*.55}s;--d:0s`;
-      document.body.append(c);setTimeout(()=>c.remove(),1400);
+function draw(board,gold=-1){tiles.forEach((t,i)=>{t.textContent=board[i]<0?'🌟':FACE[board[i]];t.className='tile'+(i===gold?' gold':'')})}
+// 同じ直線の同じマスを、ワイルドのせいで二重加算しない
+function findWins(board,gold,fever){
+ const hits=[];
+ for(const line of lines){const seen=new Map();
+  for(let sym=0;sym<FACE.length;sym++){
+   let k=0;
+   while(k<line.p.length){
+    if(board[line.p[k]]!==sym&&board[line.p[k]]!==-1){k++;continue}
+    let end=k;while(end<line.p.length&&(board[line.p[end]]===sym||board[line.p[end]]===-1))end++;
+    const len=end-k;
+    if(len>=3){const cells=line.p.slice(k,end);const key=cells.join(',');
+     let pts=BASE[len]*POWER[sym];
+     pts*=1+(len===3?.6*lv('three'):len===4?lv('four'):2*lv('five'));
+     if(sym<=1)pts*=1+.75*lv('fruit');
+     else if(sym<=3)pts*=1+.75*lv('luck');
+     else pts*=1+lv('rare');
+     if(gold>=0&&cells.includes(gold))pts*=2+lv('gold');
+     if(fever)pts*=2+lv('fever');
+     pts=cap(pts);
+     if(!seen.has(key)||seen.get(key).pts<pts)seen.set(key,{cells,sym,len,pts,dir:line.dir});
     }
+    k=end;
+   }
   }
+  hits.push(...seen.values());
+ }
+ if(hits.length>1){const multi=1+Math.min(2,(hits.length-1)*.25*lv('combo'));hits.forEach(h=>h.pts=cap(h.pts*multi))}
+ return hits.sort((a,b)=>a.pts-b.pts);
 }
-
-
-// Stop reels one-by-one; real moving glyph strips and dynamic tension.
-async function begin(){
- if(busy||d.spins>=100||!$('overlay').classList.contains('hidden'))return;
- busy=true;render();clearPath();
- const machine=document.querySelector('.machine');machine.classList.remove('reach','godmode','suspense','fever','reverse');
- $('message').className='message';$('message').textContent=d.spins>=90?'🔥 FINAL SPIN '+(d.spins+1)+'/100':'リール回転中…';$('multiplier').textContent='';
- cells.forEach((c,i)=>makeTicker(i));
- startMusic();beep(135,.2,'sawtooth',.05);vibrate(25);
- let spin=d.spins+1,log=[],s=chooseGrid(spin,log),g=s.g;
- d.golden=d.upgradeCount>=3&&spin%10===0?randGame(5):-1;if(d.golden>=0)addLog(log,'✨ ゴールデンリール 2倍');
- let result=getSpin(g,s.god,spin,log);
- if(s.god){machine.classList.add('godmode');quickBonus('👁️ スロットの神 覚醒！')}
- if(combo(4)&&spin%10===0)machine.classList.add('reverse');
- if(d.fever>0)machine.classList.add('fever');
- let nextDelay=pace(FIRST_STOP);
- for(let col=0;col<5;col++){
-  await slept(nextDelay);
-  for(let row=0;row<5;row++){
-   let i=row*5+col,c=cells[i];c.className='cell land';c.textContent=sign(g[i]);
-   if(d.golden===col)c.classList.add('golden');
-  }
-  beep(130+col*48,.21,'triangle',.085);beep(73,.14,'sine',.08);vibrate([40,25,40]);
-  $('message').textContent=`${col+1}/5 列 停止`;nextDelay=pace(COLUMN_INTERVAL);
-  if(col===2||col===3){
-   let reaches=H.filter(path=>{let p=path.slice(0,col+1);if(!p.every(i=>i%5<=col))return false;let a=g[p[0]];return a>=0&&p.every(i=>eq(g[i],a))});
-   if(reaches.length&&col<4){machine.classList.add('reach','suspense');$('message').textContent='⚡ REACH!! 次のリールは…';beep(690,.24,'sawtooth',.06);nextDelay+=pace(col===3?900:450)}if(col===3&&result.award>=Math.max(150000,d.score*.2)){machine.classList.add('suspense');$('message').textContent='🌠 激アツ！ 最終リール……';nextDelay+=pace(1050);beep(880,.28,'sawtooth',.06)}
-  }
- }
- machine.classList.remove('reach','godmode','suspense');
- $('message').textContent='当たりラインを確認中…';await slept(pace(350));
- await displayResult(result,g);
- machine.classList.remove('reverse');
+function popAt(cells,points){
+ const root=$('board'),rootBox=root.getBoundingClientRect();
+ let x=0,y=0;for(const index of cells){const b=tiles[index].getBoundingClientRect();x+=b.left+b.width/2-rootBox.left;y+=b.top+b.height/2-rootBox.top}
+ x/=cells.length;y/=cells.length;
+ const p=document.createElement('div');p.className='float-points';p.textContent='+'+money(points);p.style.left=x+'px';p.style.top=y+'px';root.appendChild(p);setTimeout(()=>p.remove(),490);
 }
-async function displayResult(res,g){
- const hits=res.reveals||[],baseScore=safe(d.score-res.siphon);
- if(res.secondReels){
-  $('message').textContent='🎰 BONUS REELS：'+res.secondReels.join('・')+' → ×'+res.secondFactor;
-  beep(750,.22,'triangle',.045);await slept(pace(470));
+async function reveal(hits,board,gold,fever){
+ let total=0;
+ const allHit=new Set();
+ if(!hits.length){$('message').textContent='ハズレ！ 次に期待';sound(175,.15,'sine',.025);await sleep(260)}
+ for(let i=0;i<hits.length;i++){
+  const h=hits[i];tiles.forEach(t=>t.classList.remove('focus'));
+  h.cells.forEach(id=>{tiles[id].classList.add('focus');allHit.add(id)});
+  $('message').textContent=(i+1)+' / '+hits.length+'ライン　'+h.dir+h.len+'連 '+FACE[h.sym];
+  popAt(h.cells,h.pts);
+  sound(470+Math.min(i,12)*65,.14,h.len>=5?'sawtooth':'triangle',.065);
+  if(h.len>=4){sound(900,.21,'sine',.045,.065);buzz([30,25,45])}
+  if(h.len>=5){$('machine').classList.add('shake');setTimeout(()=>$('machine').classList.remove('shake'),300)}
+  total=cap(total+h.pts);d.score=cap(d.score+h.pts);render();
+  await sleep(hits.length>=9?230:h.len>=5?690:h.len===4?500:340);
  }
- const msg=$('message'),scoreEl=$('score'),mult=$('multiplier');
- let running=0;
- cells.forEach(c=>c.classList.remove('focus','seen','hit','minihit'));
- clearPath();
- scoreEl.classList.add('counting');
- if(hits.length){
-  for(let i=0;i<hits.length;i++){
-   const p=hits[i];
-   cells.forEach(c=>{if(c.classList.contains('focus')){
-     c.classList.remove('focus');c.classList.add('seen');
-   }});
-   for(let n of p.idx)if(cells[n])cells[n].classList.add('focus');
-   markPath(p.idx);
-   const linePoint=safe(p.value);
-   running=safe(running+linePoint);
-   scoreEl.textContent=fmt(safe(baseScore+Math.min(running,res.award)));
-   msg.className='message '+(p.len>=4?'mega':'win');
-   const kind=p.name==='chain'?'連鎖':p.name==='limit'?'限界突破':p.name==='domino'?'⚡ ドミノ':p.len+'連';
-   msg.textContent=`${i+1}/${hits.length} ${sign(p.sym)} ${kind} +${fmt(linePoint)}`;
-   mult.textContent=hits.length>1?`LINE ${i+1} / ${hits.length}`:'';
-   smallCelebration(p,i+1,hits.length);
-   // All lines still appear, but an ultra-long combo will not trap the player for minutes.
-   const interval=hits.length>24?65:hits.length>10?125:p.len>=5?500:HIT_INTERVAL;
-   await slept(pace(p.len>=5?interval+120:interval));
-  }
- }else{
-  msg.className='message';msg.textContent='ライン当たりなし';
-  beep(190,.12,'triangle',.025);await slept(pace(240));
- }
- clearPath();
- cells.forEach((c,i)=>{c.classList.remove('focus','seen');if(res.used.has(i))c.classList.add('hit')});
- // Show base paylines first, then all bonuses, then the actual total multiplier.
- // This is a real accounting breakdown. It is not a made-up per-line allocation.
- let raw=safe(res.rawGain||0);
- if(raw!==running){
-   mult.textContent=(raw>=running?'BONUS +':'BONUS 調整 ')+fmt(Math.abs(raw-running));
-   scoreEl.textContent=fmt(safe(baseScore+Math.min(Math.max(running,raw),res.award)));
-   beep(540,.16,'triangle',.045);
-   await slept(pace(380));
- }
- const effects=res.log.filter(x=>/倍|臨界|FEVER|雷神|連鎖|覚醒|予知|奇跡|チェリー|ブラックホール|宝箱|ジャックポット|契約/.test(x));
- const shown=effects.slice(0,8);
- for(let i=0;i<shown.length;i++){
-   mult.textContent=shown[i];
-   beep(450+i*45,.12,'triangle',.034);
-   await slept(pace(shown.length>5?165:275));
- }
- if(effects.length>8){
-   mult.textContent=`＋ ほか ${effects.length-8} 効果`;await slept(pace(250));
- }
- const m=res.multiplier;
- if(m!==1&&Number.isFinite(m)){
-   mult.textContent='実効倍率 ×'+(m>=1000?fmt(m):Number(m.toFixed(2)));
-   beep(m>=10?880:640,.2,m>=10?'sawtooth':'triangle',.06);
-   await slept(pace(m>=10?580:320));
- }
- // 2: voluntary double-up after a four-of-kind. Winnings are not deducted from bank.
- if(res.maxLen>=4&&res.award>0){
-  const option=await chooseOne('💀 ダブルアップ！',
-   'この回転の獲得得点 '+fmt(res.award)+'点。確定するか、35%で2.3倍 / 失敗なら25%の配当で挑むか。',
-   [{id:'bank',icon:'🛡️',name:'確実に受け取る',desc:'+'+fmt(res.award)+'点を確定'},
-    {id:'chance',icon:'🎲',name:'ダブルアップ挑戦',desc:'成功2.3倍・失敗は25%配当'}]);
-  if(option==='chance'){
-   let success=rng()<.35;
-   res.award=safe(res.award*(success?2.3:.25));
-   res.log.push(success?'🎲 ダブルアップ成功 ×2.3':'🎲 ダブルアップ失敗 ×0.25');
-   toast(success?'🎲 2.3倍成功！':'🎲 25%で生還');
-  }
- }
- // Only now commit score and progress. This also handles risk cards whose payout is zero.
- d.spins++;d.score=safe(baseScore+res.award);d.best=Math.max(d.best,d.score);
- d.bestTurn=Math.max(d.bestTurn,res.award);d.highestHit=Math.max(d.highestHit,res.award);
- d.grid=g.slice();d.events=res.log.slice(-9).reverse();d.trace.push(d.score);postSpinEvents(res,g);
- scoreEl.textContent=fmt(d.score);scoreEl.classList.remove('counting');
- msg.className='message '+(res.award>=10000?'mega':res.award?'win':'');
- msg.textContent=res.award?'確定 +'+fmt(res.award)+' 点！':'今回は 0 点';
- const threshold=Math.max(30000,target(Math.max(0,d.upgradeCount-1))*.25);
- const special=res.award>=threshold||res.maxLen>=5;
- if(special){song(true);if(res.maxLen>=5||res.award>=threshold*2){
-   await slept(pace(200));fireworks(res.award>=threshold*2?'MEGA JACKPOT!':'JACKPOT!');
- }}else if(res.award>0){beep(650,.12,'triangle',.035)}
- if(d.spins%10===0&&d.spins<100){d.rerolls++;quickBonus('ROUND '+d.spins+' /100 · リロール権 +1')}
- if(d.streak>=8&&d.streak%8===0&&rng()<.35&&d.fever===0&&d.feverCooldown===0&&d.feverTriggers<2){
-   d.fever=4;d.feverCooldown=15;d.feverTriggers++;quickBonus('🔥 FEVER MODE ×2！');
- }else{if(d.fever>0)d.fever--;if(d.feverCooldown>0)d.feverCooldown--}
- if(!d.awaken&&(d.upgradeCount>=28&&d.spins>=85||discovered().length>=3&&d.spins>=75)){
-   d.awaken=true;quickBonus('✨ SLOT AWAKEN!'+(combo(3)?' 第7絵柄解放':''));song(true);
- }
- if(d.spins===90){quickBonus('🔥 FINAL 10 SPINS!');const near=closestCombo();if(near)toast('最終コンボ候補：'+near.name+'（あと'+near.need[2]+'）');else toast('ラスト10回転！ スコアを伸ばせ！')}
- d.golden=-1;save();render();
- await slept(pace(special?600:330));busy=false;progress();
+ tiles.forEach((t,i)=>{t.classList.remove('focus');if(allHit.has(i))t.classList.add('win')});
+ if(total){const flash=document.createElement('div');flash.className='big-total';flash.innerHTML='<div><small>THIS SPIN</small><strong>+'+money(total)+'</strong></div>';$('machine').appendChild(flash);fanfare(total>=5000||hits.some(h=>h.len===5));await sleep(950);flash.remove()}
+ d.turn++;d.best=Math.max(d.best,d.score);d.board=board.slice();
+ if(d.fever>0)d.fever--;
+ else if(hits.length){d.energy=Math.min(18,d.energy+Math.min(3,hits.length));if(d.energy>=18){d.energy=0;d.fever=3; $('message').textContent='🔥 次の3回はFEVER！'}}
+ save();busy=false;render();
+ if(d.turn>=100)showFinal();else if(d.score>=d.nextGoal)showUpgrade();
 }
-function close(){$('modal').classList.remove('mythic'); $('overlay').classList.add('hidden');render() }
-function modal(html){$('modal').innerHTML=html;$('overlay').classList.remove('hidden');render()}
-function choiceThree(){
- const riskActive=[41,42,49].some(id=>has(id));
- let available=ITEMS.filter(x=>LV(x[0])<x[5]&&(!riskActive||![41,42,49].includes(x[0]))),choices=[];
- const pickFrom=pool=>pool[randGame(pool.length)];
- const take=x=>{choices.push(x);available=available.filter(y=>y!==x)};
- // 毎3回の強化に1枠、合体未完成のパーツを優先提示する。
- if(d.upgradeCount%3===2){
-  const needs=new Set(comboNeeds().map(x=>x.id));
-  const pool=available.filter(x=>needs.has(x[0]));
-  if(pool.length)take(pickFrom(pool));
- }
- while(choices.length<3&&available.length){
-  let r=rng()*100,tier=0;
-  while(tier<ODDS.length-1&&r>=ODDS[tier])r-=ODDS[tier++];
-  let pool=available.filter(x=>x[4]===tier);
-  if(d.upgradeCount%3===2&&choices.length===2){
-    const guaranteed=available.filter(x=>x[4]>=1&&x[4]<=3);
-    if(guaranteed.length)pool=guaranteed;
+async function spin(){
+ if(busy||d.turn>=100||!$('overlay').classList.contains('hidden'))return;
+ busy=true;render();$('message').textContent='回転中…';
+ let board=Array.from({length:25},choose),gold=-1;
+ const n=d.turn+1;
+ if(lv('wild')&&n%5===0){for(let k=0;k<lv('wild');k++){let pick;do{pick=rand(25)}while(board[pick]===-1);board[pick]=-1}}
+ if(lv('gold')&&n%7===0)gold=rand(25);
+ const hits=findWins(board,gold,d.fever>0);
+ let tension=hits.some(h=>h.len>=4&&h.cells.some(id=>id%5===4));
+ tiles.forEach(t=>t.classList.remove('focus','win'));cols.forEach(c=>{c.className='column spinning'});
+ const stopped=[false,false,false,false,false];
+ const interval=setInterval(()=>{
+  for(let c=0;c<5;c++){if(stopped[c])continue;for(let r=4;r>0;r--)tiles[r*5+c].textContent=tiles[(r-1)*5+c].textContent;tiles[c].textContent=FACE[choose()]}
+ },75);
+ try{
+  for(let c=0;c<5;c++){
+   await sleep(c===0?245:c===4&&tension?700:205);
+   stopped[c]=true;cols[c].className='column stopped';
+   for(let r=0;r<5;r++){const id=r*5+c;tiles[id].textContent=board[id]<0?'🌟':FACE[board[id]];tiles[id].classList.toggle('gold',id===gold)}
+   sound(160+60*c,.105,'triangle',.075);buzz(17);
+   if(c===3&&tension){$('message').textContent='⚡ 激アツ！ ラスト1列';$('machine').classList.add('reach')}
   }
-  if(!pool.length)pool=available;
-  take(pickFrom(pool));
- }
- return choices;
+ }finally{clearInterval(interval);cols.forEach(c=>c.classList.remove('spinning'));$('machine').classList.remove('reach')}
+ $('message').textContent=hits.length?'当たり '+hits.length+'ライン！':'判定中…';
+ await sleep(180);await reveal(hits,board,gold,d.fever>0);
 }
-function upgrade(){
- if(d.bonusPending<=0)return progress();
- let choices=choiceThree();
- if(!choices.length){d.upgradeCount++;d.bonusPending--;save();return upgrade()}
- let total=d.bonusPending;
- modal(`<div class="eyebrow">UPGRADE UNLOCKED</div><h2>⚡ 強化獲得！</h2>
- <p>まとめ受取：残り <b>${total}回</b>　累計 ${fmt(d.score)}点<br>現在のビルド：${getBuild()}</p>
- <div id="choices"></div><div id="rerollArea"></div>`);
- function claim(x){
-  d.powers[x[0]]=LV(x[0])+1;
-  d.upgradeCount++;d.bonusPending=Math.max(0,d.bonusPending-1);
-  if(x[0]===43)d.contractAt=d.spins;
-  if(x[0]===47){d.score=safe(d.score-Math.floor(d.score*.1));d.heist++}
-  if(x[0]===55){d.prophecy=randGame(6);d.prophecyEnd=d.spins+5}
-  d.events=[x[1]+' '+x[2]+'獲得',...(d.events||[])].slice(0,9);
-  if(LV(x[0])===3)d.events.unshift(x[1]+' LV3 EVOLUTION');
-  updateCombos();save();
- }
- function afterClaim(){
-  beep(880,.15,'triangle',.055);
-  if(d.bonusPending>0){upgrade();return}
-  close();progress();
- }
- function bestChoice(pool){
-   return pool.slice().sort((a,b)=>compatibility(b).score-compatibility(a).score||(b[4]-a[4])*.5)[0];
- }
- function list(){
-  const c=$('choices');c.replaceChildren();
-  const recommendation=bestChoice(choices);
-  for(const x of choices){
-   const b=document.createElement('button');b.className='choice'+(x===recommendation?' recommended':'');
-   const match=compatibility(x),cursed=[35,41,42,43,47,49].includes(x[0]);
-   const tip=match.text?'<span class="synergy">'+match.text+'</span>':'';
-   b.innerHTML=`<span class="emoji">${x[1]}</span><span><span class="tier tier-${x[4]}">${TIER[x[4]]}${cursed?' · CURSED':''}</span><strong>${x[2]}${x===recommendation?'　⭐':''}</strong><small>${x[3]} ${x[5]===1?'・1回限り':'・Lv '+(LV(x[0])+1)}</small>${tip}</span>`;
-   b.onclick=()=>{claim(x);afterClaim()};c.appendChild(b);
-  }
-  const r=$('rerollArea');r.replaceChildren();
-  if(d.rerolls>0){let b=document.createElement('button');b.className='tinybtn';b.textContent='🔁 3択を引き直す（残り'+d.rerolls+'）';b.onclick=()=>{d.rerolls--;choices=choiceThree();save();list()};r.appendChild(b)}
-  if(d.bonusPending>1){let b=document.createElement('button');b.className='tinybtn';b.style.marginTop='8px';b.textContent='⚡ 残り'+d.bonusPending+'回をおすすめで一括受取';b.onclick=()=>{
-    let loops=0;
-    while(d.bonusPending>0&&loops++<80){let options=choiceThree();if(!options.length)break;claim(bestChoice(options))}
-    close();render();progress();
-  };r.appendChild(b)}
-  if(choices.some(x=>x[4]===4)){$('modal').classList.add('mythic');song(true);toast('🌠 MYTHIC 出現！')}
- }
- list();
+function modal(html){$('dialog').innerHTML=html;$('overlay').classList.remove('hidden');render()}
+function close(){ $('overlay').classList.add('hidden');render() }
+function options(){const available=UP.filter(p=>lv(p.id)<p.max);const picked=[];while(picked.length<3&&available.length){const i=rand(available.length);picked.push(available.splice(i,1)[0])}return picked}
+function showUpgrade(){
+ const choices=options();
+ modal('<div class="sub">UPGRADE!</div><h2>⚡ 強化を1つ選ぼう</h2><p>やることは簡単。好きな強化を1つ選ぶだけ！</p><div id="choices"></div>');
+ for(const p of choices){const b=document.createElement('button');b.className='choice';b.innerHTML='<span class="emoji">'+p.icon+'</span><span><strong>'+p.name+'</strong><small>'+p.desc+'<br>いま Lv.'+lv(p.id)+' → Lv.'+(lv(p.id)+1)+'</small></span>';
+ b.onclick=()=>{d.power[p.id]=lv(p.id)+1;d.upgrades++;d.nextGoal=Math.max(Math.ceil((d.score*1.4)/100)*100,Math.ceil((d.nextGoal+850*Math.pow(1.45,d.upgrades))/100)*100);save();close();$('message').textContent='⚡ '+p.name+'を強化！';sound(760,.24,'triangle',.08);render()};$('choices').appendChild(b)}
 }
-function progress(){
- if(busy)return;
- if(d.spins>=100){
-  let log=[];finalChest(log);judgement();
-  if(log.length)d.events=[...log,...d.events].slice(0,9);
-  save();results();return;
- }
- const event=nextMilestone();
- if(event){save();specialChoice(event).then(()=>progress()).catch(e=>{console.error(e);busy=false;render()});return}
- if(d.bonusPending>0){upgrade();return}
- // まとめて条件を超えた分は1画面で連続選択できる。
- let next=d.upgradeCount;
- while(next<80&&target(next)<CAP&&d.score>=target(next)){d.bonusPending++;next++}
- if(d.bonusPending>0){save();upgrade();return}
- render();
-}
-function results(){completeRun();let record=d.score>d.record;modal(`<div class="eyebrow">100 SPINS COMPLETE</div><h2>${record?'🏆 NEW BEST!':'🎰 FINISH!'}</h2><p>100回転終了！ おつかれ！</p><div id="judgeStages" class="judgeStages"></div><div class="eyebrow">FINAL SCORE</div><div class="score" style="color:var(--gold)">${fmt(d.score)}</div><p>強化回数：${d.upgradeCount}回<br>獲得強化：${Object.keys(d.powers).length}種類<br>自己ベスト：${fmt(d.best)}点<br>最終審判：+${fmt(d.judgementBonus)}点<br>ビンゴ：${d.bingoRows.length}ライン<br>秘宝：${d.relics.length}個<br>最高当たり：${fmt(d.highestHit)}点<br>ビルド：${getBuild()}<br>シード：${d.seed}${has(56)?'<br>🎁 最終宝箱：精算済み':''}</p>${chartSVG(d.trace)}<button class="primary" id="again">もう一度100回転！</button>`);$('again').onclick=()=>restart();
- const node=$('judgeStages');if(node){
-  for(const [i,entry] of (d.judgementBreakdown||[]).entries()){
-   setTimeout(()=>{if(!node.isConnected)return;
-    const x=document.createElement('div');x.className='judgeRow';x.textContent='✦ '+entry[0]+'　+'+fmt(entry[1])+' PT';
-    node.appendChild(x);beep(500+i*100,.15,'triangle',.035);
-   },pace(400+i*420));
-  }
- }
-}
-function restart(userSeed){cancelBoardSelect();let best=d.best;d=fresh();d.best=best;d.record=best;d.seed=userSeed||String(Date.now());d.rng=seedFromString(d.seed);cells.forEach((c,i)=>{c.className='cell';c.textContent=sign(d.grid[i])});$('message').textContent='SPINでスタート！';$('message').className='message';save();close();startTrait()}
-$('special').onclick=specialMenu;$('bingo').onclick=showBingo;$('system').onclick=showRules;$('codex').onclick=showCodex;$('history').onclick=showHistory;$('seed').onclick=askSeed;$('speed').onclick=()=>{speedIndex=(speedIndex+1)%3;try{localStorage.setItem(SAVE+'_speed',String(speedIndex))}catch(e){}render()};$('spin').onclick=begin;$('sound').onclick=()=>{muted=!muted;try{localStorage.setItem(SAVE+'_mute',muted?'1':'0')}catch(e){}render();if(!muted)beep(720)};$('reset').onclick=()=>{if(!busy&&confirm('100回転を最初からやり直す？ 最高記録は残るで。'))restart()};
-if(!d.seed){d.seed=String(Date.now());d.rng=seedFromString(d.seed);save()}render();setTimeout(()=>{if(!d.trait&&d.spins===0)startTrait();else progress()},110);
+function showFinal(){modal('<div class="sub">100 SPINS COMPLETE</div><h2>🏆 FINISH!</h2><p>100回転おつかれ！</p><div class="caption">FINAL SCORE</div><div class="total" style="color:var(--gold)">'+money(d.score)+'</div><p>獲得した強化：'+d.upgrades+'回<br>最高記録：'+money(d.best)+'点</p><button class="primary" id="again">もう一度プレイ</button>');$('again').onclick=restart}
+function restart(){const best=d.best;d=create();d.best=best;draw(d.board);cols.forEach(c=>c.className='column');$('message').textContent='SPINを押してスタート！';save();close();render()}
+$('spin').onclick=()=>{spin().catch(e=>{console.error(e);busy=false;render();$('message').textContent='エラーが発生しました。もう一度お試しください'})};
+$('sound').onclick=()=>{soundOn=!soundOn;try{localStorage.setItem(SAVE+'_sound',soundOn?'on':'off')}catch(e){}render()};
+$('reset').onclick=()=>{if(busy)return;if(confirm('100回転を最初からやり直す？（最高記録は残ります）'))restart()};
+draw(d.board);render();if(d.turn>=100)setTimeout(showFinal,80);else if(d.score>=d.nextGoal)setTimeout(showUpgrade,80);
 })();
-</script></body></html>
+</script>
+</body>
+</html>
