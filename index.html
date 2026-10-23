@@ -1,0 +1,122 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OFFLINE SLOT</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100dvh;
+ display:grid;place-items:center;
+ background:#0b0b0d;color:white;
+ font-family:Arial,sans-serif
+}
+main{width:92%;max-width:440px}
+.reels{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px;margin-bottom:22px
+}
+.reel{
+ height:120px;background:#18181d;
+ border:1px solid #444;border-radius:14px;
+ display:grid;place-items:center;
+ font-size:75px;font-weight:900
+}
+button{
+ width:100%;height:70px;
+ border:0;border-radius:14px;
+ font-size:24px;font-weight:900;
+ background:white;color:black;
+ touch-action:manipulation
+}
+button:disabled{opacity:.5}
+.big .reel{color:#ffdb66}
+.reg .reel{color:#88d7ff}
+</style>
+</head>
+<body>
+<main id="machine">
+ <div class="reels">
+  <div class="reel">0</div>
+  <div class="reel">0</div>
+  <div class="reel">0</div>
+ </div>
+ <button id="spin">回す</button>
+</main>
+<script>
+const roles=[
+ {name:"BIG",odds:287,pattern:"777",pay:252},
+ {name:"REG",odds:431,pattern:"333",pay:96},
+ {name:"REPLAY",odds:7.3,pattern:"222",pay:3},
+ {name:"BELL",odds:6.2,pattern:"555",pay:8},
+ {name:"CHERRY",odds:33,pattern:"111",pay:2}
+];
+const reels=[...document.querySelectorAll(".reel")];
+const button=document.getElementById("spin");
+const machine=document.getElementById("machine");
+let spinning=false;
+
+function rand(){
+ if(window.crypto?.getRandomValues){
+  const a=new Uint32Array(1);
+  crypto.getRandomValues(a);
+  return a[0]/4294967296;
+ }
+ return Math.random();
+}
+function digit(){return Math.floor(rand()*10)}
+
+function draw(){
+ let x=rand();
+ for(const role of roles){
+  x-=1/role.odds;
+  if(x<0)return role;
+ }
+ let p;
+ do{
+  p=""+digit()+digit()+digit();
+ }while(p[0]===p[1]&&p[1]===p[2]);
+ return {name:"MISS",pattern:p,pay:0};
+}
+
+button.onclick=()=>{
+ if(spinning)return;
+ spinning=true;
+ button.disabled=true;
+ machine.className="";
+ const result=draw();
+ const start=performance.now();
+ const changed=[0,0,0];
+ const stops=[850,1170,1490];
+
+ function animate(now){
+  const elapsed=now-start;
+  let finished=true;
+  for(let i=0;i<3;i++){
+   if(elapsed<stops[i]){
+    finished=false;
+    if(now-changed[i]>55){
+     reels[i].textContent=digit();
+     changed[i]=now;
+    }
+   }else{
+    reels[i].textContent=result.pattern[i];
+   }
+  }
+  if(!finished){
+   requestAnimationFrame(animate);
+   return;
+  }
+  if(result.name==="BIG")machine.className="big";
+  if(result.name==="REG")machine.className="reg";
+  spinning=false;
+  button.disabled=false;
+ }
+ requestAnimationFrame(animate);
+};
+</script>
+</body>
+</html>
