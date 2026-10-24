@@ -1,405 +1,1358 @@
+
 <!doctype html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#101426">
-<title>LUCK LOOP 100 — MEGA GRID 10×20</title>
+<meta name="theme-color" content="#0b0e19">
+<title>LUCK LOOP — CHAIN REACTION</title>
 <style>
-:root{color-scheme:dark;--bg:#101426;--panel:#1b2237;--line:#39435e;--lime:#c5ff70;--gold:#ffe18a;--muted:#aab4ca}
+:root{color-scheme:dark;--bg:#0b0e19;--panel:#1a2032;--muted:#a6b1c9;--lime:#bfff6b;--gold:#ffdf78;--edge:#374159}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;min-height:100%;background:var(--bg);color:#f7f9ff;font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN",Meiryo,sans-serif}
-body{background:radial-gradient(ellipse at 50% -10%,#343055,#101426 65%)}
-button{font:inherit;cursor:pointer;touch-action:manipulation}button:focus-visible{outline:2px solid white;outline-offset:3px}
-.app{max-width:690px;margin:auto;min-height:100dvh;display:flex;flex-direction:column;gap:13px;padding:calc(13px + env(safe-area-inset-top)) 12px calc(15px + env(safe-area-inset-bottom))}
-.row{display:flex;align-items:center;justify-content:space-between;gap:8px}.brand{font-size:25px;font-weight:1000;letter-spacing:-1.3px}.brand b{color:var(--lime)}.micro{font-size:10px;font-weight:850;color:var(--muted);letter-spacing:1.5px}
-.sound{border:1px solid var(--line);background:#28314a;color:white;border-radius:12px;width:41px;height:41px;font-size:18px}
-.stats{background:linear-gradient(145deg,#262e47,#182033);border:1px solid #414c67;padding:13px;border-radius:17px}
-.total{font-size:clamp(30px,8.6vw,43px);font-weight:1000;line-height:1.18;letter-spacing:-1.3px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;margin:5px 0 7px}.counter{font-size:14px;color:var(--lime);font-weight:950}
-.mini{color:var(--muted);font-size:11px}.mini b{color:#fff}.progress{height:9px;background:#3d4863;border-radius:9px;overflow:hidden;margin:7px 0 9px}.progress i{display:block;width:0;height:100%;background:linear-gradient(90deg,#70e9c0,var(--lime));transition:width .2s}
-.machine{position:relative;isolation:isolate;padding:10px 6px;border:2px solid #5e627f;border-radius:21px;background:linear-gradient(145deg,#353a54,#1e2537);box-shadow:0 7px #090c17,0 13px 25px #0007;overflow:hidden}
-.machine-head{text-align:center;color:var(--gold);font-size:11px;font-weight:900;letter-spacing:2px;padding-bottom:10px}
-.board{position:relative;display:grid;grid-template-columns:repeat(20,minmax(0,1fr));gap:2px;isolation:isolate;min-width:0}
-.column{min-width:0;display:flex;flex-direction:column;gap:2px;border-radius:4px;overflow:visible}
-.tile{aspect-ratio:1;min-width:0;display:grid;place-items:center;position:relative;border:1px solid #c7d2e4;border-radius:3px;background:linear-gradient(#fff,#e3e9f5 54%,#fff);font-size:clamp(10px,2.8vw,23px);line-height:1;color:#1d2637;box-shadow:inset 0 0 7px #8192b18a;user-select:none;overflow:visible}
-.column.rolling .tile{animation:rolling .13s linear infinite;filter:blur(.35px)}@keyframes rolling{from{transform:translateY(-5px)}to{transform:translateY(5px)}}
-.column.stopped .tile{animation:land .22s both}@keyframes land{0%{transform:translateY(-8px) scale(.93)}65%{transform:translateY(2px) scale(1.04)}100%{transform:none}}
-.tile.gold{border:2px solid #f4c44e;background:#fff2bb;box-shadow:0 0 12px #ffdb67}
-.tile.focus{z-index:3;background:#fff0aa;border:2px solid #ffda57;box-shadow:0 0 18px #fbc74e;transform:scale(1.1)}
-.tile.won{background:#fff6dc;border-color:#e7c977}
-.reach .column:nth-last-child(-n+4) .tile{box-shadow:0 0 10px #ffe078}
-.float{position:absolute;z-index:9;pointer-events:none;white-space:nowrap;font-size:clamp(15px,4.7vw,24px);font-weight:1000;transform:translate(-50%,-70%);color:#fffbd0;text-shadow:0 2px #c63a81,0 0 8px #141124,0 0 16px #fbb942;animation:float .58s both}
-@keyframes float{0%{opacity:0;transform:translate(-50%,-15%) scale(.65)}22%{opacity:1;transform:translate(-50%,-70%) scale(1.13)}83%{opacity:1}100%{opacity:0;transform:translate(-50%,-145%)}}
-.board-viewport{overflow:hidden;border-radius:7px;position:relative;isolation:isolate}
-.board-viewport.zoom{overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;touch-action:pan-x pan-y}
-.board-viewport.zoom .board{width:760px;min-width:760px;gap:3px}
-.board-viewport.zoom .column{gap:3px}
-.board-viewport.zoom .tile{font-size:21px;border-radius:5px}
-.tile{transition:background .13s,box-shadow .13s}
-.tile.focus{outline:1px solid #fff}
-.board-caption{font-size:10px;color:#d9def2;text-align:center;opacity:.8}
-.zoom-btn{font-size:11px;font-weight:900;padding:5px 10px;border:1px solid #7b8095;border-radius:9px;background:#242a42;color:#fff;min-height:28px}
-.mega-note{font-size:10px;font-weight:900;color:#ffdc72;letter-spacing:.7px}
-.message{min-height:32px;text-align:center;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#dfe7f7;padding-top:5px}
-.turn-total{position:absolute;z-index:14;inset:0;background:#101426da;pointer-events:none;display:grid;place-items:center;animation:total .98s both}
-.turn-total small{display:block;color:#ffecaa;font-size:12px;font-weight:900;letter-spacing:2px;text-align:center}
-.turn-total strong{display:block;color:var(--gold);text-shadow:0 4px #da5389,0 0 27px #ffc754;font-size:clamp(31px,9.4vw,49px);font-weight:1000;text-align:center;max-width:100%;overflow-wrap:anywhere;padding:0 6px}
-@keyframes total{0%{opacity:0;transform:scale(.78)}20%{opacity:1;transform:scale(1.06)}35%{transform:scale(1)}82%{opacity:1}100%{opacity:0}}
-.spark{position:fixed;z-index:19;top:-10px;left:var(--x);width:7px;height:12px;background:var(--c);pointer-events:none;animation:sparkfall var(--t) ease-in both;animation-delay:var(--d)}
-@keyframes sparkfall{to{transform:translate(var(--dx),105vh) rotate(720deg);opacity:.1}}
-.fever{border-color:#f4ac4c}.fever .machine-head{color:#ffc36b;text-shadow:0 0 15px #ffb238}
-.jolt{animation:jolt .23s linear}@keyframes jolt{25%{transform:translateX(-3px)}50%{transform:translateX(3px)}75%{transform:translateX(-2px)}}
-.spin{margin-top:5px;width:100%;min-height:67px;background:linear-gradient(125deg,#d7ff75,#86f2a9);border:0;border-radius:18px;color:#18251f;font-size:28px;font-weight:1000;letter-spacing:3px;box-shadow:0 6px #407d57,0 11px 21px #0008}
-.spin:active:not(:disabled){transform:translateY(4px);box-shadow:0 2px #407d57}.spin:disabled{opacity:.52;filter:grayscale(.55)}
-.rules{text-align:center;margin:0;color:#b7c0d7;font-size:11px;line-height:1.6}
-.details{background:#171d2c;border:1px solid #31394f;padding:11px 12px;border-radius:14px}.details summary{font-size:12px;font-weight:900;cursor:pointer;list-style:none}.details summary::-webkit-details-marker{display:none}.details summary:after{content:' ▾';color:#9da8c3}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.chip{font-size:11px;line-height:1.45;padding:6px 7px;background:#303c54;border-radius:7px;color:#ecf0fb}
-.footer{margin-top:auto;font-size:10px;color:#919cb4}.reset{border:0;background:none;color:#bac3d7;font-size:11px;text-decoration:underline;padding:7px}
-.overlay{position:fixed;z-index:30;inset:0;background:#070b17e9;backdrop-filter:blur(8px);display:grid;place-items:center;padding:15px}.hidden{display:none!important}
-.modal{width:min(100%,430px);max-height:90dvh;overflow:auto;text-align:center;border:1px solid #586586;border-radius:22px;background:linear-gradient(135deg,#2b3552,#141b2c);padding:20px 14px;box-shadow:0 25px 70px #000b}
-.modal h2{font-size:26px;margin:8px 0;color:var(--lime)}.modal p{font-size:12px;color:#c6cfe0;line-height:1.65;margin:8px 0 15px}
-.choice{display:flex;text-align:left;align-items:center;gap:10px;width:100%;padding:13px 11px;color:#fff;background:#28354f;border:1px solid #53637f;border-radius:14px;margin:8px 0}.choice:active{background:#3d5271}
-.choice .emoji{font-size:27px;width:34px;text-align:center;flex:0 0 34px}.choice strong{display:block;font-size:15px}.choice small{display:block;font-size:11px;line-height:1.5;margin-top:3px;color:#c3cee4}.tag{font-size:10px;font-weight:900;color:#bcff71}
-.primary{border:0;border-radius:15px;width:100%;padding:15px;font-size:17px;background:var(--lime);color:#18241a;font-weight:1000}
-@media(max-width:360px){.app{padding-left:7px;padding-right:7px}.board,.column{gap:1px}.tile{font-size:10px;border-radius:2px;border-width:1px}.machine{padding:9px 4px}}
-@media(max-height:760px){.app{gap:9px}.stats{padding:10px}.spin{min-height:59px}.machine-head{padding-bottom:6px}}
-@media(prefers-reduced-motion:reduce){.column.rolling .tile,.column.stopped .tile,.float,.turn-total,.jolt{animation:none!important}}
+html,body{margin:0;min-height:100%;background:var(--bg);color:#fff;font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN",Meiryo,sans-serif}
+body{background:radial-gradient(ellipse at 50% -15%,#30244e 0%,#0b0e19 65%);overscroll-behavior:none}
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+button:disabled{opacity:.46;cursor:default}
+button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.app{max-width:450px;margin:auto;min-height:100dvh;padding:calc(12px + env(safe-area-inset-top)) 14px calc(15px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:9px}
+.brand{font-size:25px;font-weight:1000;letter-spacing:-1.6px;line-height:1}
+.brand b{color:var(--lime)}
+.sub{font-size:10px;letter-spacing:1.65px;color:var(--muted);font-weight:850;margin-top:5px}
+.tools{display:flex;gap:5px}
+.tool{height:36px;min-width:40px;border-radius:11px;background:#242a40;color:#e7ebf6;border:1px solid #46506b;font-size:12px;font-weight:900;padding:0 8px}
+.scorebox{background:linear-gradient(135deg,#262a46,#191f31);border:1px solid var(--edge);border-radius:17px;padding:14px}
+.label{color:var(--muted);font-size:10px;font-weight:900;letter-spacing:1.1px}
+.score{font-size:clamp(33px,9vw,44px);font-weight:1000;line-height:1.2;letter-spacing:-1.3px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.statsRight{text-align:right}
+.smallnum{font-size:18px;font-weight:1000;font-variant-numeric:tabular-nums}
+.bar{height:9px;background:#3a4159;border-radius:20px;overflow:hidden;margin:9px 0 5px}
+.fill{width:0;height:100%;background:linear-gradient(90deg,#6cd8bd,var(--lime));border-radius:inherit;transition:width .22s}
+.footnote{font-size:11px;color:#b4bfd5;font-weight:700}
+.footnote strong{color:white}
+.machine{position:relative;border:2px solid #5b567e;border-radius:23px;padding:12px;background:linear-gradient(160deg,#2e3048,#191e30 62%,#30304d);box-shadow:0 7px #090b15,0 14px 23px #0007;isolation:isolate}
+.machineHead{text-align:center;color:var(--gold);font-weight:1000;letter-spacing:2.6px;font-size:11px;padding:1px 0 12px}
+.machineHead span{color:#d1a9ff}
+.board{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.cell{position:relative;aspect-ratio:1/1;min-width:0;display:grid;place-items:center;border-radius:12px;border:2px solid #c5cddd;background:linear-gradient(#fff,#e3e8f2 48%,#fff);box-shadow:inset 0 0 13px #a6b3d1;color:#182035;font-size:clamp(30px,10vw,49px);user-select:none;line-height:1;transition:transform .17s,opacity .17s,background .17s}
+.cell.gold{background:linear-gradient(#fff7c8,#ffd66f 55%,#fff2b0);border-color:#fff0a6;box-shadow:0 0 11px #e8a84266,inset 0 0 11px #d4a34b}
+.cell.match{z-index:2;transform:scale(1.10);background:#fff2a1;box-shadow:0 0 23px #ffce50,inset 0 0 15px #ffb650;border-color:#fff8af}
+.cell.clear{transform:scale(.2) rotate(12deg);opacity:0}
+.cell.fall{animation:drop .28s cubic-bezier(.15,.9,.37,1.15)}
+.cell.spinny{animation:roll .14s linear infinite}
+@keyframes roll{
+0%{filter:blur(1px);transform:translateY(-4px)}
+50%{filter:blur(1px);transform:translateY(4px)}
+100%{filter:blur(1px);transform:translateY(-4px)}
+}
+@keyframes drop{
+0%{transform:translateY(-24px);opacity:.2}
+70%{transform:translateY(3px);opacity:1}
+100%{transform:translateY(0)}
+}
+@keyframes impact{
+0%{transform:scale(.6);opacity:0}
+25%{transform:scale(1.16);opacity:1}
+80%{opacity:1}
+100%{transform:scale(1.25);opacity:0}
+}
+.chainBox{height:42px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:15px;font-weight:1000;color:var(--muted)}
+.chainBox.hot{color:var(--gold);text-shadow:0 0 14px #f7c455aa}
+.float{position:absolute;z-index:8;pointer-events:none;transform:translate(-50%,-50%);font-weight:1000;font-variant-numeric:tabular-nums;color:#fffadd;font-size:17px;white-space:nowrap;text-shadow:0 2px 3px #15131b,0 0 12px #ffb936;animation:up .5s ease-out forwards}
+@keyframes up{
+0%{opacity:0;transform:translate(-50%,-20%) scale(.6)}
+30%{opacity:1;transform:translate(-50%,-65%) scale(1.17)}
+100%{opacity:0;transform:translate(-50%,-135%)}
+}
+.totalOverlay{position:absolute;z-index:12;inset:15% 0 16%;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;background:radial-gradient(ellipse,#131221e8,#1511228a 65%,transparent 78%);animation:impact 1.05s both}
+.totalOverlay .kicker{font-size:12px;color:#fbe3a5;letter-spacing:2px;font-weight:1000}
+.totalOverlay .big{font-size:clamp(35px,11vw,53px);font-weight:1000;color:#fff2a8;text-shadow:0 3px #bd6a37,0 0 24px #ffc75b;letter-spacing:-1px;overflow-wrap:anywhere;max-width:95%;text-align:center}
+.totalOverlay .details{font-size:13px;color:#fff;font-weight:950}
+.spin{border:0;width:100%;height:73px;border-radius:19px;background:linear-gradient(135deg,#daff83,#8cf6ac);color:#152018;font-size:28px;font-weight:1000;letter-spacing:2px;box-shadow:0 6px #3a8755,0 12px 20px #0007}
+.spin:active:not(:disabled){transform:translateY(5px);box-shadow:0 1px #3a8755}
+.spin:disabled{filter:grayscale(.55)}
+.helper{text-align:center;font-size:11px;line-height:1.55;color:#b4bfd5;margin:-1px 0 0}
+.powers{background:#181e2f;border:1px solid #353d58;border-radius:14px;padding:11px}
+.pillRow{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.pill{background:#303950;color:#e4edf8;border-radius:7px;padding:5px 7px;font-size:10px;font-weight:800}
+.footer{display:flex;justify-content:space-between;align-items:center;margin-top:auto;font-size:10px;color:#8792aa}
+.reset{border:0;background:none;color:#aab4ca;text-decoration:underline;font-size:11px;padding:7px}
+.overlay{position:fixed;inset:0;background:#050712e8;z-index:40;display:grid;place-items:center;padding:18px;backdrop-filter:blur(8px)}
+.overlay.hidden{display:none}
+.dialog{width:min(100%,410px);max-height:91dvh;overflow:auto;background:linear-gradient(160deg,#303850,#171c2e);border:1px solid #626d89;border-radius:22px;padding:20px 16px;text-align:center;box-shadow:0 22px 80px #000b}
+.dialog h2{font-size:28px;margin:5px 0;color:var(--lime)}
+.dialog p{font-size:12px;color:#c9d1e2;line-height:1.6;margin:8px 0 14px}
+.upgrade{width:100%;display:flex;align-items:center;text-align:left;gap:12px;color:white;background:#303b53;border:1px solid #58657f;border-radius:14px;padding:12px;margin:8px 0}
+.upgrade:active{background:#4c5d78}
+.upgrade .emoji{font-size:29px;width:34px;text-align:center}
+.upgrade strong{display:block;font-size:15px}
+.upgrade small{display:block;font-size:11px;line-height:1.5;color:#c7d4e6;margin-top:3px}
+.category{font-size:9px;letter-spacing:1px;font-weight:900;color:#abf2cb;margin-bottom:2px}
+.primary{background:var(--lime);border:0;border-radius:14px;width:100%;padding:14px;color:#142017;font-size:17px;font-weight:1000}
+.flash{position:fixed;inset:0;pointer-events:none;z-index:29;opacity:0;background:#fff5bf;transition:opacity .23s}
+.flash.on{opacity:.32;transition:none}
+.confetti{position:fixed;top:-5vh;left:var(--x);z-index:30;width:8px;height:12px;background:var(--c);pointer-events:none;animation:rain var(--t) linear forwards}
+.confetti:nth-child(2n){border-radius:5px}
+@keyframes rain{
+to{transform:translate(var(--dx),106vh) rotate(900deg);opacity:.15}
+}
+@media(max-height:770px){
+.app{gap:9px}
+.scorebox{padding:10px}
+.machine{padding:9px}
+.machineHead{padding-bottom:7px}
+.chainBox{height:34px}
+.spin{height:64px}
+.board{gap:5px}
+.cell{border-radius:9px}
+}
+@media(prefers-reduced-motion:reduce){
+.cell.spinny,.cell.fall,.totalOverlay,.float,.confetti{animation:none!important}
+.cell{transition:none!important}
+}
 </style>
 </head>
 <body>
 <main class="app">
-<header class="row"><div><div class="brand">LUCK <b>LOOP</b></div><div class="micro">MEGA GRID · 100 SPINS</div></div><button id="sound" class="sound" aria-label="音の切替">🔊</button></header>
-<section class="stats">
-<div class="row"><span class="micro">TOTAL SCORE</span><span class="counter" id="counter">0 / 100</span></div>
-<div class="total" id="score">0</div>
-<div class="row mini"><span>⚡ 次の強化まで</span><b id="next">1,200 PT</b></div>
-<div class="progress"><i id="bar"></i></div>
-<div class="row mini"><span id="fever">🔥 FEVER 0 / 36</span><span id="best">BEST 0</span></div>
+<header class="row">
+  <div>
+    <div class="brand">LUCK <b>LOOP</b></div>
+    <div class="sub">CHAIN REACTION · 5 × 5</div>
+  </div>
+  <div class="tools">
+    <button class="tool" id="speed" title="演出速度">通常</button>
+    <button class="tool" id="sound" title="効果音">🔊</button>
+  </div>
+</header>
+<section class="scorebox">
+  <div class="row">
+    <div>
+      <div class="label">TOTAL SCORE</div>
+      <div id="score" class="score">0</div>
+    </div>
+    <div class="statsRight">
+      <div class="label">BEST</div>
+      <div class="smallnum" id="best">0</div>
+      <div class="label" style="margin-top:4px">
+        <span id="spins">0</span> / 100 SPINS
+      </div>
+    </div>
+  </div>
+  <div class="bar"><div class="fill" id="bar"></div></div>
+  <div class="row footnote">
+    <span>⚡ 次の強化 <strong id="goal">500</strong></span>
+    <span id="remaining">あと 500</span>
+  </div>
 </section>
 <section class="machine" id="machine">
-<div class="row" style="margin:0 2px 7px"><span class="mega-note" id="machineHead">✦ 10 × 20 / 200 CELLS ✦</span><button class="zoom-btn" id="zoom" aria-label="盤面の拡大切り替え">🔍 拡大</button></div>
-<div class="board-viewport" id="viewport"><div class="board" id="board"></div></div>
-<div class="message" id="message" aria-live="polite">SPINでスタート！</div>
+  <div class="machineHead">✦ <span>CHAIN</span> REACTION ✦</div>
+  <div class="board" id="board"></div>
+  <div class="chainBox" id="chain" aria-live="polite">
+    SPINして連鎖を起こせ！
+  </div>
 </section>
 <button id="spin" class="spin">SPIN !</button>
-<p class="rules">全200マス・縦横斜め3連以上で当たり！<br>20回転ごとに幸運の波 → 最後にその回の合計！</p>
-<details class="details"><summary>⚡ 持っている強化 <span id="ownedCount">0</span>種類</summary><div id="owned" class="chips"></div></details>
-<footer class="row footer"><span>オフライン・自動セーブ</span><button class="reset" id="reset">最初から</button></footer>
+<p class="helper">
+  縦・横・斜め3つ以上で当たり<br>
+  そろう → 消える → 落ちる → またそろう！
+</p>
+<section class="powers">
+  <div class="row">
+    <span style="font-size:12px;font-weight:900">
+      ✨ 強化アイテム
+    </span>
+    <span id="upcount" class="footnote">0回獲得</span>
+  </div>
+  <div class="pillRow" id="owned">
+    <span class="pill">まだなし</span>
+  </div>
+</section>
+<footer class="footer">
+  <span>オフライン・自動セーブ</span>
+  <button id="reset" class="reset">最初から</button>
+</footer>
 </main>
-<div class="overlay hidden" id="overlay"><div class="modal" id="modal"></div></div>
+<div class="flash" id="flash"></div>
+<div id="overlay" class="overlay hidden">
+  <div id="dialog" class="dialog"></div>
+</div>
 <script>
-(()=>{'use strict';
+(()=>{
+'use strict';
+
 const $=id=>document.getElementById(id);
-const ROWS=10,COLS=20,CELLS=ROWS*COLS,END=100,CAP=1e15;
-const FACE=['🍒','🍋','🍀','🔔','🔷','💎','7️⃣'];
-const WEIGHT=[26,22,18,14,10,7,3];
-const FACE_VALUE=[1,1.12,1.28,1.48,1.85,2.6,4];
-const PAY=[0,0,0,35,105,300,820,2200,6000,15000,36000,78000,160000,320000,640000,1250000,2500000,5000000,10000000,20000000,40000000];
-const KEY='luck_loop_10x20_mega_grid_v1';
-// 運系 + 得点系 + 爆発系。説明が見ただけで分かる強化を維持。
-const UP=[];
-for(let i=0;i<7;i++)UP.push({id:'face'+i,icon:FACE[i],name:FACE[i]+'運',group:'運',desc:FACE[i]+'の出現しやすさが約1.7倍（抽選の重み）/Lv',max:3,face:i});
-UP.push(
- {id:'color',icon:'🎨',name:'一色ラッキー',group:'運',desc:'毎回ランダムな1絵柄が出やすくなる',max:3},
- {id:'hcopy',icon:'➡️',name:'横コピー',group:'運',desc:'左隣の絵柄をコピーする確率 +10%/Lv',max:3},
- {id:'vcopy',icon:'⬇️',name:'縦コピー',group:'運',desc:'上の絵柄をコピーする確率 +10%/Lv',max:3},
- {id:'dcopy',icon:'↘️',name:'斜めコピー',group:'運',desc:'斜め上の絵柄をコピーする確率 +10%/Lv',max:3},
- {id:'pair',icon:'🧲',name:'おそろいペア',group:'運',desc:'毎回横2マスを同じ絵柄にする +2組/Lv',max:3},
- {id:'wild',icon:'🌟',name:'ワイルド',group:'運',desc:'6回転ごとに、どの絵柄にもなるマス +2個/Lv',max:3},
- {id:'gold',icon:'✨',name:'黄金マス',group:'運',desc:'7回転ごとに、当たり得点3倍のマス +2個/Lv',max:3},
- {id:'bestboard',icon:'🔄',name:'幸運の引き直し',group:'運',desc:'10回転ごとに盤面を2回抽選し、高得点側を採用',max:1},
- {id:'shift',icon:'🍀',name:'多数派に変化',group:'運',desc:'毎回3マス/Lvを最多の絵柄に変更',max:3},
- {id:'rush',icon:'🌊',name:'幸運の波',group:'運',desc:'8回転ごとに横1列で7〜9連が出現。Lvごとに+2連',max:3},
- {id:'three',icon:'🍒',name:'3連ブースト',group:'得点',desc:'3連の得点 +50%/Lv',max:5},
- {id:'four',icon:'⚡',name:'4連ブースト',group:'得点',desc:'4連の得点 +70%/Lv',max:5},
- {id:'five',icon:'👑',name:'5連ブースト',group:'得点',desc:'5連の得点 +100%/Lv',max:5},
- {id:'long',icon:'🌈',name:'ロングブースト',group:'得点',desc:'6連以上の得点 +100%/Lv',max:5},
- {id:'ten',icon:'🔟',name:'10連ブースト',group:'得点',desc:'10連以上の得点 +150%/Lv',max:4},
- {id:'fruit',icon:'🍋',name:'フルーツ強化',group:'得点',desc:'🍒と🍋の当たり得点 +50%/Lv',max:5},
- {id:'green',icon:'🔔',name:'ラッキー強化',group:'得点',desc:'🍀🔔🔷の当たり得点 +50%/Lv',max:5},
- {id:'rare',icon:'💎',name:'レア強化',group:'得点',desc:'💎と7️⃣の当たり得点 +70%/Lv',max:5},
- {id:'combo',icon:'🔗',name:'複数ライン強化',group:'得点',desc:'2ライン以上で全ライン得点 +15%/Lv',max:5},
- {id:'fever',icon:'🔥',name:'フィーバー強化',group:'爆発',desc:'3回転のFEVER倍率 +0.5倍/Lv（基本2倍）',max:4},
- {id:'spark',icon:'⚡',name:'突然5倍',group:'爆発',desc:'各当たりが4%/Lvの確率で5倍に！',max:3},
- {id:'mega',icon:'🚀',name:'超ロング',group:'爆発',desc:'8連以上の配当が +100%/Lv',max:3},
- {id:'super',icon:'🌠',name:'15連の奇跡',group:'爆発',desc:'15連以上の得点が3倍/Lv',max:3},
- {id:'bonus',icon:'🪙',name:'当たりおまけ',group:'爆発',desc:'揃ったライン1本につき +50点/Lv',max:5}
+const ICON=['🍒','🍋','🍀','🔔','💎','7️⃣'];
+const BASE_WEIGHT=[24,21,19,16,12,8];
+const BASE_PAY=[40,50,65,85,130,220];
+const SAVE_KEY='luck_loop_chain_reaction_v1';
+const SCORE_CAP=999999999999;
+const dirs=[[0,1],[1,0],[1,1],[1,-1]];
+
+// id, 絵文字, 名前, 説明, 系統, 最大レベル
+const UP=[
+[0,'🍒','チェリー運','🍒が出やすくなる','運',4],
+[1,'🍋','レモン運','🍋が出やすくなる','運',4],
+[2,'🍀','クローバー運','🍀が出やすくなる','運',4],
+[3,'🔔','ベル運','🔔が出やすくなる','運',4],
+[4,'💎','ダイヤ運','💎が出やすくなる','運',4],
+[5,'7️⃣','セブン運','7️⃣が出やすくなる','運',4],
+[6,'🧲','左コピー','新しい絵柄が左隣をコピーする確率 +8%','運',3],
+[7,'⬆️','上コピー','新しい絵柄が上隣をコピーする確率 +8%','運',3],
+[8,'🌟','ワイルド運','万能マスの出現率 +2%','運',4],
+[9,'🌈','虹の奇跡','SPIN時、3%で6マスを同じ絵柄にする','運',3],
+[10,'🚀','得点アップ','すべての当たり得点 +25%','得点',5],
+[11,'🍒','3連強化','3個そろいの得点 +50%','得点',5],
+[12,'💥','4連強化','4個そろいの得点 +75%','得点',5],
+[13,'👑','5連強化','5個そろいの得点 +150%','得点',5],
+[14,'🍓','チェリー王','🍒でそろった得点 +60%','得点',5],
+[15,'7️⃣','セブン王','7️⃣でそろった得点 +120%','得点',5],
+[16,'✨','黄金強化','黄金マスを含む当たりの倍率 +0.5','得点',4],
+[17,'💣','爆弾','爆弾の出現率 +2%。そろうと周囲も消す','連鎖',4],
+[18,'👑','黄金化','黄金マスの出現率 +2%','連鎖',4],
+[19,'🔥','連鎖王','連鎖ごとの倍率の増え方 +0.4','連鎖',4],
+[20,'♾️','不滅','連鎖終了時15%で6マスを再抽選（1回）','連鎖',3],
+[21,'🛟','敗者復活','初回ハズレ時25%で3連を作る','連鎖',3],
+[22,'🌟','ワイルドの祝福','5回転ごとにワイルドを2マス追加','連鎖',2],
+[23,'🌧️','黄金の雨','2連鎖目から黄金マスの出現率 +6%','連鎖',3]
+];
+
+const byId=id=>UP.find(x=>x[0]===id);
+
+const fresh=()=>({
+  spins:0,
+  score:0,
+  best:0,
+  powers:{},
+  upgrades:0,
+  board:null,
+  maxChain:0,
+  bestTurn:0
+});
+
+let state=fresh();
+let busy=false;
+let mute=false;
+let fast=false;
+let ac=null;
+let pendingUp=0;
+let board=[];
+let cellEls=[];
+
+try{
+  const v=JSON.parse(localStorage.getItem(SAVE_KEY));
+
+  if(
+    v&&
+    Number.isInteger(v.spins)&&
+    v.spins>=0&&v.spins<=100&&
+    Number.isFinite(v.score)&&
+    v.score>=0&&v.score<=SCORE_CAP&&
+    v.powers&&typeof v.powers==='object'
+  ){
+    state={...fresh(),...v};
+  }
+
+  mute=localStorage.getItem(SAVE_KEY+'_mute')==='1';
+  fast=localStorage.getItem(SAVE_KEY+'_fast')==='1';
+}catch(e){}
+
+const lv=id=>Math.min(
+  byId(id)[5],
+  Math.max(0,Number(state.powers[id])||0)
 );
-const state=()=>({turn:0,score:0,best:0,goal:6500,lastGoal:0,upgrades:0,power:{},energy:0,fever:0,board:Array.from({length:CELLS},(_,i)=>(i*3+Math.floor(i/COLS))%7)});
-let d=state(),busy=false,audio=null,soundOn=true;
-try{const x=JSON.parse(localStorage.getItem(KEY));if(x&&Number.isInteger(x.turn)&&x.turn>=0&&x.turn<=100&&Number.isFinite(x.score)&&x.score>=0&&Array.isArray(x.board)&&x.board.length===CELLS&&x.power&&typeof x.power==='object')d={...state(),...x};soundOn=localStorage.getItem(KEY+'_sound')!=='off'}catch(e){}
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(d))}catch(e){}};
-const lv=id=>Math.max(0,Math.min(10,Number(d.power[id])||0));
-const rand=n=>Math.floor(Math.random()*n);
-const fmt=n=>Math.round(n).toLocaleString('ja-JP');
-const cap=n=>Math.max(0,Math.min(CAP,Math.round(Number.isFinite(n)?n:CAP)));
-const wait=ms=>new Promise(r=>setTimeout(r,ms));
-const LINES=[];
-for(const [dr,dc,name] of [[0,1,'横'],[1,0,'縦'],[1,1,'斜め'],[1,-1,'斜め']]){
- for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
-  const pr=r-dr,pc=c-dc;if(pr>=0&&pr<ROWS&&pc>=0&&pc<COLS)continue;
-  let p=[];for(let y=r,x=c;y>=0&&y<ROWS&&x>=0&&x<COLS;y+=dr,x+=dc)p.push(y*COLS+x);
-  if(p.length>=3)LINES.push({p,name});
- }
-}
-const columns=[],tiles=[];
-for(let c=0;c<COLS;c++){
- const col=document.createElement('div');col.className='column';$('board').appendChild(col);columns.push(col);
- for(let r=0;r<ROWS;r++){
-  const t=document.createElement('div');t.className='tile';t.textContent=FACE[d.board[r*COLS+c]??0];col.appendChild(t);tiles[r*COLS+c]=t;
- }
-}
-function sound(f=440,dur=.12,type='triangle',volume=.05,delay=0){
- if(!soundOn)return;
- try{
-  const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
-  audio=audio||new AC();if(audio.state==='suspended')audio.resume().catch(()=>{});
-  const osc=audio.createOscillator(),gain=audio.createGain(),t=audio.currentTime+delay;
-  osc.type=type;osc.frequency.setValueAtTime(f,t);gain.gain.setValueAtTime(.0001,t);
-  gain.gain.exponentialRampToValueAtTime(Math.max(.001,volume),t+.01);
-  gain.gain.exponentialRampToValueAtTime(.0001,t+dur);
-  osc.connect(gain);gain.connect(audio.destination);osc.start(t);osc.stop(t+dur+.02);
- }catch(e){}
-}
-const vib=p=>{try{navigator.vibrate?.(p)}catch(e){}};
-function fanfare(big){(big?[392,523,659,784,1046]:[523,659,784]).forEach((f,i)=>sound(f,.2,big?'sawtooth':'triangle',big?.058:.045,i*.085));vib(big?[55,25,70,25,105]:[20,25,35])}
-function rareBurst(){
- const palette=['#ffdb60','#c5ff70','#ff66a7','#83ceff','#fff9c9'];
- for(let i=0;i<32;i++){
-  const e=document.createElement('i');e.className='spark';
-  e.style.cssText='--x:'+rand(100)+'vw;--dx:'+(rand(151)-75)+'px;--c:'+palette[i%5]+';--t:'+(0.9+Math.random()*.6)+'s;--d:'+(Math.random()*.15)+'s';
-  document.body.appendChild(e);setTimeout(()=>e.remove(),1750);
- }
-}
-function draw(b,golds=[]){tiles.forEach((t,i)=>{t.className='tile'+(golds.includes(i)?' gold':'');t.textContent=b[i]===-1?'🌟':FACE[b[i]??0]})}
-function render(){
- $('score').textContent=fmt(d.score);$('counter').textContent=d.turn+' / 100';
- $('next').textContent=fmt(Math.max(0,d.goal-d.score))+' PT';
- $('bar').style.width=Math.min(100,100*Math.max(0,d.score-(d.lastGoal||0))/Math.max(1,d.goal-(d.lastGoal||0)))+'%';
- $('best').textContent='BEST '+fmt(Math.max(d.score,d.best));
- $('fever').textContent=d.fever>0?'🔥 FEVER ×'+(2+.5*lv('fever'))+' あと'+d.fever+'回':'🔥 FEVER '+d.energy+' / 36';
- $('machine').classList.toggle('fever',d.fever>0);
- $('machineHead').textContent=d.fever>0?'🔥 FEVER TIME!':'✦ 10 × 20 / 200 CELLS ✦';
- const owned=UP.filter(u=>lv(u.id)>0);$('ownedCount').textContent=owned.length;
- $('owned').innerHTML=owned.map(u=>'<span class="chip">'+u.icon+' '+u.name+' Lv.'+lv(u.id)+'<br>'+u.desc+'</span>').join('')||'<span class="mini">まだなし</span>';
- $('spin').disabled=busy||d.turn>=100||!$('overlay').classList.contains('hidden');
- $('sound').textContent=soundOn?'🔊':'🔇';
-}
-// 出現率を変える抽選。通常、個別の「○○運」、毎回の「一色ラッキー」の効果を反映する。
-function weightedPick(lucky){
- const w=WEIGHT.map((v,i)=>v*(1+.7*lv('face'+i))*(lucky===i?1+1.2*lv('color'):1));
- let n=Math.random()*w.reduce((a,b)=>a+b,0);
- for(let i=0;i<w.length;i++){n-=w[i];if(n<0)return i}return 6;
-}
-function roll(lucky){return Array.from({length:CELLS},()=>weightedPick(lucky))}
-function improveBoard(b){
- // 上・左・斜めの絵柄をコピー。行単位で処理するので連続して揃いやすくなる。
- for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
-  const i=r*COLS+c;
-  if(c>0&&Math.random()<.10*lv('hcopy'))b[i]=b[i-1];
-  if(r>0&&Math.random()<.10*lv('vcopy'))b[i]=b[i-COLS];
-  if(r>0&&Math.random()<.10*lv('dcopy')){
-   const dirs=[c>0?-1:null,c<COLS-1?1:null].filter(x=>x!==null);
-   b[i]=b[(r-1)*COLS+c+dirs[rand(dirs.length)]];
-  }
- }
- for(let k=0;k<lv('pair')*2;k++){
-  const r=rand(ROWS),c=rand(COLS-1),id=r*COLS+c;
-  b[id+1]=b[id];
- }
- for(let k=0;k<lv('shift')*3;k++){
-  const count=Array(7).fill(0);b.forEach(x=>{if(x>=0)count[x]++});
-  const max=Math.max(...count),most=count.indexOf(max);
-  b[rand(CELLS)]=most;
- }
- return b;
-}
-function winLines(b,golds,fever,bonusChance=true){
- const out=[];
- for(const line of LINES){
-  const found=new Map();
-  for(let sym=0;sym<7;sym++){
-   let k=0;
-   while(k<line.p.length){
-    if(b[line.p[k]]!==sym&&b[line.p[k]]!==-1){k++;continue}
-    let end=k;
-    while(end<line.p.length&&(b[line.p[end]]===sym||b[line.p[end]]===-1))end++;
-    const len=end-k;
-    if(len>=3){
-     const members=line.p.slice(k,end),key=members.join('-');
-     let pts=PAY[len]*FACE_VALUE[sym];
-     if(len===3)pts*=1+.5*lv('three');
-     if(len===4)pts*=1+.7*lv('four');
-     if(len===5)pts*=1+lv('five');
-     if(len>=6)pts*=1+lv('long');
-     if(len>=8)pts*=1+lv('mega');
-     if(len>=10)pts*=1+1.5*lv('ten');
-     if(len>=15&&lv('super'))pts*=Math.pow(3,lv('super'));
-     if(sym<=1)pts*=1+.5*lv('fruit');
-     else if(sym<=4)pts*=1+.5*lv('green');
-     else pts*=1+.7*lv('rare');
-     if(fever)pts*=2+.5*lv('fever');
-     if(golds.some(i=>members.includes(i)))pts*=3;
-     pts+=50*lv('bonus');
-     if(bonusChance&&Math.random()<.04*lv('spark'))pts*=5;
-     pts=cap(pts);
-     if(!found.has(key)||found.get(key).pts<pts)found.set(key,{members,sym,len,pts,dir:line.name});
-    }
-    k=end;
-   }
-  }
-  out.push(...found.values());
- }
- if(out.length>1&&lv('combo'))out.forEach(h=>h.pts=cap(h.pts*(1+.15*lv('combo'))));
- return out.sort((a,b)=>a.pts-b.pts);
-}
-function prepBoard(n){
- const lucky=lv('color')?rand(7):-1;
- const golds=[];
- if(lv('gold')&&n%7===0)for(let i=0;i<lv('gold')*2;i++){
-  let id=rand(CELLS);while(golds.includes(id))id=rand(CELLS);golds.push(id);
- }
- const gen=()=>{
-  const b=improveBoard(roll(lucky));
-  // 20回転ごとの小さなご褒美。幸運の波を持つと8回転ごとにも発動。
-  if(n%20===0||(lv('rush')&&n%8===0)){
-   const base=n%20===0?8+rand(5):7+rand(3)+(lv('rush')-1)*2;
-   const len=Math.min(COLS,base);
-   const r=rand(ROWS),start=rand(COLS-len+1),symbol=weightedPick(lucky);
-   for(let i=0;i<len;i++)b[r*COLS+start+i]=symbol;
-  }
-  if(lv('wild')&&n%6===0)for(let k=0;k<lv('wild')*2;k++){
-   let id=rand(CELLS);while(b[id]===-1)id=rand(CELLS);b[id]=-1;
-  }
-  return b;
- };
- let b=gen();
- if(lv('bestboard')&&n%10===0){
-  const other=gen();
-  const sum=arr=>winLines(arr,golds,d.fever>0,false).reduce((a,h)=>a+h.pts,0);
-  if(sum(other)>sum(b))b=other;
- }
- return {b,golds,lucky};
-}
-function popAt(cells,points){
- const root=$('board'),rect=root.getBoundingClientRect();
- let x=0,y=0;
- for(const i of cells){const r=tiles[i].getBoundingClientRect();x+=r.left+r.width/2-rect.left;y+=r.top+r.height/2-rect.top}
- x/=cells.length;y/=cells.length;
- const e=document.createElement('div');e.className='float';e.textContent='+'+fmt(points);
- // 横20マスでも得点が画面外へはみ出しにくいよう位置を補正。
- e.style.left=Math.max(40,Math.min(rect.width-40,x))+'px';e.style.top=y+'px';root.appendChild(e);
- setTimeout(()=>e.remove(),620);
-}
-async function reveal(wins,prepared){
- const all=new Set();let total=0;
- if(!wins.length){$('message').textContent='ハズレ！ 次こそ！';sound(170,.12,'sine',.03);await wait(260)}
- for(let i=0;i<wins.length;i++){
-  const h=wins[i];tiles.forEach(t=>t.classList.remove('focus'));
-  h.members.forEach(k=>{tiles[k].classList.add('focus');all.add(k)});
-  $('message').textContent=(i+1)+'/'+wins.length+'本　'+h.dir+h.len+'連　'+FACE[h.sym];
-  popAt(h.members,h.pts);
-  sound(380+Math.min(i,12)*48,.12,h.len>=6?'sawtooth':'triangle',h.len>=5?.068:.044);
-  if(h.len>=5){sound(760,.19,'sine',.044,.07);vib([30,20,45])}
-  if(h.len>=8){$('machine').classList.add('jolt');setTimeout(()=>$('machine').classList.remove('jolt'),250)}
-  if(h.len>=10){rareBurst();sound(95,.28,'sawtooth',.075);$('message').textContent='🌈 '+h.len+'連 MEGA JACKPOT!'}
-  if(h.len>=15){sound(75,.4,'sawtooth',.09);vib([100,35,100,35,180]);$('message').textContent='👑 '+h.len+'連 GODLIKE!!'}
-  total=cap(total+h.pts);d.score=cap(d.score+h.pts);render();
-  await wait(wins.length>45?35:wins.length>25?55:wins.length>12?90:h.len>=15?640:h.len>=10?430:h.len>=8?300:140);
- }
- tiles.forEach((t,i)=>{t.classList.remove('focus');if(all.has(i))t.classList.add('won')});
- const banner=document.createElement('div');banner.className='turn-total';
- banner.innerHTML='<div><small>THIS SPIN</small><strong>+'+fmt(total)+'</strong></div>';
- $('machine').appendChild(banner);if(total>0)fanfare(total>=30000||wins.some(w=>w.len>=10));
- await wait(total>=50000?1350:900);banner.remove();
- d.turn++;d.board=prepared.b.slice();d.best=Math.max(d.best,d.score);
- if(d.fever>0)d.fever--;
- else if(wins.length){d.energy=Math.min(36,d.energy+Math.min(3,wins.length));if(d.energy>=36){d.energy=0;d.fever=3;$('message').textContent='🔥 次の3回はFEVER！'}}
- save();busy=false;render();
- if(d.turn>=END)showFinal();else if(d.score>=d.goal)showUpgrade();
- else $('message').textContent='SPINで次の回転へ！';
-}
-async function spin(){
- if(busy||d.turn>=END||!$('overlay').classList.contains('hidden'))return;
- busy=true;render();
- const n=d.turn+1,prepared=prepBoard(n),board=prepared.b;
- $('message').textContent=(n%20===0||(lv('rush')&&n%8===0))?'🌊 幸運の波！ ロング連鎖チャンス':prepared.lucky>=0?'🎨 今回は'+FACE[prepared.lucky]+'が出やすい！':'回転中…';
- const wins=winLines(board,prepared.golds,d.fever>0);
- const tense=wins.some(w=>w.len>=8&&w.members.some(i=>i%COLS>=16));
- columns.forEach(c=>c.className='column rolling');tiles.forEach(t=>t.classList.remove('focus','won'));
- const stopped=Array(COLS).fill(false);
- const interval=setInterval(()=>{
-  for(let c=0;c<COLS;c++)if(!stopped[c]){
-   for(let r=ROWS-1;r>0;r--)tiles[r*COLS+c].textContent=tiles[(r-1)*COLS+c].textContent;
-   tiles[c].textContent=FACE[rand(FACE.length)];
-  }
- },70);
- try{
-  for(let c=0;c<COLS;c++){
-   await wait(c===0?220:(c>=16&&tense)?320:75);
-   stopped[c]=true;columns[c].className='column stopped';
-   for(let r=0;r<ROWS;r++){
-    const i=r*COLS+c,t=tiles[i];t.textContent=board[i]===-1?'🌟':FACE[board[i]];
-    t.classList.toggle('gold',prepared.golds.includes(i));
-   }
-   sound(140+18*c,.065,'triangle',.045);vib(12);
-   if(c===15&&tense){$('machine').classList.add('reach');$('message').textContent='⚡ ラスト4列に注目！'}
-  }
- }finally{clearInterval(interval);columns.forEach(c=>c.classList.remove('rolling'));$('machine').classList.remove('reach')}
- $('message').textContent=wins.length?wins.length+'本の当たりを判定！':'判定中…';
- await wait(140);await reveal(wins,prepared);
-}
-function modal(html){$('modal').innerHTML=html;$('overlay').classList.remove('hidden');render()}
-function closeModal(){$('overlay').classList.add('hidden');render()}
-function pickOptions(){
- const used=new Set(),out=[];
- const chooseGroup=(g)=>{
-  const options=UP.filter(x=>x.group===g&&lv(x.id)<x.max&&!used.has(x.id));
-  if(!options.length)return;const x=options[rand(options.length)];used.add(x.id);out.push(x);
- };
- chooseGroup('運');chooseGroup('得点');chooseGroup('爆発');
- while(out.length<3){const a=UP.filter(x=>lv(x.id)<x.max&&!used.has(x.id));if(!a.length)break;const x=a[rand(a.length)];used.add(x.id);out.push(x)}
- return out;
-}
-function showUpgrade(){
- if(d.turn>=100){showFinal();return}
- const options=pickOptions();
- if(!options.length){d.goal=CAP;save();return}
- modal('<div class="micro">UPGRADE UNLOCKED</div><h2>⚡ 好きな強化を1つ！</h2><p>運を上げる？ 得点を増やす？ 一発を狙う？</p><div id="options"></div>');
- for(const u of options){
-  const b=document.createElement('button');b.className='choice';
-  b.innerHTML='<span class="emoji">'+u.icon+'</span><span><span class="tag">'+u.group+'アップ</span><strong>'+u.name+'</strong><small>'+u.desc+'<br>Lv.'+lv(u.id)+' → Lv.'+(lv(u.id)+1)+'</small></span>';
-  b.onclick=()=>{
-   d.power[u.id]=lv(u.id)+1;d.upgrades++;
-   const step=Math.round(5500*Math.pow(1.43,d.upgrades-1)/100)*100;
-   d.lastGoal=d.goal;
-   // 1回の大当たりで強化画面が何十回も連続しないよう次のノルマを調整。
-   d.goal=Math.min(CAP,cap(Math.max(d.goal+step,d.score+Math.max(1000,step*.4))));
-   save();closeModal();$('message').textContent=u.icon+' '+u.name+'を獲得！';
-   sound(800,.22,'triangle',.075);render();
-   // 100回転・1回転で強化1回まで。次は新しいノルマへ。
-  };
-  $('options').appendChild(b);
- }
-}
-function showFinal(){
- modal('<div class="micro">100 SPINS COMPLETE</div><h2>🏆 FINISH!</h2><p>100回転終了！</p><div class="micro">FINAL SCORE</div><div class="total" style="color:var(--gold)">'+fmt(d.score)+'</div><p>獲得強化 '+d.upgrades+'回<br>自己ベスト '+fmt(d.best)+'点</p><button class="primary" id="again">もう一度プレイ！</button>');
- $('again').onclick=restart;
-}
-function restart(){
- const best=d.best;d=state();d.best=best;
- draw(d.board);columns.forEach(c=>c.className='column');$('message').textContent='SPINでスタート！';
- save();closeModal();render();
-}
-$('zoom').onclick=()=>{
- const on=$('viewport').classList.toggle('zoom');
- $('zoom').textContent=on?'↩ 全体':'🔍 拡大';
- if(!on)$('viewport').scrollLeft=0;
+
+const num=n=>Math.floor(n).toLocaleString('ja-JP');
+const clamp=n=>Math.max(
+  0,Math.min(SCORE_CAP,Math.round(n))
+);
+
+const rnd=n=>Math.floor(Math.random()*n);
+const sleep=ms=>new Promise(
+  r=>setTimeout(r,fast?Math.round(ms*.22):ms)
+);
+
+const save=()=>{
+  try{
+    state.board=board.map(x=>({...x}));
+    localStorage.setItem(SAVE_KEY,JSON.stringify(state));
+  }catch(e){}
 };
-$('spin').onclick=()=>spin().catch(err=>{console.error(err);busy=false;render();$('message').textContent='エラーが発生しました。もう一度お試しください'});
-$('sound').onclick=()=>{soundOn=!soundOn;try{localStorage.setItem(KEY+'_sound',soundOn?'on':'off')}catch(e){}render()};
-$('reset').onclick=()=>{if(!busy&&confirm('100回転を最初からやり直す？ 最高記録は残ります。'))restart()};
-draw(d.board);render();if(d.turn>=100)setTimeout(showFinal,90);else if(d.score>=d.goal)setTimeout(showUpgrade,90);
+
+const nextGoal=n=>Math.min(
+  SCORE_CAP,
+  Math.round(
+    (500*(Math.pow(1.45,n+1)-1)/.45)/10
+  )*10
+);
+
+// 音
+function beep(
+  freq=440,
+  duration=.12,
+  type='sine',
+  volume=.045,
+  delay=0
+){
+  if(mute)return;
+
+  try{
+    const AC=window.AudioContext||
+      window.webkitAudioContext;
+    if(!AC)return;
+
+    ac=ac||new AC();
+
+    if(ac.state==='suspended'){
+      ac.resume().catch(()=>{});
+    }
+
+    const o=ac.createOscillator();
+    const g=ac.createGain();
+    const t=ac.currentTime+delay;
+
+    o.type=type;
+    o.frequency.setValueAtTime(freq,t);
+
+    g.gain.setValueAtTime(.0001,t);
+    g.gain.exponentialRampToValueAtTime(
+      Math.max(.001,volume),t+.012
+    );
+    g.gain.exponentialRampToValueAtTime(
+      .0001,t+duration
+    );
+
+    o.connect(g);
+    g.connect(ac.destination);
+    o.start(t);
+    o.stop(t+duration+.015);
+  }catch(e){}
+}
+
+function vibrate(a){
+  try{navigator.vibrate?.(a)}
+  catch(e){}
+}
+
+function confetti(count){
+  const palette=[
+    '#ffe27b',
+    '#f993b9',
+    '#bfff6b',
+    '#7edaff',
+    '#ffffff'
+  ];
+
+  for(let i=0;i<count;i++){
+    const e=document.createElement('i');
+    e.className='confetti';
+
+    e.style.cssText=`
+      --x:${Math.random()*100}vw;
+      --dx:${rnd(201)-100}px;
+      --c:${palette[i%5]};
+      --t:${.8+Math.random()*.8}s
+    `;
+
+    document.body.appendChild(e);
+    setTimeout(()=>e.remove(),1800);
+  }
+}
+
+function flash(){
+  const x=$('flash');
+  x.classList.add('on');
+
+  setTimeout(()=>{
+    x.classList.remove('on');
+  },90);
+}
+
+// 絵柄の出現確率
+function pickSymbol(){
+  const w=BASE_WEIGHT.map(
+    (x,i)=>x+lv(i)*(i===5?5:i>=4?6:7)
+  );
+
+  let v=Math.random()*w.reduce((a,b)=>a+b,0);
+
+  for(let i=0;i<6;i++){
+    v-=w[i];
+    if(v<0)return i;
+  }
+
+  return 5;
+}
+
+// 新しい絵柄を作成
+function makeTile(context=null){
+  const chain=context?.chain||0;
+
+  const wp=Math.min(.19,.008+.02*lv(8));
+  const bp=Math.min(.14,.005+.02*lv(17));
+
+  const r=Math.random();
+
+  let sym=r<bp?'b':
+    r<bp+wp?'w':pickSymbol();
+
+  const goldChance=Math.min(
+    .32,
+    .01+.02*lv(18)+
+    (chain>=2?.06*lv(23):0)
+  );
+
+  return {
+    s:sym,
+    gold:Math.random()<goldChance
+  };
+}
+
+function fillNewGrid(chain=0){
+  const out=Array(25).fill(null);
+
+  for(let i=0;i<25;i++){
+    out[i]=makeTile({chain});
+
+    const row=Math.floor(i/5);
+    const col=i%5;
+
+    if(
+      col>0&&
+      Math.random()<.08*lv(6)
+    ){
+      out[i].s=out[i-1].s;
+    }else if(
+      row>0&&
+      Math.random()<.08*lv(7)
+    ){
+      out[i].s=out[i-5].s;
+    }
+  }
+
+  return out;
+}
+
+function symLabel(s){
+  return s==='w'?'🌟':
+    s==='b'?'💣':ICON[s];
+}
+
+function drawGrid(animate=false){
+  for(let i=0;i<25;i++){
+    const t=board[i];
+    const e=cellEls[i];
+
+    e.textContent=t?symLabel(t.s):'';
+
+    e.className=
+      'cell'+
+      (t?.gold?' gold':'')+
+      (animate?' fall':'');
+  }
+}
+
+// 画面表示更新
+function render(){
+  $('score').textContent=num(state.score);
+
+  $('best').textContent=num(
+    Math.max(state.best,state.score)
+  );
+
+  $('spins').textContent=state.spins;
+
+  const goal=nextGoal(state.upgrades);
+  const prev=state.upgrades?
+    nextGoal(state.upgrades-1):0;
+
+  $('goal').textContent=num(goal);
+
+  $('remaining').textContent=
+    state.score>=goal?
+      '強化できる！':
+      'あと '+num(goal-state.score);
+
+  $('bar').style.width=
+    `${Math.max(0,Math.min(
+      100,
+      100*(state.score-prev)/
+      Math.max(1,goal-prev)
+    ))}%`;
+
+  $('upcount').textContent=
+    state.upgrades+'回獲得';
+
+  const owned=UP
+    .filter(p=>lv(p[0]))
+    .map(p=>`
+      <span class="pill">
+        ${p[1]} ${p[2]}
+        ${lv(p[0])>1?' Lv.'+lv(p[0]):''}
+      </span>
+    `);
+
+  $('owned').innerHTML=
+    owned.join('')||
+    '<span class="pill">まだなし</span>';
+
+  $('sound').textContent=mute?'🔇':'🔊';
+  $('speed').textContent=fast?'高速':'通常';
+
+  $('spin').disabled=
+    busy||
+    state.spins>=100||
+    !$('overlay').classList.contains('hidden');
+}
+
+// 縦・横・斜め3つ以上の当たりを検出
+function matches(grid){
+  const candidates=new Map();
+
+  for(const [dr,dc] of dirs){
+    for(let r=0;r<5;r++){
+      for(let c=0;c<5;c++){
+        for(let s=0;s<6;s++){
+          const prevR=r-dr;
+          const prevC=c-dc;
+
+          const ok=i=>grid[i]&&(
+            grid[i].s===s||
+            grid[i].s==='w'||
+            grid[i].s==='b'
+          );
+
+          if(
+            prevR>=0&&prevR<5&&
+            prevC>=0&&prevC<5&&
+            ok(prevR*5+prevC)
+          )continue;
+
+          const idx=[];
+
+          for(
+            let rr=r,cc=c;
+            rr>=0&&rr<5&&
+            cc>=0&&cc<5&&
+            ok(rr*5+cc);
+            rr+=dr,cc+=dc
+          ){
+            idx.push(rr*5+cc);
+          }
+
+          if(idx.length<3)continue;
+
+          const key=
+            dr+','+dc+':'+idx.join(',');
+
+          const prior=candidates.get(key);
+
+          if(
+            !prior||
+            BASE_PAY[s]>BASE_PAY[prior.s]
+          ){
+            candidates.set(key,{
+              s,
+              idx,
+              len:idx.length
+            });
+          }
+        }
+      }
+    }
+  }
+
+  return [...candidates.values()].sort(
+    (a,b)=>
+      b.len-a.len||
+      Math.min(...a.idx)-Math.min(...b.idx)
+  );
+}
+
+// 当たり得点
+function pay(match,grid,chain){
+  const len=match.len;
+
+  let v=BASE_PAY[match.s]*(
+    len===3?1:
+    len===4?4:12
+  );
+
+  // 基本得点強化
+  v*=1+.25*lv(10);
+
+  // 3・4・5連強化
+  v*=1+(
+    len===3?.50*lv(11):
+    len===4?.75*lv(12):
+    1.5*lv(13)
+  );
+
+  // 絵柄別ボーナス
+  if(match.s===0){
+    v*=1+.60*lv(14);
+  }
+
+  if(match.s===5){
+    v*=1+1.2*lv(15);
+  }
+
+  // 黄金マス
+  if(match.idx.some(i=>grid[i].gold)){
+    v*=2+.5*lv(16);
+  }
+
+  // 連鎖倍率
+  const mult=Math.min(
+    512,
+    Math.pow(
+      2+.4*lv(19),
+      chain-1
+    )
+  );
+
+  return clamp(v*mult);
+}
+
+// SPINで出る盤面を作成
+function rollGrid(spin){
+  let g=fillNewGrid();
+
+  // 虹の奇跡
+  if(
+    lv(9)&&
+    Math.random()<.03*lv(9)
+  ){
+    const symbol=pickSymbol();
+
+    const positions=[
+      ...Array(25).keys()
+    ].sort(
+      ()=>Math.random()-.5
+    ).slice(0,6);
+
+    positions.forEach(i=>{
+      g[i].s=symbol;
+    });
+
+    $('chain').textContent='🌈 虹の奇跡！';
+  }
+
+  // ワイルドの祝福
+  if(
+    lv(22)&&
+    spin%5===0
+  ){
+    const pool=[
+      ...Array(25).keys()
+    ].sort(
+      ()=>Math.random()-.5
+    ).slice(0,2*lv(22));
+
+    pool.forEach(i=>{
+      g[i].s='w';
+    });
+
+    $('chain').textContent=
+      '🌟 ワイルドの祝福！';
+  }
+
+  // 敗者復活
+  if(
+    lv(21)&&
+    !matches(g).length&&
+    Math.random()<.25*lv(21)
+  ){
+    const r=rnd(5);
+    const c=rnd(3);
+    const s=pickSymbol();
+
+    for(let j=0;j<3;j++){
+      g[r*5+c+j].s=s;
+    }
+
+    $('chain').textContent='🛟 敗者復活！';
+  }
+
+  return g;
+}
+
+// 当たりが消えたあと落下と補充
+function cascadeRefill(removed,chain){
+  for(let c=0;c<5;c++){
+    const left=[];
+
+    for(let r=4;r>=0;r--){
+      const i=r*5+c;
+
+      if(!removed.has(i)){
+        left.push({...board[i]});
+      }
+    }
+
+    for(let r=4;r>=0;r--){
+      const i=r*5+c;
+
+      board[i]=
+        left[4-r]||
+        makeTile({chain});
+
+      if(!left[4-r]){
+        // 新しく降ってきた絵柄のみコピー
+        if(
+          c>0&&
+          Math.random()<.08*lv(6)
+        ){
+          board[i].s=board[i-1].s;
+        }else if(
+          r<4&&
+          Math.random()<.08*lv(7)
+        ){
+          board[i].s=board[i+5].s;
+        }
+      }
+    }
+  }
+}
+
+// 当たりの位置に得点を表示
+function floating(match,value){
+  const center=match.idx.reduce(
+    (a,i)=>{
+      const rect=
+        cellEls[i].getBoundingClientRect();
+
+      const parent=
+        $('machine').getBoundingClientRect();
+
+      return {
+        x:a.x+(
+          rect.left+rect.width/2-
+          parent.left
+        )/match.idx.length,
+        y:a.y+(
+          rect.top+rect.height/2-
+          parent.top
+        )/match.idx.length
+      };
+    },
+    {x:0,y:0}
+  );
+
+  const e=document.createElement('div');
+
+  e.className='float';
+  e.style.left=center.x+'px';
+  e.style.top=center.y+'px';
+  e.textContent='+'+num(value);
+
+  $('machine').appendChild(e);
+
+  setTimeout(()=>{
+    e.remove();
+  },580);
+}
+
+// 回転終了時に大きな合計を表示
+function totalPopup(score,chain){
+  const e=document.createElement('div');
+
+  e.className='totalOverlay';
+
+  e.innerHTML=`
+    <div class="kicker">TURN SCORE</div>
+    <div class="big">+${num(score)}</div>
+    <div class="details">
+      ${chain?chain+' CHAIN!':'NEXT SPIN!'}
+    </div>
+  `;
+
+  $('machine').appendChild(e);
+
+  setTimeout(()=>{
+    e.remove();
+  },fast?340:1080);
+}
+
+// モーダル
+function close(){
+  $('overlay').classList.add('hidden');
+  render();
+}
+
+function dialog(html){
+  $('dialog').innerHTML=html;
+  $('overlay').classList.remove('hidden');
+  render();
+}
+
+// 強化3択
+function threeUpgrades(){
+  const selected=[];
+
+  for(const category of [
+    '運',
+    '得点',
+    '連鎖'
+  ]){
+    const options=UP.filter(
+      p=>
+        p[4]===category&&
+        lv(p[0])<p[5]&&
+        !selected.includes(p)
+    );
+
+    if(options.length){
+      selected.push(
+        options[rnd(options.length)]
+      );
+    }
+  }
+
+  return selected;
+}
+
+function showUpgrade(){
+  const options=threeUpgrades();
+
+  if(!options.length){
+    state.upgrades++;
+    save();
+    return afterSpin();
+  }
+
+  dialog(`
+    <div class="sub">UPGRADE UNLOCKED</div>
+    <h2>⚡ 強化を選ぼう！</h2>
+    <p>
+      運を上げる？
+      得点を伸ばす？
+      連鎖を狙う？
+    </p>
+    <div id="choices"></div>
+  `);
+
+  for(const item of options){
+    const b=document.createElement('button');
+
+    b.className='upgrade';
+
+    b.innerHTML=`
+      <span class="emoji">
+        ${item[1]}
+      </span>
+      <span>
+        <span class="category">
+          ${item[4]}系
+        </span>
+        <strong>
+          ${item[2]}
+          <span style="font-size:11px;color:#bfff6b">
+            Lv.${lv(item[0])+1}
+          </span>
+        </strong>
+        <small>
+          ${item[3]}（1レベルごと）
+        </small>
+      </span>
+    `;
+
+    b.onclick=()=>{
+      if(busy)return;
+
+      state.powers[item[0]]=
+        lv(item[0])+1;
+
+      state.upgrades++;
+
+      save();
+      close();
+
+      beep(
+        700,.16,'triangle',.07
+      );
+      beep(
+        1050,.2,'sine',.05,.1
+      );
+
+      $('chain').textContent=
+        item[1]+' '+item[2]+' 強化！';
+
+      afterSpin();
+    };
+
+    $('choices').appendChild(b);
+  }
+}
+
+function afterSpin(){
+  if(busy)return;
+
+  if(state.spins>=100){
+    finish();
+    return;
+  }
+
+  if(
+    state.score>=
+    nextGoal(state.upgrades)
+  ){
+    showUpgrade();
+    return;
+  }
+
+  render();
+}
+
+// 100回転終了
+function finish(){
+  dialog(`
+    <div class="sub">100 SPINS FINISHED</div>
+    <h2>🏆 FINISH!</h2>
+    <p>100回転おつかれ！</p>
+
+    <div class="label">
+      FINAL SCORE
+    </div>
+    <div class="score" style="color:#ffdf78">
+      ${num(state.score)}
+    </div>
+
+    <p>
+      最高連鎖：${state.maxChain} CHAIN<br>
+      最高1回転：${num(state.bestTurn)}点<br>
+      獲得した強化：${state.upgrades}回<br>
+      自己ベスト：${num(state.best)}点
+    </p>
+
+    <button class="primary" id="again">
+      もう一度100回転！
+    </button>
+  `);
+
+  $('again').onclick=restart;
+}
+
+// スロット本体
+async function spin(){
+  if(
+    busy||
+    state.spins>=100||
+    !$('overlay').classList.contains('hidden')
+  )return;
+
+  busy=true;
+  render();
+
+  const thisSpin=state.spins+1;
+
+  $('chain').className='chainBox';
+  $('chain').textContent='リール回転中…';
+
+  const finalGrid=rollGrid(thisSpin);
+
+  const stopped=[
+    false,false,false,false,false
+  ];
+
+  cellEls.forEach(e=>{
+    e.className='cell spinny';
+  });
+
+  beep(
+    140,.2,'sawtooth',.06
+  );
+
+  // 回転中の絵柄
+  const ticker=setInterval(()=>{
+    for(let i=0;i<25;i++){
+      if(!stopped[i%5]){
+        cellEls[i].textContent=
+          ICON[rnd(6)];
+      }
+    }
+  },65);
+
+  // 左から1列ずつ停止
+  for(let c=0;c<5;c++){
+    await sleep(c===0?340:240);
+
+    stopped[c]=true;
+
+    for(let r=0;r<5;r++){
+      const i=r*5+c;
+
+      cellEls[i].textContent=
+        symLabel(finalGrid[i].s);
+
+      cellEls[i].className=
+        'cell'+
+        (finalGrid[i].gold?' gold':'');
+    }
+
+    beep(
+      220+c*58,
+      .1,
+      'triangle',
+      .072
+    );
+
+    vibrate(20);
+  }
+
+  clearInterval(ticker);
+
+  board=finalGrid;
+  drawGrid();
+
+  await sleep(180);
+
+  let turnTotal=0;
+  let chain=0;
+  let revived=false;
+
+  // 1回転の連鎖処理
+  while(chain<18){
+    let hits=matches(board);
+
+    if(!hits.length){
+
+      // 不滅：1回だけ再抽選
+      if(
+        chain>0&&
+        !revived&&
+        lv(20)&&
+        Math.random()<.15*lv(20)
+      ){
+        revived=true;
+
+        $('chain').textContent=
+          '♾️ 不滅！ 6マス再抽選！';
+
+        const spots=[
+          ...Array(25).keys()
+        ].sort(
+          ()=>Math.random()-.5
+        ).slice(0,6);
+
+        spots.forEach(i=>{
+          board[i]=makeTile({
+            chain:chain+1
+          });
+        });
+
+        drawGrid(true);
+
+        beep(
+          740,.22,'sine',.05
+        );
+
+        await sleep(420);
+        continue;
+      }
+
+      break;
+    }
+
+    chain++;
+
+    state.maxChain=Math.max(
+      chain,
+      state.maxChain
+    );
+
+    const mult=Math.min(
+      512,
+      Math.pow(
+        2+.4*lv(19),
+        chain-1
+      )
+    );
+
+    $('chain').textContent=
+      `${chain} CHAIN! ×${Number(mult.toFixed(1))}`;
+
+    $('chain').className=
+      'chainBox'+
+      (chain>=3?' hot':'');
+
+    if(chain>=3){
+      beep(
+        450+Math.min(8,chain)*75,
+        .22,
+        'sawtooth',
+        .06
+      );
+
+      vibrate([40,25,50]);
+    }
+
+    if(chain>=5){
+      flash();
+      confetti(chain>=8?35:15);
+    }
+
+    const removed=new Set();
+
+    // 当たりごとに加点演出
+    for(const hit of hits){
+      const value=pay(
+        hit,
+        board,
+        chain
+      );
+
+      hit.idx.forEach(i=>{
+        removed.add(i);
+        cellEls[i].classList.add('match');
+      });
+
+      floating(hit,value);
+
+      state.score=clamp(
+        state.score+value
+      );
+
+      turnTotal=clamp(
+        turnTotal+value
+      );
+
+      $('score').textContent=
+        num(state.score);
+
+      beep(
+        400+Math.min(12,chain)*55,
+        .12,
+        'triangle',
+        .05
+      );
+
+      await sleep(
+        hits.length>=12?85:
+        hits.length>=6?135:240
+      );
+
+      hit.idx.forEach(i=>{
+        cellEls[i].classList.remove('match');
+      });
+    }
+
+    // 爆弾の周囲を消す
+    const explosions=[
+      ...removed
+    ].filter(
+      i=>board[i].s==='b'
+    );
+
+    for(const i of explosions){
+      const r=Math.floor(i/5);
+      const c=i%5;
+
+      for(let dr=-1;dr<=1;dr++){
+        for(let dc=-1;dc<=1;dc++){
+          const rr=r+dr;
+          const cc=c+dc;
+
+          if(
+            rr>=0&&rr<5&&
+            cc>=0&&cc<5
+          ){
+            removed.add(rr*5+cc);
+          }
+        }
+      }
+    }
+
+    if(explosions.length){
+      $('chain').textContent+=' 💣 BOOM!';
+
+      flash();
+
+      beep(
+        120,.28,'sawtooth',.075
+      );
+    }
+
+    // 当たりマスを消去
+    for(const i of removed){
+      cellEls[i].classList.add('clear');
+    }
+
+    await sleep(230);
+
+    // 重力で落下・補充
+    cascadeRefill(
+      removed,
+      chain+1
+    );
+
+    drawGrid(true);
+
+    await sleep(360);
+  }
+
+  // 連鎖終了
+  if(chain>=4){
+    beep(
+      523,.17,'sawtooth',.07
+    );
+
+    beep(
+      784,.24,'sawtooth',.08,.10
+    );
+  }
+
+  if(chain>=6){
+    flash();
+    confetti(70);
+  }
+
+  state.spins++;
+
+  state.best=Math.max(
+    state.best,
+    state.score
+  );
+
+  state.bestTurn=Math.max(
+    state.bestTurn,
+    turnTotal
+  );
+
+  // 回転合計を大きく表示
+  totalPopup(
+    turnTotal,
+    chain
+  );
+
+  $('chain').className=
+    'chainBox'+
+    (chain>=3?' hot':'');
+
+  $('chain').textContent=chain?
+    `${chain} CHAIN!　合計 +${num(turnTotal)}`:
+    '次はそろうかな？';
+
+  save();
+  render();
+
+  await sleep(1050);
+
+  busy=false;
+
+  afterSpin();
+}
+
+// リスタート
+function restart(){
+  const best=state.best;
+
+  state=fresh();
+  state.best=best;
+
+  board=fillNewGrid();
+
+  save();
+  close();
+  drawGrid();
+
+  $('chain').className='chainBox';
+  $('chain').textContent=
+    'SPINして連鎖を起こせ！';
+
+  render();
+}
+
+// 盤面を作成
+for(let i=0;i<25;i++){
+  const e=document.createElement('div');
+
+  e.className='cell';
+
+  $('board').appendChild(e);
+  cellEls.push(e);
+}
+
+// セーブデータから復帰
+if(
+  Array.isArray(state.board)&&
+  state.board.length===25&&
+  state.board.every(
+    x=>x&&[
+      'w','b',0,1,2,3,4,5
+    ].includes(x.s)
+  )
+){
+  board=state.board.map(
+    x=>({
+      s:x.s,
+      gold:!!x.gold
+    })
+  );
+}else{
+  board=fillNewGrid();
+  save();
+}
+
+drawGrid();
+render();
+
+// イベント登録
+$('spin').onclick=()=>{
+  spin().catch(err=>{
+    console.error(err);
+
+    busy=false;
+    drawGrid();
+    render();
+
+    $('chain').textContent=
+      'エラーが発生しました。再開できます';
+  });
+};
+
+$('sound').onclick=()=>{
+  mute=!mute;
+
+  try{
+    localStorage.setItem(
+      SAVE_KEY+'_mute',
+      mute?'1':'0'
+    );
+  }catch(e){}
+
+  render();
+
+  if(!mute){
+    beep(600);
+  }
+};
+
+$('speed').onclick=()=>{
+  fast=!fast;
+
+  try{
+    localStorage.setItem(
+      SAVE_KEY+'_fast',
+      fast?'1':'0'
+    );
+  }catch(e){}
+
+  render();
+};
+
+$('reset').onclick=()=>{
+  if(
+    !busy&&
+    confirm(
+      '100回転を最初からやり直す？ 自己ベストは残すで。'
+    )
+  ){
+    restart();
+  }
+};
+
+setTimeout(afterSpin,70);
+
 })();
 </script>
 </body>
