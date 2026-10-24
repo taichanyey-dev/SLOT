@@ -1,1358 +1,219 @@
-
 <!doctype html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b0e19">
-<title>LUCK LOOP — CHAIN REACTION</title>
+<meta name="theme-color" content="#0c1020">
+<title>LUCK LOOP — ROGUE CHAIN</title>
 <style>
-:root{color-scheme:dark;--bg:#0b0e19;--panel:#1a2032;--muted:#a6b1c9;--lime:#bfff6b;--gold:#ffdf78;--edge:#374159}
+:root{color-scheme:dark;--bg:#0c1020;--panel:#171e32;--line:#394363;--mint:#b9ff77;--gold:#ffda70;--muted:#aab5cc}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;min-height:100%;background:var(--bg);color:#fff;font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN",Meiryo,sans-serif}
-body{background:radial-gradient(ellipse at 50% -15%,#30244e 0%,#0b0e19 65%);overscroll-behavior:none}
-button{font:inherit;cursor:pointer;touch-action:manipulation}
-button:disabled{opacity:.46;cursor:default}
-button:focus-visible{outline:2px solid #fff;outline-offset:2px}
-.app{max-width:450px;margin:auto;min-height:100dvh;padding:calc(12px + env(safe-area-inset-top)) 14px calc(15px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px}
-.row{display:flex;align-items:center;justify-content:space-between;gap:9px}
-.brand{font-size:25px;font-weight:1000;letter-spacing:-1.6px;line-height:1}
-.brand b{color:var(--lime)}
-.sub{font-size:10px;letter-spacing:1.65px;color:var(--muted);font-weight:850;margin-top:5px}
-.tools{display:flex;gap:5px}
-.tool{height:36px;min-width:40px;border-radius:11px;background:#242a40;color:#e7ebf6;border:1px solid #46506b;font-size:12px;font-weight:900;padding:0 8px}
-.scorebox{background:linear-gradient(135deg,#262a46,#191f31);border:1px solid var(--edge);border-radius:17px;padding:14px}
-.label{color:var(--muted);font-size:10px;font-weight:900;letter-spacing:1.1px}
-.score{font-size:clamp(33px,9vw,44px);font-weight:1000;line-height:1.2;letter-spacing:-1.3px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
-.statsRight{text-align:right}
-.smallnum{font-size:18px;font-weight:1000;font-variant-numeric:tabular-nums}
-.bar{height:9px;background:#3a4159;border-radius:20px;overflow:hidden;margin:9px 0 5px}
-.fill{width:0;height:100%;background:linear-gradient(90deg,#6cd8bd,var(--lime));border-radius:inherit;transition:width .22s}
-.footnote{font-size:11px;color:#b4bfd5;font-weight:700}
-.footnote strong{color:white}
-.machine{position:relative;border:2px solid #5b567e;border-radius:23px;padding:12px;background:linear-gradient(160deg,#2e3048,#191e30 62%,#30304d);box-shadow:0 7px #090b15,0 14px 23px #0007;isolation:isolate}
-.machineHead{text-align:center;color:var(--gold);font-weight:1000;letter-spacing:2.6px;font-size:11px;padding:1px 0 12px}
-.machineHead span{color:#d1a9ff}
-.board{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
-.cell{position:relative;aspect-ratio:1/1;min-width:0;display:grid;place-items:center;border-radius:12px;border:2px solid #c5cddd;background:linear-gradient(#fff,#e3e8f2 48%,#fff);box-shadow:inset 0 0 13px #a6b3d1;color:#182035;font-size:clamp(30px,10vw,49px);user-select:none;line-height:1;transition:transform .17s,opacity .17s,background .17s}
-.cell.gold{background:linear-gradient(#fff7c8,#ffd66f 55%,#fff2b0);border-color:#fff0a6;box-shadow:0 0 11px #e8a84266,inset 0 0 11px #d4a34b}
-.cell.match{z-index:2;transform:scale(1.10);background:#fff2a1;box-shadow:0 0 23px #ffce50,inset 0 0 15px #ffb650;border-color:#fff8af}
-.cell.clear{transform:scale(.2) rotate(12deg);opacity:0}
-.cell.fall{animation:drop .28s cubic-bezier(.15,.9,.37,1.15)}
-.cell.spinny{animation:roll .14s linear infinite}
-@keyframes roll{
-0%{filter:blur(1px);transform:translateY(-4px)}
-50%{filter:blur(1px);transform:translateY(4px)}
-100%{filter:blur(1px);transform:translateY(-4px)}
-}
-@keyframes drop{
-0%{transform:translateY(-24px);opacity:.2}
-70%{transform:translateY(3px);opacity:1}
-100%{transform:translateY(0)}
-}
-@keyframes impact{
-0%{transform:scale(.6);opacity:0}
-25%{transform:scale(1.16);opacity:1}
-80%{opacity:1}
-100%{transform:scale(1.25);opacity:0}
-}
-.chainBox{height:42px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:15px;font-weight:1000;color:var(--muted)}
-.chainBox.hot{color:var(--gold);text-shadow:0 0 14px #f7c455aa}
-.float{position:absolute;z-index:8;pointer-events:none;transform:translate(-50%,-50%);font-weight:1000;font-variant-numeric:tabular-nums;color:#fffadd;font-size:17px;white-space:nowrap;text-shadow:0 2px 3px #15131b,0 0 12px #ffb936;animation:up .5s ease-out forwards}
-@keyframes up{
-0%{opacity:0;transform:translate(-50%,-20%) scale(.6)}
-30%{opacity:1;transform:translate(-50%,-65%) scale(1.17)}
-100%{opacity:0;transform:translate(-50%,-135%)}
-}
-.totalOverlay{position:absolute;z-index:12;inset:15% 0 16%;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;background:radial-gradient(ellipse,#131221e8,#1511228a 65%,transparent 78%);animation:impact 1.05s both}
-.totalOverlay .kicker{font-size:12px;color:#fbe3a5;letter-spacing:2px;font-weight:1000}
-.totalOverlay .big{font-size:clamp(35px,11vw,53px);font-weight:1000;color:#fff2a8;text-shadow:0 3px #bd6a37,0 0 24px #ffc75b;letter-spacing:-1px;overflow-wrap:anywhere;max-width:95%;text-align:center}
-.totalOverlay .details{font-size:13px;color:#fff;font-weight:950}
-.spin{border:0;width:100%;height:73px;border-radius:19px;background:linear-gradient(135deg,#daff83,#8cf6ac);color:#152018;font-size:28px;font-weight:1000;letter-spacing:2px;box-shadow:0 6px #3a8755,0 12px 20px #0007}
-.spin:active:not(:disabled){transform:translateY(5px);box-shadow:0 1px #3a8755}
-.spin:disabled{filter:grayscale(.55)}
-.helper{text-align:center;font-size:11px;line-height:1.55;color:#b4bfd5;margin:-1px 0 0}
-.powers{background:#181e2f;border:1px solid #353d58;border-radius:14px;padding:11px}
-.pillRow{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
-.pill{background:#303950;color:#e4edf8;border-radius:7px;padding:5px 7px;font-size:10px;font-weight:800}
-.footer{display:flex;justify-content:space-between;align-items:center;margin-top:auto;font-size:10px;color:#8792aa}
-.reset{border:0;background:none;color:#aab4ca;text-decoration:underline;font-size:11px;padding:7px}
-.overlay{position:fixed;inset:0;background:#050712e8;z-index:40;display:grid;place-items:center;padding:18px;backdrop-filter:blur(8px)}
-.overlay.hidden{display:none}
-.dialog{width:min(100%,410px);max-height:91dvh;overflow:auto;background:linear-gradient(160deg,#303850,#171c2e);border:1px solid #626d89;border-radius:22px;padding:20px 16px;text-align:center;box-shadow:0 22px 80px #000b}
-.dialog h2{font-size:28px;margin:5px 0;color:var(--lime)}
-.dialog p{font-size:12px;color:#c9d1e2;line-height:1.6;margin:8px 0 14px}
-.upgrade{width:100%;display:flex;align-items:center;text-align:left;gap:12px;color:white;background:#303b53;border:1px solid #58657f;border-radius:14px;padding:12px;margin:8px 0}
-.upgrade:active{background:#4c5d78}
-.upgrade .emoji{font-size:29px;width:34px;text-align:center}
-.upgrade strong{display:block;font-size:15px}
-.upgrade small{display:block;font-size:11px;line-height:1.5;color:#c7d4e6;margin-top:3px}
-.category{font-size:9px;letter-spacing:1px;font-weight:900;color:#abf2cb;margin-bottom:2px}
-.primary{background:var(--lime);border:0;border-radius:14px;width:100%;padding:14px;color:#142017;font-size:17px;font-weight:1000}
-.flash{position:fixed;inset:0;pointer-events:none;z-index:29;opacity:0;background:#fff5bf;transition:opacity .23s}
-.flash.on{opacity:.32;transition:none}
-.confetti{position:fixed;top:-5vh;left:var(--x);z-index:30;width:8px;height:12px;background:var(--c);pointer-events:none;animation:rain var(--t) linear forwards}
-.confetti:nth-child(2n){border-radius:5px}
-@keyframes rain{
-to{transform:translate(var(--dx),106vh) rotate(900deg);opacity:.15}
-}
-@media(max-height:770px){
-.app{gap:9px}
-.scorebox{padding:10px}
-.machine{padding:9px}
-.machineHead{padding-bottom:7px}
-.chainBox{height:34px}
-.spin{height:64px}
-.board{gap:5px}
-.cell{border-radius:9px}
-}
-@media(prefers-reduced-motion:reduce){
-.cell.spinny,.cell.fall,.totalOverlay,.float,.confetti{animation:none!important}
-.cell{transition:none!important}
-}
+html,body{margin:0;min-height:100%;background:var(--bg);color:#f5f7ff;font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN",Meiryo,sans-serif}
+body{background:radial-gradient(ellipse at top,#31274b 0%,#0c1020 62%);overscroll-behavior:none}
+button{font:inherit;cursor:pointer;touch-action:manipulation}button:disabled{opacity:.45;cursor:default}button:focus-visible{outline:2px solid white;outline-offset:3px}
+.app{width:min(100%,450px);min-height:100dvh;margin:auto;padding:calc(14px + env(safe-area-inset-top)) 14px calc(18px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px}
+.top,.between{display:flex;align-items:center;justify-content:space-between;gap:9px}.brand{font-size:26px;font-weight:1000;letter-spacing:-1.6px;line-height:1}.brand b{color:var(--mint)}.eyebrow{font-size:10px;color:var(--muted);letter-spacing:1.4px;font-weight:850;margin-top:5px}.tiny{font-size:11px;color:var(--muted)}.tools{display:flex;gap:5px}.tool{height:37px;border-radius:11px;background:#263049;border:1px solid #495473;color:#e7ebfa;font-weight:900;font-size:12px;padding:0 10px}
+.stats{background:linear-gradient(135deg,#222a44,#151a2b);border:1px solid var(--line);border-radius:17px;padding:13px 14px}.score{font-size:clamp(30px,9vw,43px);font-weight:1000;letter-spacing:-1.4px;font-variant-numeric:tabular-nums;line-height:1.15;overflow-wrap:anywhere}.floor{font-size:14px;color:var(--mint);font-weight:1000}.bar{height:8px;border-radius:20px;background:#37415c;margin-top:9px;overflow:hidden}.bar div{height:100%;width:0;background:linear-gradient(90deg,#62cca8,var(--mint));border-radius:inherit;transition:width .2s}.stats-bottom{margin-top:6px;font-size:11px;color:#b6c3da;font-weight:750}.boss{background:linear-gradient(90deg,#392032,#1c1e35);border:1px solid #865169;border-radius:13px;padding:10px 12px}.boss.hidden{display:none}.boss strong{font-size:12px;color:#ffb4bf}.bossbar{background:#392937;border-radius:20px;height:9px;margin-top:7px;overflow:hidden}.bossbar div{height:100%;background:linear-gradient(90deg,#ee5f89,#ffc17e);width:100%;transition:width .3s}
+.machine{border:2px solid #555575;border-radius:21px;padding:11px;background:linear-gradient(150deg,#30344d,#171c2c 65%,#302a44);box-shadow:0 7px #090b13,0 13px 25px #0007;position:relative;isolation:isolate}.machinehead{text-align:center;font-size:11px;letter-spacing:2.4px;color:var(--gold);font-weight:1000;padding:0 0 10px}.board{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.cell{position:relative;min-width:0;aspect-ratio:1;background:linear-gradient(#fff,#e1e8f2 48%,#fff);border:2px solid #c5ccdb;border-radius:11px;display:grid;place-items:center;color:#182035;box-shadow:inset 0 0 11px #92a4c6;font-size:clamp(29px,9vw,46px);user-select:none;transition:transform .15s,opacity .15s}.cell .symbol{line-height:1}.cell .stamp{position:absolute;right:1px;bottom:1px;font-size:clamp(12px,3.4vw,18px);filter:drop-shadow(0 1px 1px #0008);z-index:2}.cell.special{border-color:#e4bc74}.cell.wild{background:linear-gradient(#edfcff,#b0ebef)}.cell.hit{transform:scale(1.07);z-index:2;background:#fff0a2;border-color:#fffbc8;box-shadow:0 0 22px #ffdb57,inset 0 0 12px #f9b847}.cell.gone{transform:scale(.2) rotate(14deg);opacity:0}.cell.falling{animation:drop .32s cubic-bezier(.1,.8,.4,1.2)}.cell.roll{animation:roll .13s linear infinite}
+@keyframes roll{0%,100%{transform:translateY(-3px);filter:blur(1px)}50%{transform:translateY(3px);filter:blur(1px)}}@keyframes drop{0%{transform:translateY(-32px);opacity:.3}70%{transform:translateY(3px);opacity:1}100%{transform:translateY(0)}}
+.message{text-align:center;height:39px;display:flex;align-items:center;justify-content:center;color:#d7def0;font-size:14px;font-weight:950}.message.hot{color:var(--gold);text-shadow:0 0 16px #ffdc7d}.spin{width:100%;height:72px;border:none;border-radius:18px;background:linear-gradient(135deg,#dfff80,#87f3a7);color:#16201a;font-size:28px;font-weight:1000;letter-spacing:3px;box-shadow:0 6px #367f52,0 13px 20px #0007}.spin:active:not(:disabled){transform:translateY(5px);box-shadow:0 1px #367f52}.spin:disabled{filter:grayscale(.5)}.hint{margin:0;text-align:center;font-size:11px;color:#adb9d1;line-height:1.5}
+.bag{border:1px solid #303953;background:#171d30;border-radius:14px;padding:11px}.bag summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:900}.bag summary::-webkit-details-marker{display:none}.pills{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}.pill{font-size:11px;background:#303950;border-radius:7px;padding:6px 8px}.fusions{font-size:11px;color:var(--gold);line-height:1.7;margin-top:9px}.foot{margin-top:auto;color:#8995ae;display:flex;justify-content:space-between;align-items:center;font-size:10px}.link{background:none;border:none;text-decoration:underline;color:#aab6cb;padding:7px;font-size:11px}
+.float{position:absolute;z-index:7;pointer-events:none;transform:translate(-50%,-50%);font-weight:1000;font-variant-numeric:tabular-nums;font-size:17px;color:#fff7c5;white-space:nowrap;text-shadow:0 2px #9d543a,0 0 13px #f8b853;animation:float .58s ease-out both}@keyframes float{0%{opacity:0;transform:translate(-50%,-10%) scale(.65)}25%{opacity:1;transform:translate(-50%,-62%) scale(1.1)}100%{opacity:0;transform:translate(-50%,-140%)}}
+.total{position:absolute;inset:19% 0 16%;z-index:9;pointer-events:none;display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center;background:radial-gradient(ellipse,#131220ed,#131220ac 57%,transparent 78%);animation:pop 1.1s both}.total small{color:#f6dc97;letter-spacing:2px;font-weight:1000}.total strong{color:#fff0ac;font-size:clamp(35px,10vw,54px);text-shadow:0 3px #b66f4d,0 0 22px #ffcb71;max-width:98%;overflow-wrap:anywhere}.total span{font-size:14px;font-weight:900}@keyframes pop{0%{transform:scale(.5);opacity:0}20%{transform:scale(1.05);opacity:1}80%{opacity:1}100%{transform:scale(1.14);opacity:0}}
+.flash{position:fixed;inset:0;background:#fff3bc;z-index:20;opacity:0;pointer-events:none;transition:opacity .18s}.flash.on{opacity:.3;transition:none}.confetti{position:fixed;z-index:21;top:-5vh;left:var(--x);width:8px;height:13px;pointer-events:none;background:var(--c);animation:fall var(--t) linear forwards}@keyframes fall{to{transform:translate(var(--dx),110vh) rotate(780deg);opacity:0}}
+.overlay{position:fixed;z-index:50;inset:0;background:#050712e9;display:grid;place-items:center;padding:18px;backdrop-filter:blur(7px)}.overlay.hidden{display:none}.modal{width:min(100%,420px);max-height:92dvh;overflow:auto;border:1px solid #596582;background:linear-gradient(150deg,#2d354e,#151a2c);border-radius:23px;padding:20px 16px;text-align:center;box-shadow:0 25px 75px #000c}.modal h2{font-size:27px;color:var(--mint);margin:5px 0}.modal p{font-size:12px;line-height:1.65;color:#c5cee1;margin:7px 0 15px}.choice{width:100%;background:#2a3450;border:1px solid #56637e;color:white;border-radius:14px;padding:13px 12px;display:flex;align-items:center;gap:12px;text-align:left;margin:8px 0}.choice:active{background:#455574}.choice .emoji{font-size:27px;flex:0 0 36px;text-align:center}.choice strong{display:block;font-size:15px}.choice small{display:block;font-size:11px;line-height:1.5;color:#c9d1e3;margin-top:4px}.choice .tag{font-size:10px;color:#ffdc7f;font-weight:1000}.primary{width:100%;border:0;border-radius:14px;background:var(--mint);color:#172018;font-weight:1000;font-size:17px;padding:15px}.notice{color:var(--gold);font-weight:900;font-size:12px}
+@media(max-height:760px){.app{gap:9px}.stats{padding:10px}.machine{padding:9px}.machinehead{padding-bottom:7px}.message{height:33px}.spin{height:63px}.board{gap:5px}}@media(prefers-reduced-motion:reduce){.cell.roll,.cell.falling,.total,.float,.confetti{animation:none!important}.cell{transition:none!important}}
 </style>
 </head>
 <body>
 <main class="app">
-<header class="row">
-  <div>
-    <div class="brand">LUCK <b>LOOP</b></div>
-    <div class="sub">CHAIN REACTION · 5 × 5</div>
-  </div>
-  <div class="tools">
-    <button class="tool" id="speed" title="演出速度">通常</button>
-    <button class="tool" id="sound" title="効果音">🔊</button>
-  </div>
-</header>
-<section class="scorebox">
-  <div class="row">
-    <div>
-      <div class="label">TOTAL SCORE</div>
-      <div id="score" class="score">0</div>
-    </div>
-    <div class="statsRight">
-      <div class="label">BEST</div>
-      <div class="smallnum" id="best">0</div>
-      <div class="label" style="margin-top:4px">
-        <span id="spins">0</span> / 100 SPINS
-      </div>
-    </div>
-  </div>
-  <div class="bar"><div class="fill" id="bar"></div></div>
-  <div class="row footnote">
-    <span>⚡ 次の強化 <strong id="goal">500</strong></span>
-    <span id="remaining">あと 500</span>
-  </div>
-</section>
-<section class="machine" id="machine">
-  <div class="machineHead">✦ <span>CHAIN</span> REACTION ✦</div>
-  <div class="board" id="board"></div>
-  <div class="chainBox" id="chain" aria-live="polite">
-    SPINして連鎖を起こせ！
-  </div>
-</section>
-<button id="spin" class="spin">SPIN !</button>
-<p class="helper">
-  縦・横・斜め3つ以上で当たり<br>
-  そろう → 消える → 落ちる → またそろう！
-</p>
-<section class="powers">
-  <div class="row">
-    <span style="font-size:12px;font-weight:900">
-      ✨ 強化アイテム
-    </span>
-    <span id="upcount" class="footnote">0回獲得</span>
-  </div>
-  <div class="pillRow" id="owned">
-    <span class="pill">まだなし</span>
-  </div>
-</section>
-<footer class="footer">
-  <span>オフライン・自動セーブ</span>
-  <button id="reset" class="reset">最初から</button>
-</footer>
+ <header class="top"><div><div class="brand">LUCK <b>LOOP</b></div><div class="eyebrow">ROGUE CHAIN · BALANCED</div></div><div class="tools"><button class="tool" id="speed">通常</button><button class="tool" id="audio">🔊</button></div></header>
+ <section class="stats"><div class="between"><div><div class="eyebrow">TOTAL SCORE</div><div class="score" id="score">0</div></div><div style="text-align:right"><div class="floor" id="floor">FLOOR 1 / 10</div><div class="tiny" id="spins">0 / 100 SPINS</div></div></div><div class="bar"><div id="barfill"></div></div><div class="between stats-bottom"><span id="floorDesc">10回転で次の階へ</span><span id="best">BEST 0</span></div></section>
+ <section class="boss hidden" id="boss"><div class="between"><strong id="bossName">👹 ボス</strong><strong id="bossHp">HP 0</strong></div><div class="bossbar"><div id="bossFill"></div></div></section>
+ <section class="machine" id="machine"><div class="machinehead">✦ CHAIN REACTION ✦</div><div class="board" id="board"></div><div id="message" class="message">SPINで連鎖を起こせ！</div></section>
+ <button class="spin" id="spin">SPIN !</button>
+ <p class="hint">縦・横・斜め3個で消える → 落ちる → また連鎖！<br>10回転ごとにギミックを1つ獲得</p>
+ <details class="bag"><summary><span>✨ 所持ギミック <span id="ownedCount">0</span>種類</span><span>見る ▾</span></summary><div class="pills" id="owned"></div><div class="fusions" id="fusions"></div></details>
+ <footer class="foot"><span>オフライン・自動セーブ</span><button class="link" id="reset">最初から</button></footer>
 </main>
-<div class="flash" id="flash"></div>
-<div id="overlay" class="overlay hidden">
-  <div id="dialog" class="dialog"></div>
-</div>
+<div id="flash" class="flash"></div>
+<div id="overlay" class="overlay hidden"><div class="modal" id="dialog"></div></div>
 <script>
 (()=>{
 'use strict';
-
 const $=id=>document.getElementById(id);
 const ICON=['🍒','🍋','🍀','🔔','💎','7️⃣'];
-const BASE_WEIGHT=[24,21,19,16,12,8];
-const BASE_PAY=[40,50,65,85,130,220];
-const SAVE_KEY='luck_loop_chain_reaction_v1';
-const SCORE_CAP=999999999999;
-const dirs=[[0,1],[1,0],[1,1],[1,-1]];
-
-// id, 絵文字, 名前, 説明, 系統, 最大レベル
-const UP=[
-[0,'🍒','チェリー運','🍒が出やすくなる','運',4],
-[1,'🍋','レモン運','🍋が出やすくなる','運',4],
-[2,'🍀','クローバー運','🍀が出やすくなる','運',4],
-[3,'🔔','ベル運','🔔が出やすくなる','運',4],
-[4,'💎','ダイヤ運','💎が出やすくなる','運',4],
-[5,'7️⃣','セブン運','7️⃣が出やすくなる','運',4],
-[6,'🧲','左コピー','新しい絵柄が左隣をコピーする確率 +8%','運',3],
-[7,'⬆️','上コピー','新しい絵柄が上隣をコピーする確率 +8%','運',3],
-[8,'🌟','ワイルド運','万能マスの出現率 +2%','運',4],
-[9,'🌈','虹の奇跡','SPIN時、3%で6マスを同じ絵柄にする','運',3],
-[10,'🚀','得点アップ','すべての当たり得点 +25%','得点',5],
-[11,'🍒','3連強化','3個そろいの得点 +50%','得点',5],
-[12,'💥','4連強化','4個そろいの得点 +75%','得点',5],
-[13,'👑','5連強化','5個そろいの得点 +150%','得点',5],
-[14,'🍓','チェリー王','🍒でそろった得点 +60%','得点',5],
-[15,'7️⃣','セブン王','7️⃣でそろった得点 +120%','得点',5],
-[16,'✨','黄金強化','黄金マスを含む当たりの倍率 +0.5','得点',4],
-[17,'💣','爆弾','爆弾の出現率 +2%。そろうと周囲も消す','連鎖',4],
-[18,'👑','黄金化','黄金マスの出現率 +2%','連鎖',4],
-[19,'🔥','連鎖王','連鎖ごとの倍率の増え方 +0.4','連鎖',4],
-[20,'♾️','不滅','連鎖終了時15%で6マスを再抽選（1回）','連鎖',3],
-[21,'🛟','敗者復活','初回ハズレ時25%で3連を作る','連鎖',3],
-[22,'🌟','ワイルドの祝福','5回転ごとにワイルドを2マス追加','連鎖',2],
-[23,'🌧️','黄金の雨','2連鎖目から黄金マスの出現率 +6%','連鎖',3]
+const BASE=[42,49,59,72,98,140];
+const CAP=999999999999;
+const KEY='luckloop_rogue_chain_balanced_v3';
+const DIR=[[0,1],[1,0],[1,1],[1,-1]];
+// id, icon, name, effect, max level, unlock floor
+const CARDS=[
+[0,'💣','爆弾','爆弾マスが出現。そろうと周囲8マスを爆破',2,1],
+[1,'🧨','誘爆','爆風が別の爆弾に触れると次々爆発',1,2],
+[2,'⚡','雷玉','雷玉がそろうと同じ絵柄を盤面から全消去',2,1],
+[3,'🦠','増殖スライム','当たったスライムが隣2マスを同じ絵柄に変化',2,1],
+[4,'🧊','氷結','氷マスは当たっても1回だけ盤面に残る',2,1],
+[5,'🪞','ミラー','新しい絵柄が確率で左隣をコピー',2,1],
+[6,'🧲','磁石','落下後、横に同じ絵柄が並ぶように整列',2,1],
+[7,'🎨','ペイント','当たりの周囲2マスを同じ絵柄に塗り替え',2,1],
+[8,'🧬','分裂','消えた絵柄のコピー2個を次の落下で生成',2,2],
+[9,'🪃','ブーメラン','消えた絵柄が次の落下で戻りやすくなる',2,1],
+[10,'👻','ゴースト','当たった幽霊マスが万能マスに変化して残る',2,1],
+[11,'🌪️','竜巻','回転開始時、当たりが増える列入れ替えを探す',1,1],
+[12,'🧨','時限爆弾','3連鎖目に縦1列を爆破',1,3],
+[13,'🎁','宝箱','宝箱マスを消すと次の落下に万能2マス',2,1],
+[14,'🌱','種まき','2連鎖目以降、隣1マスをコピーする',2,1],
+[15,'☄️','隕石','4回転に1回、縦1列を引き直し有利な方を採用',1,1],
+[16,'🔥','炎','2連鎖目以降、当たりの周りも最大4マス燃やす',1,2],
+[17,'💎','結晶','落下後、同じ絵柄を縦に寄せる',2,2],
+[18,'🕳️','ワープ','開始時に2マスを交換し当たりを増やす',1,1],
+[19,'👑','王冠','王冠が消えると同じ絵柄3マスが万能に',2,3],
+[20,'🌟','ワイルド','万能絵柄が出現。どの絵柄にもつながる',2,1],
+[21,'♾️','再生','最初にハズレたら6マスを引き直す',1,1],
+[22,'🌈','虹の奇跡','8回転に1回、ランダムな5マスを同じ絵柄に',1,1],
+[23,'✨','黄金','黄金マスが出現。そろうと追加得点',2,1],
+[24,'🔊','エコー','2連鎖目から直前の当たり絵柄が落ちやすい',2,2],
+[25,'💥','ラインブレイカー','4連鎖目に横1行を吹き飛ばす',1,3],
+[26,'🔮','未来視','毎回2つの初期盤面から当たりが多い方を選ぶ',1,3],
+[27,'🗿','トーテム','次の落下で直前にそろった絵柄が出やすい',2,2],
+[28,'🐉','ドラゴン','5連鎖目に横2行を焼き払う',1,4],
+[29,'⚗️','反応炉','特殊マス2種類発動で次の落下に万能2マス',1,3]
 ];
-
-const byId=id=>UP.find(x=>x[0]===id);
-
-const fresh=()=>({
-  spins:0,
-  score:0,
-  best:0,
-  powers:{},
-  upgrades:0,
-  board:null,
-  maxChain:0,
-  bestTurn:0
-});
-
-let state=fresh();
-let busy=false;
-let mute=false;
-let fast=false;
-let ac=null;
-let pendingUp=0;
-let board=[];
-let cellEls=[];
-
-try{
-  const v=JSON.parse(localStorage.getItem(SAVE_KEY));
-
-  if(
-    v&&
-    Number.isInteger(v.spins)&&
-    v.spins>=0&&v.spins<=100&&
-    Number.isFinite(v.score)&&
-    v.score>=0&&v.score<=SCORE_CAP&&
-    v.powers&&typeof v.powers==='object'
-  ){
-    state={...fresh(),...v};
-  }
-
-  mute=localStorage.getItem(SAVE_KEY+'_mute')==='1';
-  fast=localStorage.getItem(SAVE_KEY+'_fast')==='1';
-}catch(e){}
-
-const lv=id=>Math.min(
-  byId(id)[5],
-  Math.max(0,Number(state.powers[id])||0)
-);
-
-const num=n=>Math.floor(n).toLocaleString('ja-JP');
-const clamp=n=>Math.max(
-  0,Math.min(SCORE_CAP,Math.round(n))
-);
-
+const COMBOS=[
+ {a:0,b:2,name:'🌩️ 雷撃爆弾',desc:'爆弾の爆風で同じ絵柄を全消去'},
+ {a:3,b:2,name:'⚡ 感染雷撃',desc:'スライムと雷玉が共鳴して変異が拡大'},
+ {a:6,b:17,name:'🧲 結晶磁界',desc:'落下後に追加でもう1マス整列'},
+ {a:7,b:16,name:'🔥 炎のペイント',desc:'塗り替えた周囲も燃焼'},
+ {a:19,b:20,name:'👑 虹の王冠',desc:'王冠の万能化が3→5マスに増加'},
+ {a:14,b:28,name:'🐉 世界樹ドラゴン',desc:'ドラゴンが4連鎖目から覚醒'}
+];
+function fresh(best=0){return{started:false,spins:0,score:0,best,cards:{},pending:1,boss:null,bossWins:[],maxChain:0,maxTurn:0,history:[],board:null};}
+let st=fresh(),board=[],cell=[],busy=false,fast=false,mute=false,audio=null;
+try{const v=JSON.parse(localStorage.getItem(KEY));if(v&&Number.isInteger(v.spins)&&v.spins>=0&&v.spins<=100&&v.cards&&typeof v.cards==='object'&&Number.isFinite(v.score)){st={...fresh(),...v};}fast=localStorage.getItem(KEY+'_fast')==='1';mute=localStorage.getItem(KEY+'_mute')==='1';}catch(e){}
+const lv=id=>Math.max(0,Math.min(CARDS[id][4],Number(st.cards[id]||0)));
+const have=id=>lv(id)>0;
+const combo=(a,b)=>have(a)&&have(b);
 const rnd=n=>Math.floor(Math.random()*n);
-const sleep=ms=>new Promise(
-  r=>setTimeout(r,fast?Math.round(ms*.22):ms)
-);
-
-const save=()=>{
-  try{
-    state.board=board.map(x=>({...x}));
-    localStorage.setItem(SAVE_KEY,JSON.stringify(state));
-  }catch(e){}
-};
-
-const nextGoal=n=>Math.min(
-  SCORE_CAP,
-  Math.round(
-    (500*(Math.pow(1.45,n+1)-1)/.45)/10
-  )*10
-);
-
-// 音
-function beep(
-  freq=440,
-  duration=.12,
-  type='sine',
-  volume=.045,
-  delay=0
-){
-  if(mute)return;
-
-  try{
-    const AC=window.AudioContext||
-      window.webkitAudioContext;
-    if(!AC)return;
-
-    ac=ac||new AC();
-
-    if(ac.state==='suspended'){
-      ac.resume().catch(()=>{});
-    }
-
-    const o=ac.createOscillator();
-    const g=ac.createGain();
-    const t=ac.currentTime+delay;
-
-    o.type=type;
-    o.frequency.setValueAtTime(freq,t);
-
-    g.gain.setValueAtTime(.0001,t);
-    g.gain.exponentialRampToValueAtTime(
-      Math.max(.001,volume),t+.012
-    );
-    g.gain.exponentialRampToValueAtTime(
-      .0001,t+duration
-    );
-
-    o.connect(g);
-    g.connect(ac.destination);
-    o.start(t);
-    o.stop(t+duration+.015);
-  }catch(e){}
-}
-
-function vibrate(a){
-  try{navigator.vibrate?.(a)}
-  catch(e){}
-}
-
-function confetti(count){
-  const palette=[
-    '#ffe27b',
-    '#f993b9',
-    '#bfff6b',
-    '#7edaff',
-    '#ffffff'
-  ];
-
-  for(let i=0;i<count;i++){
-    const e=document.createElement('i');
-    e.className='confetti';
-
-    e.style.cssText=`
-      --x:${Math.random()*100}vw;
-      --dx:${rnd(201)-100}px;
-      --c:${palette[i%5]};
-      --t:${.8+Math.random()*.8}s
-    `;
-
-    document.body.appendChild(e);
-    setTimeout(()=>e.remove(),1800);
+const fmt=n=>Math.floor(Math.max(0,n)).toLocaleString('ja-JP');
+const cap=n=>Math.max(0,Math.min(CAP,Math.round(Number.isFinite(n)?n:CAP)));
+const sleep=ms=>new Promise(r=>setTimeout(r,fast?Math.max(1,Math.round(ms*.24)):ms));
+const floorNow=()=>Math.min(10,Math.floor(Math.min(99,st.spins)/10)+1);
+const save=()=>{try{st.board=board.map(t=>({...t}));localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}};
+function beep(f=460,t=.12,wave='sine',vol=.055){if(mute)return;try{const AC=window.AudioContext||window.webkitAudioContext;audio=audio||new AC();if(audio.state==='suspended')audio.resume().catch(()=>{});const o=audio.createOscillator(),g=audio.createGain(),now=audio.currentTime;o.type=wave;o.frequency.value=f;g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(vol,now+.012);g.gain.exponentialRampToValueAtTime(.0001,now+t);o.connect(g);g.connect(audio.destination);o.start(now);o.stop(now+t+.01);}catch(e){}}
+function vib(p){try{navigator.vibrate?.(p)}catch(e){}}
+function flash(){const e=$('flash');e.classList.add('on');setTimeout(()=>e.classList.remove('on'),85)}
+function confetti(n){const colors=['#ffe78b','#bfff84','#ff78b1','#8edaff'];for(let i=0;i<n;i++){const e=document.createElement('i');e.className='confetti';e.style.cssText=`--x:${Math.random()*100}vw;--dx:${rnd(201)-100}px;--c:${colors[i%4]};--t:${1+Math.random()*.7}s`;document.body.append(e);setTimeout(()=>e.remove(),1900)}}
+const neighbors=i=>{const r=Math.floor(i/5),c=i%5;return [[-1,0],[1,0],[0,-1],[0,1]].map(([dr,dc])=>[r+dr,c+dc]).filter(([rr,cc])=>rr>=0&&rr<5&&cc>=0&&cc<5).map(([rr,cc])=>rr*5+cc)};
+function tile(prev=-1,echo=-1){let s=rnd(6);if(echo>=0&&Math.random()<.095*lv(27)+.08*lv(24))s=echo;if(prev>=0&&have(5)&&Math.random()<.10*lv(5))s=prev;
+ let special=null,shield=0;
+ const trials=[[0,'bomb',.029],[2,'light',.026],[3,'slime',.03],[4,'ice',.032],[10,'ghost',.029],[13,'chest',.029],[19,'crown',.025],[20,'wild',.035],[23,'gold',.037]];
+ for(const [id,key,p] of trials){if(have(id)&&Math.random()<p*lv(id)){special=key;break;}}
+ if(special==='wild')s='w';if(special==='ice'||special==='ghost')shield=1;
+ return{s,sp:special,shield};}
+function gridFresh(echo=-1){const a=[];for(let i=0;i<25;i++)a[i]=tile(i%5?a[i-1].s:-1,echo);return a;}
+function glyph(t){return t?.s==='w'?'🌟':ICON[t?.s??0]}
+const marks={bomb:'💣',light:'⚡',slime:'🦠',ice:'🧊',ghost:'👻',chest:'🎁',crown:'👑',gold:'✨'};
+function draw(drop=false){for(let i=0;i<25;i++){const t=board[i],e=cell[i];e.className='cell'+(t?.sp?' special':'')+(t?.s==='w'?' wild':'')+(drop?' falling':'');e.querySelector('.symbol').textContent=t?glyph(t):'';e.querySelector('.stamp').textContent=t?.sp&&t.sp!=='wild'?marks[t.sp]||'':'';}}
+function countLines(grid){return matches(grid).length;}
+function matches(g){const map=new Map();for(const [dr,dc] of DIR){for(let r=0;r<5;r++)for(let c=0;c<5;c++){for(let s=0;s<6;s++){
+ const ok=(rr,cc)=>{if(rr<0||rr>=5||cc<0||cc>=5)return false;const t=g[rr*5+cc];return !!t&&(t.s===s||t.s==='w');};
+ if(ok(r-dr,c-dc))continue;
+ const idx=[];for(let rr=r,cc=c;ok(rr,cc);rr+=dr,cc+=dc)idx.push(rr*5+cc);
+ if(idx.length<3)continue;
+ const key=dr+','+dc+':'+idx.join(',');const previous=map.get(key);
+ if(!previous||BASE[s]>BASE[previous.s])map.set(key,{s,len:idx.length,idx});
+ }}}
+ return [...map.values()].sort((a,b)=>b.len-a.len||Math.min(...a.idx)-Math.min(...b.idx));}
+function chainMult(chain){return chain<=5?Math.pow(2,chain-1):16*Math.pow(1.4,Math.min(8,chain-5));}
+function linePay(hit,g,chain){const length=hit.len;let val=BASE[hit.s]*(length===3?1:length===4?3.1:8);const gold=hit.idx.filter(i=>g[i].sp==='gold').length;val+=gold*140;return cap(val*chainMult(chain));}
+function render(){const f=floorNow(),within=st.spins%10;
+ $('score').textContent=fmt(st.score);$('floor').textContent='FLOOR '+f+' / 10';$('spins').textContent=st.spins+' / 100 SPINS';$('barfill').style.width=(within*10)+'%';$('floorDesc').textContent=(10-within)+'回転で'+(f===10?'終了':'次の階へ');$('best').textContent='BEST '+fmt(st.best);
+ $('speed').textContent=fast?'高速':'通常';$('audio').textContent=mute?'🔇':'🔊';const present=CARDS.filter(x=>have(x[0]));$('ownedCount').textContent=present.length;
+ $('owned').innerHTML=present.length?present.map(x=>`<span class="pill">${x[1]} ${x[2]}${lv(x[0])>1?' Lv.'+lv(x[0]):''}</span>`).join(''):'<span class="tiny">まだなし</span>';
+ const co=COMBOS.filter(x=>combo(x.a,x.b));$('fusions').textContent=co.length?'合体：'+co.map(x=>x.name).join(' / '):'ギミック同士で自動合体することがある！';
+ const isBoss=f===5||f===10;
+ $('boss').classList.toggle('hidden',!isBoss);
+ if(isBoss){const hpMax=f===5?7300:16200;const hp=(st.boss&&st.boss.floor===f)?st.boss.hp:hpMax;$('bossName').textContent=(f===5?'👹 中ボス':'👑 最終ボス')+' · 残り'+(10-(st.spins%10))+'回';$('bossHp').textContent=hp<=0?'撃破！':'HP '+fmt(hp);$('bossFill').style.width=Math.min(100,100*hp/hpMax)+'%';}
+ $('spin').disabled=busy||st.pending>0||st.spins>=100||!$('overlay').classList.contains('hidden');}
+function open(html){$('dialog').innerHTML=html;$('overlay').classList.remove('hidden');render()}
+function close(){$('overlay').classList.add('hidden');render()}
+function candidates(){const available=CARDS.filter(x=>x[5]<=floorNow()&&lv(x[0])<x[4]);const picks=[];while(picks.length<3&&available.length){const weights=available.map(x=>1+(COMBOS.some(z=>(z.a===x[0]&&have(z.b))||(z.b===x[0]&&have(z.a)))?4:0)+(lv(x[0])?1:0));let n=Math.random()*weights.reduce((a,b)=>a+b,0),pos=0;while(pos<weights.length-1&&n>=weights[pos])n-=weights[pos++];picks.push(available.splice(pos,1)[0]);}return picks;}
+function chooseUpgrade(){const opts=candidates();if(!opts.length){st.pending=0;save();return resume();}
+ const initial=!st.started;open(`<div class="eyebrow">${initial?'STARTER GIMMICK':'FLOOR CLEAR · REWARD'}</div><h2>${initial?'最初のギミックを選ぼう！':'✨ 強化を1つ選ぼう！'}</h2><p>${initial?'この能力を持って100回転スタート！':'強化はそのプレイの間ずっと有効。<br>ボスや連鎖を突破しよう！'}<br>残り選択：${st.pending}回</p><div id="choices"></div>`);
+ const box=$('choices');opts.forEach(x=>{const button=document.createElement('button');button.className='choice';const sy=COMBOS.find(z=>(z.a===x[0]&&have(z.b))||(z.b===x[0]&&have(z.a)));button.innerHTML=`<span class="emoji">${x[1]}</span><span><strong>${x[2]} ${lv(x[0])?'Lv.'+(lv(x[0])+1):''}</strong><small>${x[3]}${x[4]>1?'（重ねて強化可能）':''}</small>${sy?'<span class="tag">⚡ 合体！ '+sy.name+'</span>':''}</span>`;
+ button.onclick=()=>{st.cards[x[0]]=lv(x[0])+1;st.pending=Math.max(0,st.pending-1);st.started=true;save();close();beep(880,.15,'triangle',.065);if(st.pending>0)chooseUpgrade();else resume();};box.append(button);});}
+function ensureBoss(f){if((f===5||f===10)&&(!st.boss||st.boss.floor!==f)){st.boss={floor:f,hp:f===5?7300:16200};save();}}
+function resume(){if(st.spins>=100){finish();return;}if(st.pending>0){chooseUpgrade();return;}ensureBoss(floorNow());render()}
+function finish(){const success=st.bossWins.includes(10);open(`<div class="eyebrow">100 SPINS COMPLETE</div><h2>${success?'👑 全階層制覇！':'🎰 CHALLENGE COMPLETE'}</h2><p>今回はこんなスロットに成長したで！</p><div class="eyebrow">FINAL SCORE</div><div class="score" style="color:#ffda70">${fmt(st.score)}</div><p>最大連鎖：${st.maxChain} CHAIN<br>最大1回転：${fmt(st.maxTurn)}点<br>所持ギミック：${Object.keys(st.cards).length}種類<br>ボス撃破：${st.bossWins.length} / 2<br>自己ベスト：${fmt(st.best)}</p><button class="primary" id="again">もう1プレイ！</button>`);$('again').onclick=restart;}
+function restart(){if(busy)return;st=fresh(st.best);board=gridFresh();save();draw();close();$('message').textContent='SPINで連鎖を起こせ！';chooseUpgrade()}
+function scoreAt(hit,val){const base=$('machine').getBoundingClientRect();let x=0,y=0;hit.idx.forEach(i=>{const r=cell[i].getBoundingClientRect();x+=(r.left+r.width/2-base.left)/hit.idx.length;y+=(r.top+r.height/2-base.top)/hit.idx.length});const e=document.createElement('div');e.className='float';e.style.left=x+'px';e.style.top=y+'px';e.textContent='+'+fmt(val);$('machine').append(e);setTimeout(()=>e.remove(),750);}
+function turnOverlay(total,chain){const div=document.createElement('div');div.className='total';div.innerHTML=`<small>TURN SCORE</small><strong>+${fmt(total)}</strong><span>${chain?chain+' CHAIN!':'NEXT SPIN!'}</span>`;$('machine').append(div);setTimeout(()=>div.remove(),fast?400:1150);}
+function shuffleColumns(g){const a=rnd(5),b=(a+1+rnd(4))%5;for(let r=0;r<5;r++){[g[r*5+a],g[r*5+b]]=[g[r*5+b],g[r*5+a]]}}
+function arrange(g,extra=false){if(have(6)){for(let k=0;k<lv(6)+(extra?1:0);k++){const r=rnd(5),c=rnd(4),i=r*5+c;if(Math.random()<.48)g[i+1].s=g[i].s;}}if(have(17)){for(let k=0;k<lv(17);k++){const c=rnd(5),r=rnd(4),i=r*5+c;if(Math.random()<.53)g[i+5].s=g[i].s;}}}
+function initialGrid(spin){let a=gridFresh();if(have(22)&&spin%8===0){const s=rnd(6);for(let k=0;k<5;k++)a[rnd(25)].s=s;}$('message').textContent=have(22)&&spin%8===0?'🌈 虹の奇跡！':'リール回転中…';
+ if(have(15)&&spin%4===0){const b=a.map(t=>({...t})),col=rnd(5);for(let r=0;r<5;r++)b[r*5+col]=tile();if(countLines(b)>=countLines(a))a=b;}
+ if(have(11)){let chosen=a,best=countLines(a);for(let k=0;k<4;k++){const b=chosen.map(t=>({...t}));shuffleColumns(b);const lines=countLines(b);if(lines>best){chosen=b;best=lines;}}a=chosen;}
+ if(have(18)){let best=countLines(a);for(let k=0;k<20;k++){const i=rnd(25),j=rnd(25);[a[i],a[j]]=[a[j],a[i]];const n=countLines(a);if(n>=best){best=n;break;}[a[i],a[j]]=[a[j],a[i]];}}
+ arrange(a);
+ if(have(26)){const b=gridFresh();arrange(b);if(countLines(b)>countLines(a))a=b;}
+ return a;}
+function blankNeighborsRemoved(removed,center){for(const v of neighbors(center))removed.add(v);for(const dr of [-1,1])for(const dc of [-1,1]){const r=Math.floor(center/5)+dr,c=center%5+dc;if(r>=0&&r<5&&c>=0&&c<5)removed.add(r*5+c)}}
+function specialProcess(hits,removed,chain,context){const signal=new Set();const bombQueue=[];const specials=new Set();const primary=hits[0]||null;
+ for(const i of [...removed]){const t=board[i];if(!t)continue;
+ if(t.sp==='bomb'&&have(0)){bombQueue.push(i);specials.add('bomb');}
+ if(t.sp==='light'&&have(2)){signal.add(t.s);specials.add('light');}
+ if(t.sp==='slime'&&have(3)){const ns=neighbors(i).filter(j=>!removed.has(j));for(let j=0;j<Math.min(ns.length,2*lv(3));j++){board[ns[j]].s=t.s;}specials.add('slime');}
+ if(t.sp==='chest'&&have(13)){context.wild+=2*lv(13);specials.add('chest');}
+ if(t.sp==='crown'&&have(19)){const cands=board.map((z,j)=>z.s===t.s&&!removed.has(j)?j:-1).filter(j=>j>=0);for(let j=0;j<Math.min(cands.length,combo(19,20)?5:3);j++)board[cands[j]].s='w';specials.add('crown');}
+ if((t.sp==='ice'||t.sp==='ghost')&&t.shield>0){if(t.sp==='ghost'){t.s='w';t.sp='wild';t.shield=0;specials.add('ghost');}else{t.shield--;t.sp=null;specials.add('shield');}removed.delete(i);}
+ }
+ if(bombQueue.length){const seen=new Set();while(bombQueue.length){const i=bombQueue.shift();if(seen.has(i))continue;seen.add(i);const previous=new Set(removed);blankNeighborsRemoved(removed,i);if(have(1)){for(const v of removed){if(!previous.has(v)&&board[v]?.sp==='bomb')bombQueue.push(v);}}if(combo(0,2))signal.add(board[i].s);}}
+ if(signal.size){for(const s of signal){for(let i=0;i<25;i++){if(board[i].s===s)removed.add(i);}}}
+ if(combo(3,2)&&specials.has('slime')&&specials.has('light')){if(primary)for(let i=0;i<25;i++)if(board[i].s===primary.s)removed.add(i);}
+ if(have(7)&&primary){const origin=primary.idx[rnd(primary.idx.length)];let list=neighbors(origin).filter(j=>!removed.has(j));for(let k=0;k<Math.min(list.length,2*lv(7));k++){board[list[k]].s=primary.s;if(combo(7,16))removed.add(list[k]);}}
+ if(have(16)&&chain>=2&&primary){for(const j of neighbors(primary.idx[0]).slice(0,4))removed.add(j);specials.add('fire');}
+ if(have(8)&&primary){context.split=primary.s;context.splitCount=2*lv(8);}
+ if(have(9)&&primary)context.echo=primary.s;
+ if(have(12)&&chain===3){const c=rnd(5);for(let r=0;r<5;r++)removed.add(r*5+c);specials.add('timebomb');}
+ if(have(25)&&chain===4){const r=rnd(5);for(let c=0;c<5;c++)removed.add(r*5+c);specials.add('breaker');}
+ if(have(28)&&chain===(combo(14,28)?4:5)){const r=rnd(4);for(let c=0;c<5;c++){removed.add(r*5+c);removed.add((r+1)*5+c);}specials.add('dragon');}
+ if(have(29)&&specials.size>=2)context.wild+=2;
+ if(specials.size)context.notes.push([...specials].map(s=>({bomb:'💣爆発',light:'⚡雷撃',slime:'🦠増殖',chest:'🎁宝箱',crown:'👑王冠',shield:'🧊防御',ghost:'👻万能化',fire:'🔥炎',timebomb:'🧨時限',breaker:'💥貫通',dragon:'🐉ドラゴン'})[s]).filter(Boolean).join(' ＋ '));
+ return removed;}
+function refill(removed,ctx,chain){for(let c=0;c<5;c++){const keep=[];for(let r=4;r>=0;r--){const i=r*5+c;if(!removed.has(i))keep.push({...board[i]});}
+ for(let r=4;r>=0;r--){const i=r*5+c;const from=keep[4-r];if(from){board[i]=from;}else{board[i]=tile(c?board[i-1]?.s:-1,ctx.echo);
+ if(ctx.splitCount>0){board[i].s=ctx.split;ctx.splitCount--;}
+ if(ctx.wild>0){board[i].s='w';board[i].sp='wild';ctx.wild--;}
+ }}}
+ if(have(14)&&chain>=2){for(let k=0;k<lv(14);k++){const i=rnd(25),nb=neighbors(i);if(nb.length)board[i].s=board[nb[rnd(nb.length)]].s;}}
+ if(chain<=2||Math.random()<(chain>=6?.18:.50))arrange(board,combo(6,17));}
+async function doSpin(){if(busy||st.pending||st.spins>=100||!$('overlay').classList.contains('hidden'))return;busy=true;render();const f=floorNow(),spinNumber=st.spins+1;ensureBoss(f);const result=initialGrid(spinNumber);const ended=[false,false,false,false,false];cell.forEach(e=>{e.className='cell roll';e.querySelector('.stamp').textContent='';});beep(160,.2,'sawtooth',.06);
+ const ticker=setInterval(()=>{for(let i=0;i<25;i++)if(!ended[i%5])cell[i].querySelector('.symbol').textContent=ICON[rnd(6)];},75);
+ try{
+  for(let c=0;c<5;c++){await sleep(c===0?340:220);ended[c]=true;for(let r=0;r<5;r++){const i=r*5+c,t=result[i];cell[i].className='cell'+(t.sp?' special':'');cell[i].querySelector('.symbol').textContent=glyph(t);cell[i].querySelector('.stamp').textContent=marks[t.sp]||'';}beep(200+c*66,.11,'triangle',.07);vib(20);}
+  clearInterval(ticker);board=result;draw();await sleep(150);
+  let total=0,chains=0,revived=false;const ctx={wild:0,split:null,splitCount:0,echo:-1,notes:[]};
+  while(chains<16){const hits=matches(board);if(!hits.length){if(!revived&&have(21)&&chains===0){revived=true;for(let k=0;k<6;k++)board[rnd(25)]=tile();if(matches(board).length===0){const r=rnd(5),c=rnd(3),s=rnd(6);for(let j=0;j<3;j++)board[r*5+c+j].s=s;}$('message').textContent='♾️ 再生！';draw(true);await sleep(340);continue;}break;}
+   chains++;st.maxChain=Math.max(st.maxChain,chains);$('message').className='message'+(chains>=3?' hot':'');$('message').textContent=(chains>=10?'👑 LEGEND CHAIN! ':chains>=7?'💥 MEGA CHAIN! ':chains>=4?'🔥 BIG CHAIN! ':'')+chains+' CHAIN ×'+Number(chainMult(chains).toFixed(1));if(chains>=4){if([4,7,10].includes(chains)){flash();confetti(chains>=10?55:chains>=7?35:12);} beep(520+Math.min(6,chains)*85,.18,'sawtooth',.07);vib([35,20,50]);}
+   const removed=new Set();let shown=0;for(const hit of hits){const val=linePay(hit,board,chains);total=cap(total+val);st.score=cap(st.score+val);st.best=Math.max(st.best,st.score);hit.idx.forEach(i=>{removed.add(i);cell[i].classList.add('hit')});scoreAt(hit,val);$('score').textContent=fmt(st.score);beep(420+Math.min(7,chains)*65,.12,'triangle',.055);shown++;await sleep(hits.length>9?90:180);hit.idx.forEach(i=>cell[i].classList.remove('hit'));}
+   specialProcess(hits,removed,chains,ctx);
+   if(ctx.notes.length){$('message').textContent=ctx.notes.slice(-1)[0];beep(195,.23,'sawtooth',.07);await sleep(230);}
+   if(removed.size===0)break;
+   for(const i of removed)cell[i].classList.add('gone');await sleep(170);refill(removed,ctx,chains+1);draw(true);await sleep(330);
   }
-}
-
-function flash(){
-  const x=$('flash');
-  x.classList.add('on');
-
-  setTimeout(()=>{
-    x.classList.remove('on');
-  },90);
-}
-
-// 絵柄の出現確率
-function pickSymbol(){
-  const w=BASE_WEIGHT.map(
-    (x,i)=>x+lv(i)*(i===5?5:i>=4?6:7)
-  );
-
-  let v=Math.random()*w.reduce((a,b)=>a+b,0);
-
-  for(let i=0;i<6;i++){
-    v-=w[i];
-    if(v<0)return i;
-  }
-
-  return 5;
-}
-
-// 新しい絵柄を作成
-function makeTile(context=null){
-  const chain=context?.chain||0;
-
-  const wp=Math.min(.19,.008+.02*lv(8));
-  const bp=Math.min(.14,.005+.02*lv(17));
-
-  const r=Math.random();
-
-  let sym=r<bp?'b':
-    r<bp+wp?'w':pickSymbol();
-
-  const goldChance=Math.min(
-    .32,
-    .01+.02*lv(18)+
-    (chain>=2?.06*lv(23):0)
-  );
-
-  return {
-    s:sym,
-    gold:Math.random()<goldChance
-  };
-}
-
-function fillNewGrid(chain=0){
-  const out=Array(25).fill(null);
-
-  for(let i=0;i<25;i++){
-    out[i]=makeTile({chain});
-
-    const row=Math.floor(i/5);
-    const col=i%5;
-
-    if(
-      col>0&&
-      Math.random()<.08*lv(6)
-    ){
-      out[i].s=out[i-1].s;
-    }else if(
-      row>0&&
-      Math.random()<.08*lv(7)
-    ){
-      out[i].s=out[i-5].s;
-    }
-  }
-
-  return out;
-}
-
-function symLabel(s){
-  return s==='w'?'🌟':
-    s==='b'?'💣':ICON[s];
-}
-
-function drawGrid(animate=false){
-  for(let i=0;i<25;i++){
-    const t=board[i];
-    const e=cellEls[i];
-
-    e.textContent=t?symLabel(t.s):'';
-
-    e.className=
-      'cell'+
-      (t?.gold?' gold':'')+
-      (animate?' fall':'');
-  }
-}
-
-// 画面表示更新
-function render(){
-  $('score').textContent=num(state.score);
-
-  $('best').textContent=num(
-    Math.max(state.best,state.score)
-  );
-
-  $('spins').textContent=state.spins;
-
-  const goal=nextGoal(state.upgrades);
-  const prev=state.upgrades?
-    nextGoal(state.upgrades-1):0;
-
-  $('goal').textContent=num(goal);
-
-  $('remaining').textContent=
-    state.score>=goal?
-      '強化できる！':
-      'あと '+num(goal-state.score);
-
-  $('bar').style.width=
-    `${Math.max(0,Math.min(
-      100,
-      100*(state.score-prev)/
-      Math.max(1,goal-prev)
-    ))}%`;
-
-  $('upcount').textContent=
-    state.upgrades+'回獲得';
-
-  const owned=UP
-    .filter(p=>lv(p[0]))
-    .map(p=>`
-      <span class="pill">
-        ${p[1]} ${p[2]}
-        ${lv(p[0])>1?' Lv.'+lv(p[0]):''}
-      </span>
-    `);
-
-  $('owned').innerHTML=
-    owned.join('')||
-    '<span class="pill">まだなし</span>';
-
-  $('sound').textContent=mute?'🔇':'🔊';
-  $('speed').textContent=fast?'高速':'通常';
-
-  $('spin').disabled=
-    busy||
-    state.spins>=100||
-    !$('overlay').classList.contains('hidden');
-}
-
-// 縦・横・斜め3つ以上の当たりを検出
-function matches(grid){
-  const candidates=new Map();
-
-  for(const [dr,dc] of dirs){
-    for(let r=0;r<5;r++){
-      for(let c=0;c<5;c++){
-        for(let s=0;s<6;s++){
-          const prevR=r-dr;
-          const prevC=c-dc;
-
-          const ok=i=>grid[i]&&(
-            grid[i].s===s||
-            grid[i].s==='w'||
-            grid[i].s==='b'
-          );
-
-          if(
-            prevR>=0&&prevR<5&&
-            prevC>=0&&prevC<5&&
-            ok(prevR*5+prevC)
-          )continue;
-
-          const idx=[];
-
-          for(
-            let rr=r,cc=c;
-            rr>=0&&rr<5&&
-            cc>=0&&cc<5&&
-            ok(rr*5+cc);
-            rr+=dr,cc+=dc
-          ){
-            idx.push(rr*5+cc);
-          }
-
-          if(idx.length<3)continue;
-
-          const key=
-            dr+','+dc+':'+idx.join(',');
-
-          const prior=candidates.get(key);
-
-          if(
-            !prior||
-            BASE_PAY[s]>BASE_PAY[prior.s]
-          ){
-            candidates.set(key,{
-              s,
-              idx,
-              len:idx.length
-            });
-          }
-        }
-      }
-    }
-  }
-
-  return [...candidates.values()].sort(
-    (a,b)=>
-      b.len-a.len||
-      Math.min(...a.idx)-Math.min(...b.idx)
-  );
-}
-
-// 当たり得点
-function pay(match,grid,chain){
-  const len=match.len;
-
-  let v=BASE_PAY[match.s]*(
-    len===3?1:
-    len===4?4:12
-  );
-
-  // 基本得点強化
-  v*=1+.25*lv(10);
-
-  // 3・4・5連強化
-  v*=1+(
-    len===3?.50*lv(11):
-    len===4?.75*lv(12):
-    1.5*lv(13)
-  );
-
-  // 絵柄別ボーナス
-  if(match.s===0){
-    v*=1+.60*lv(14);
-  }
-
-  if(match.s===5){
-    v*=1+1.2*lv(15);
-  }
-
-  // 黄金マス
-  if(match.idx.some(i=>grid[i].gold)){
-    v*=2+.5*lv(16);
-  }
-
-  // 連鎖倍率
-  const mult=Math.min(
-    512,
-    Math.pow(
-      2+.4*lv(19),
-      chain-1
-    )
-  );
-
-  return clamp(v*mult);
-}
-
-// SPINで出る盤面を作成
-function rollGrid(spin){
-  let g=fillNewGrid();
-
-  // 虹の奇跡
-  if(
-    lv(9)&&
-    Math.random()<.03*lv(9)
-  ){
-    const symbol=pickSymbol();
-
-    const positions=[
-      ...Array(25).keys()
-    ].sort(
-      ()=>Math.random()-.5
-    ).slice(0,6);
-
-    positions.forEach(i=>{
-      g[i].s=symbol;
-    });
-
-    $('chain').textContent='🌈 虹の奇跡！';
-  }
-
-  // ワイルドの祝福
-  if(
-    lv(22)&&
-    spin%5===0
-  ){
-    const pool=[
-      ...Array(25).keys()
-    ].sort(
-      ()=>Math.random()-.5
-    ).slice(0,2*lv(22));
-
-    pool.forEach(i=>{
-      g[i].s='w';
-    });
-
-    $('chain').textContent=
-      '🌟 ワイルドの祝福！';
-  }
-
-  // 敗者復活
-  if(
-    lv(21)&&
-    !matches(g).length&&
-    Math.random()<.25*lv(21)
-  ){
-    const r=rnd(5);
-    const c=rnd(3);
-    const s=pickSymbol();
-
-    for(let j=0;j<3;j++){
-      g[r*5+c+j].s=s;
-    }
-
-    $('chain').textContent='🛟 敗者復活！';
-  }
-
-  return g;
-}
-
-// 当たりが消えたあと落下と補充
-function cascadeRefill(removed,chain){
-  for(let c=0;c<5;c++){
-    const left=[];
-
-    for(let r=4;r>=0;r--){
-      const i=r*5+c;
-
-      if(!removed.has(i)){
-        left.push({...board[i]});
-      }
-    }
-
-    for(let r=4;r>=0;r--){
-      const i=r*5+c;
-
-      board[i]=
-        left[4-r]||
-        makeTile({chain});
-
-      if(!left[4-r]){
-        // 新しく降ってきた絵柄のみコピー
-        if(
-          c>0&&
-          Math.random()<.08*lv(6)
-        ){
-          board[i].s=board[i-1].s;
-        }else if(
-          r<4&&
-          Math.random()<.08*lv(7)
-        ){
-          board[i].s=board[i+5].s;
-        }
-      }
-    }
-  }
-}
-
-// 当たりの位置に得点を表示
-function floating(match,value){
-  const center=match.idx.reduce(
-    (a,i)=>{
-      const rect=
-        cellEls[i].getBoundingClientRect();
-
-      const parent=
-        $('machine').getBoundingClientRect();
-
-      return {
-        x:a.x+(
-          rect.left+rect.width/2-
-          parent.left
-        )/match.idx.length,
-        y:a.y+(
-          rect.top+rect.height/2-
-          parent.top
-        )/match.idx.length
-      };
-    },
-    {x:0,y:0}
-  );
-
-  const e=document.createElement('div');
-
-  e.className='float';
-  e.style.left=center.x+'px';
-  e.style.top=center.y+'px';
-  e.textContent='+'+num(value);
-
-  $('machine').appendChild(e);
-
-  setTimeout(()=>{
-    e.remove();
-  },580);
-}
-
-// 回転終了時に大きな合計を表示
-function totalPopup(score,chain){
-  const e=document.createElement('div');
-
-  e.className='totalOverlay';
-
-  e.innerHTML=`
-    <div class="kicker">TURN SCORE</div>
-    <div class="big">+${num(score)}</div>
-    <div class="details">
-      ${chain?chain+' CHAIN!':'NEXT SPIN!'}
-    </div>
-  `;
-
-  $('machine').appendChild(e);
-
-  setTimeout(()=>{
-    e.remove();
-  },fast?340:1080);
-}
-
-// モーダル
-function close(){
-  $('overlay').classList.add('hidden');
-  render();
-}
-
-function dialog(html){
-  $('dialog').innerHTML=html;
-  $('overlay').classList.remove('hidden');
-  render();
-}
-
-// 強化3択
-function threeUpgrades(){
-  const selected=[];
-
-  for(const category of [
-    '運',
-    '得点',
-    '連鎖'
-  ]){
-    const options=UP.filter(
-      p=>
-        p[4]===category&&
-        lv(p[0])<p[5]&&
-        !selected.includes(p)
-    );
-
-    if(options.length){
-      selected.push(
-        options[rnd(options.length)]
-      );
-    }
-  }
-
-  return selected;
-}
-
-function showUpgrade(){
-  const options=threeUpgrades();
-
-  if(!options.length){
-    state.upgrades++;
-    save();
-    return afterSpin();
-  }
-
-  dialog(`
-    <div class="sub">UPGRADE UNLOCKED</div>
-    <h2>⚡ 強化を選ぼう！</h2>
-    <p>
-      運を上げる？
-      得点を伸ばす？
-      連鎖を狙う？
-    </p>
-    <div id="choices"></div>
-  `);
-
-  for(const item of options){
-    const b=document.createElement('button');
-
-    b.className='upgrade';
-
-    b.innerHTML=`
-      <span class="emoji">
-        ${item[1]}
-      </span>
-      <span>
-        <span class="category">
-          ${item[4]}系
-        </span>
-        <strong>
-          ${item[2]}
-          <span style="font-size:11px;color:#bfff6b">
-            Lv.${lv(item[0])+1}
-          </span>
-        </strong>
-        <small>
-          ${item[3]}（1レベルごと）
-        </small>
-      </span>
-    `;
-
-    b.onclick=()=>{
-      if(busy)return;
-
-      state.powers[item[0]]=
-        lv(item[0])+1;
-
-      state.upgrades++;
-
-      save();
-      close();
-
-      beep(
-        700,.16,'triangle',.07
-      );
-      beep(
-        1050,.2,'sine',.05,.1
-      );
-
-      $('chain').textContent=
-        item[1]+' '+item[2]+' 強化！';
-
-      afterSpin();
-    };
-
-    $('choices').appendChild(b);
-  }
-}
-
-function afterSpin(){
-  if(busy)return;
-
-  if(state.spins>=100){
-    finish();
-    return;
-  }
-
-  if(
-    state.score>=
-    nextGoal(state.upgrades)
-  ){
-    showUpgrade();
-    return;
-  }
-
-  render();
-}
-
-// 100回転終了
-function finish(){
-  dialog(`
-    <div class="sub">100 SPINS FINISHED</div>
-    <h2>🏆 FINISH!</h2>
-    <p>100回転おつかれ！</p>
-
-    <div class="label">
-      FINAL SCORE
-    </div>
-    <div class="score" style="color:#ffdf78">
-      ${num(state.score)}
-    </div>
-
-    <p>
-      最高連鎖：${state.maxChain} CHAIN<br>
-      最高1回転：${num(state.bestTurn)}点<br>
-      獲得した強化：${state.upgrades}回<br>
-      自己ベスト：${num(state.best)}点
-    </p>
-
-    <button class="primary" id="again">
-      もう一度100回転！
-    </button>
-  `);
-
-  $('again').onclick=restart;
-}
-
-// スロット本体
-async function spin(){
-  if(
-    busy||
-    state.spins>=100||
-    !$('overlay').classList.contains('hidden')
-  )return;
-
-  busy=true;
-  render();
-
-  const thisSpin=state.spins+1;
-
-  $('chain').className='chainBox';
-  $('chain').textContent='リール回転中…';
-
-  const finalGrid=rollGrid(thisSpin);
-
-  const stopped=[
-    false,false,false,false,false
-  ];
-
-  cellEls.forEach(e=>{
-    e.className='cell spinny';
-  });
-
-  beep(
-    140,.2,'sawtooth',.06
-  );
-
-  // 回転中の絵柄
-  const ticker=setInterval(()=>{
-    for(let i=0;i<25;i++){
-      if(!stopped[i%5]){
-        cellEls[i].textContent=
-          ICON[rnd(6)];
-      }
-    }
-  },65);
-
-  // 左から1列ずつ停止
-  for(let c=0;c<5;c++){
-    await sleep(c===0?340:240);
-
-    stopped[c]=true;
-
-    for(let r=0;r<5;r++){
-      const i=r*5+c;
-
-      cellEls[i].textContent=
-        symLabel(finalGrid[i].s);
-
-      cellEls[i].className=
-        'cell'+
-        (finalGrid[i].gold?' gold':'');
-    }
-
-    beep(
-      220+c*58,
-      .1,
-      'triangle',
-      .072
-    );
-
-    vibrate(20);
-  }
-
-  clearInterval(ticker);
-
-  board=finalGrid;
-  drawGrid();
-
-  await sleep(180);
-
-  let turnTotal=0;
-  let chain=0;
-  let revived=false;
-
-  // 1回転の連鎖処理
-  while(chain<18){
-    let hits=matches(board);
-
-    if(!hits.length){
-
-      // 不滅：1回だけ再抽選
-      if(
-        chain>0&&
-        !revived&&
-        lv(20)&&
-        Math.random()<.15*lv(20)
-      ){
-        revived=true;
-
-        $('chain').textContent=
-          '♾️ 不滅！ 6マス再抽選！';
-
-        const spots=[
-          ...Array(25).keys()
-        ].sort(
-          ()=>Math.random()-.5
-        ).slice(0,6);
-
-        spots.forEach(i=>{
-          board[i]=makeTile({
-            chain:chain+1
-          });
-        });
-
-        drawGrid(true);
-
-        beep(
-          740,.22,'sine',.05
-        );
-
-        await sleep(420);
-        continue;
-      }
-
-      break;
-    }
-
-    chain++;
-
-    state.maxChain=Math.max(
-      chain,
-      state.maxChain
-    );
-
-    const mult=Math.min(
-      512,
-      Math.pow(
-        2+.4*lv(19),
-        chain-1
-      )
-    );
-
-    $('chain').textContent=
-      `${chain} CHAIN! ×${Number(mult.toFixed(1))}`;
-
-    $('chain').className=
-      'chainBox'+
-      (chain>=3?' hot':'');
-
-    if(chain>=3){
-      beep(
-        450+Math.min(8,chain)*75,
-        .22,
-        'sawtooth',
-        .06
-      );
-
-      vibrate([40,25,50]);
-    }
-
-    if(chain>=5){
-      flash();
-      confetti(chain>=8?35:15);
-    }
-
-    const removed=new Set();
-
-    // 当たりごとに加点演出
-    for(const hit of hits){
-      const value=pay(
-        hit,
-        board,
-        chain
-      );
-
-      hit.idx.forEach(i=>{
-        removed.add(i);
-        cellEls[i].classList.add('match');
-      });
-
-      floating(hit,value);
-
-      state.score=clamp(
-        state.score+value
-      );
-
-      turnTotal=clamp(
-        turnTotal+value
-      );
-
-      $('score').textContent=
-        num(state.score);
-
-      beep(
-        400+Math.min(12,chain)*55,
-        .12,
-        'triangle',
-        .05
-      );
-
-      await sleep(
-        hits.length>=12?85:
-        hits.length>=6?135:240
-      );
-
-      hit.idx.forEach(i=>{
-        cellEls[i].classList.remove('match');
-      });
-    }
-
-    // 爆弾の周囲を消す
-    const explosions=[
-      ...removed
-    ].filter(
-      i=>board[i].s==='b'
-    );
-
-    for(const i of explosions){
-      const r=Math.floor(i/5);
-      const c=i%5;
-
-      for(let dr=-1;dr<=1;dr++){
-        for(let dc=-1;dc<=1;dc++){
-          const rr=r+dr;
-          const cc=c+dc;
-
-          if(
-            rr>=0&&rr<5&&
-            cc>=0&&cc<5
-          ){
-            removed.add(rr*5+cc);
-          }
-        }
-      }
-    }
-
-    if(explosions.length){
-      $('chain').textContent+=' 💣 BOOM!';
-
-      flash();
-
-      beep(
-        120,.28,'sawtooth',.075
-      );
-    }
-
-    // 当たりマスを消去
-    for(const i of removed){
-      cellEls[i].classList.add('clear');
-    }
-
-    await sleep(230);
-
-    // 重力で落下・補充
-    cascadeRefill(
-      removed,
-      chain+1
-    );
-
-    drawGrid(true);
-
-    await sleep(360);
-  }
-
-  // 連鎖終了
-  if(chain>=4){
-    beep(
-      523,.17,'sawtooth',.07
-    );
-
-    beep(
-      784,.24,'sawtooth',.08,.10
-    );
-  }
-
-  if(chain>=6){
-    flash();
-    confetti(70);
-  }
-
-  state.spins++;
-
-  state.best=Math.max(
-    state.best,
-    state.score
-  );
-
-  state.bestTurn=Math.max(
-    state.bestTurn,
-    turnTotal
-  );
-
-  // 回転合計を大きく表示
-  totalPopup(
-    turnTotal,
-    chain
-  );
-
-  $('chain').className=
-    'chainBox'+
-    (chain>=3?' hot':'');
-
-  $('chain').textContent=chain?
-    `${chain} CHAIN!　合計 +${num(turnTotal)}`:
-    '次はそろうかな？';
-
-  save();
-  render();
-
-  await sleep(1050);
-
+  st.spins++;st.maxTurn=Math.max(st.maxTurn,total);
+  if((f===5||f===10)&&st.boss&&st.boss.floor===f&&st.boss.hp>0){const damage=Math.round(180+Math.sqrt(total)*7.8+chains*120*(chains>=5?1.5:1));st.boss.hp=Math.max(0,st.boss.hp-damage);if(st.boss.hp===0&&!st.bossWins.includes(f)){st.bossWins.push(f);flash();confetti(70);$('message').textContent='👑 BOSS DOWN!';}else{$('message').textContent='👹 ボスに '+fmt(damage)+' ダメージ！';}}
+  st.history.push({spin:st.spins,score:total,chain:chains});if(st.history.length>100)st.history.shift();
+  if(st.spins%10===0&&st.spins<100){st.pending=1+(f===5&&st.bossWins.includes(5)?1:0);}
+  st.best=Math.max(st.best,st.score);save();render();turnOverlay(total,chains);await sleep(1100);
   busy=false;
-
-  afterSpin();
+  if(st.spins===100){finish();}else if(st.pending>0){chooseUpgrade();}else{resume();}
+ }catch(err){clearInterval(ticker);console.error(err);busy=false;draw();render();$('message').textContent='処理エラー。もう一度SPINしてな。';}
 }
-
-// リスタート
-function restart(){
-  const best=state.best;
-
-  state=fresh();
-  state.best=best;
-
-  board=fillNewGrid();
-
-  save();
-  close();
-  drawGrid();
-
-  $('chain').className='chainBox';
-  $('chain').textContent=
-    'SPINして連鎖を起こせ！';
-
-  render();
-}
-
-// 盤面を作成
-for(let i=0;i<25;i++){
-  const e=document.createElement('div');
-
-  e.className='cell';
-
-  $('board').appendChild(e);
-  cellEls.push(e);
-}
-
-// セーブデータから復帰
-if(
-  Array.isArray(state.board)&&
-  state.board.length===25&&
-  state.board.every(
-    x=>x&&[
-      'w','b',0,1,2,3,4,5
-    ].includes(x.s)
-  )
-){
-  board=state.board.map(
-    x=>({
-      s:x.s,
-      gold:!!x.gold
-    })
-  );
-}else{
-  board=fillNewGrid();
-  save();
-}
-
-drawGrid();
-render();
-
-// イベント登録
-$('spin').onclick=()=>{
-  spin().catch(err=>{
-    console.error(err);
-
-    busy=false;
-    drawGrid();
-    render();
-
-    $('chain').textContent=
-      'エラーが発生しました。再開できます';
-  });
-};
-
-$('sound').onclick=()=>{
-  mute=!mute;
-
-  try{
-    localStorage.setItem(
-      SAVE_KEY+'_mute',
-      mute?'1':'0'
-    );
-  }catch(e){}
-
-  render();
-
-  if(!mute){
-    beep(600);
-  }
-};
-
-$('speed').onclick=()=>{
-  fast=!fast;
-
-  try{
-    localStorage.setItem(
-      SAVE_KEY+'_fast',
-      fast?'1':'0'
-    );
-  }catch(e){}
-
-  render();
-};
-
-$('reset').onclick=()=>{
-  if(
-    !busy&&
-    confirm(
-      '100回転を最初からやり直す？ 自己ベストは残すで。'
-    )
-  ){
-    restart();
-  }
-};
-
-setTimeout(afterSpin,70);
-
+for(let i=0;i<25;i++){const e=document.createElement('div');e.className='cell';e.innerHTML='<span class="symbol"></span><span class="stamp"></span>';$('board').append(e);cell.push(e);}
+if(Array.isArray(st.board)&&st.board.length===25&&st.board.every(t=>t&&(t.s==='w'||(Number.isInteger(t.s)&&t.s>=0&&t.s<6)))){board=st.board.map(t=>({...t}));}else{board=gridFresh();save();}
+draw();render();$('spin').onclick=()=>doSpin();$('speed').onclick=()=>{fast=!fast;try{localStorage.setItem(KEY+'_fast',fast?'1':'0')}catch(e){}render()};$('audio').onclick=()=>{mute=!mute;try{localStorage.setItem(KEY+'_mute',mute?'1':'0')}catch(e){}render();if(!mute)beep(740)};$('reset').onclick=()=>{if(!busy&&confirm('100回転を最初からやり直す？ 自己ベストは残すで。'))restart()};setTimeout(resume,100);
 })();
 </script>
 </body>
